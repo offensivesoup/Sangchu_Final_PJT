@@ -10,8 +10,9 @@ def fetch_lease_trend_view(request):
 
 def fetch_zipgac_number_view(request):
     with connections['default'].cursor() as cursor:
-        cursor.execute("SELECT * FROM zipgac_number")
-        zipgac_numbers = cursor.fetchall()
+        sql_query = "SELECT * FROM zipgac_number_copy"
+        cursor.execute(sql_query)
+        zipgac_number = cursor.fetchall()
 
     return render(request, 'busan/index.html', {'zipgac_number': zipgac_number})
 
