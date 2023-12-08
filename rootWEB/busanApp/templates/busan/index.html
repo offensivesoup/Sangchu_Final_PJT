@@ -1,10 +1,15 @@
+<!-- templates/test.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Test Page</title>
 </head>
 <body>
-
+    <h1>Data from MariaDB</h1>
+    <ul>
+        {% for item in population_info %}
+                <li>{{ item }}</li>
+            <!-- 필요한 만큼 필드를 추가 -->
+        {% endfor %}
+    </ul>
 </body>
-</html>
