@@ -8,12 +8,12 @@ def fetch_lease_trend_view(request):
 
     return render(request, 'busan/index.html', {'lease_trend': lease_trend})
 
-def fetch_zipgac_numbers_view(request):
+def fetch_zipgac_number_view(request):
     with connections['default'].cursor() as cursor:
-        cursor.execute("SELECT * FROM zipgac_numbers")
+        cursor.execute("SELECT * FROM zipgac_number")
         zipgac_numbers = cursor.fetchall()
 
-    return render(request, 'busan/index.html', {'zipgac_numbers': zipgac_numbers})
+    return render(request, 'busan/index.html', {'zipgac_number': zipgac_number})
 
 def fetch_population_info_view(request):
     with connections['default'].cursor() as cursor:
