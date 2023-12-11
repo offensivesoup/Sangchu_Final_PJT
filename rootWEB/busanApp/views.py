@@ -29,3 +29,4 @@ def fetch_store_density_view(request) :
         cursor.execute(sql_query)
         store_density = cursor.fetchall()
     return render(request, 'busan/index.html', {'store_density': store_density})
+
