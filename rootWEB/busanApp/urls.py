@@ -1,5 +1,5 @@
 from os import path
-
+from django.urls import path, include
 from . import views
 from .views import fetch_lease_trend_view, fetch_zipgac_number_view, fetch_population_info_view, fetch_store_density_view,json_store_density_view
 from .views import json_store_density_view,json_lease_trend_view,json_zipgac_number_view,json_population_info_view
