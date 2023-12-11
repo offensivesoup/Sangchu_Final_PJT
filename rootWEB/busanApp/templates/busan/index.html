@@ -1,10 +1,26 @@
-<!-- templates/test.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
     <meta charset="UTF-8">
-    <title>title</title>
+    <title>Test_page_1</title>
 </head>
 <body>
+    <h1>Data from MariaDB</h1>
+
+<!--    <h2>Lease Trend Data</h2>-->
+<!--    <ul>-->
+<!--        {% for item in lease_trend %}-->
+<!--            <li>{{ item.0 }} - {{ item.1 }}</li>-->
+<!--            &lt;!&ndash; Add more fields as needed &ndash;&gt;-->
+<!--        {% endfor %}-->
+<!--    </ul>-->
+
+    <h2>Zipgac Numbers Data</h2>
+    <ul>
+        {% for item1 in zipgac_number %}
+            <li>{{ item1.0 }} - {{ item1.1 }}</li>
+            <!-- Add more fields as needed -->
+        {% endfor %}
+    </ul>
 </body>
+</html>
