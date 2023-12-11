@@ -17,7 +17,7 @@ def fetch_zipgac_number_view(request):
 
 def fetch_population_info_view(request):
     with connections['default'].cursor() as cursor:
-         cursor.execute("SELECT * FROM reigon_type_count")
+         cursor.execute("SELECT * FROM population_info")
          population_info = cursor.fetchall()
          return render(request, 'busan/index.html', {'population_info': population_info})
 
@@ -28,3 +28,8 @@ def fetch_store_density_view(request) :
         cursor.execute(sql_query)
         store_density = cursor.fetchall()
     return render(request, 'busan/index.html', {'store_density': store_density})
+
+
+
+
+
