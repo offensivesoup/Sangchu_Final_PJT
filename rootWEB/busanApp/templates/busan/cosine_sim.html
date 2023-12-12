@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>유사도 분석 결과</title>
+</head>
+<body>
+    <h1>입력 아이템: {{ input_item }}</h1>
+    <h2>유사한 아이템 목록:</h2>
+    <ul>
+        {% for recommended_item in recommended_items %}
+            <li><a href="{% url 'cosine' index=recommended_item.index %}">{{ recommended_item.item_name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
