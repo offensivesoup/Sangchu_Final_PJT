@@ -1,13 +1,13 @@
 from django.shortcuts import render
 from django.db import connections, connection
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views import View
 import pandas as pd
 import numpy as np
+import joblib
+from joblib import load
+import os
 
-# 2023-12-11 store_density를 json형식으로 html로 가져오기
-
-# 점포밀도
 def json_store_density_view(request) :
     final_dict = {}
     guLst = []
@@ -157,6 +157,25 @@ def json_population_cnt_view(request) :
         data = final_dict
     # JSON 형식으로 응답
     return JsonResponse({'data': data}, safe=False)
+
+def predict_model_view(request):
+    model_path = os.path.join(os.path.dirname(__file__), 'static', 'model_1', 'model_1.joblib')
+    loaded_model = load(model_path)
+
+    if request.method == 'POST':
+        user_input = request.POST
+
+        feature1 = float(user_input['feature1'])
+        feature2 = float(user_input['feature2'])
+        feature3 = float(user_input['feature3'])
+        feature4 = float(user_input['feature4'])
+
+        input_data = [[feature1, feature2, feature3, feature4]]
+        predictions = loaded_model.predict(input_data)
+        return render(request, 'busan/prediction_template.html', {'predictions': predictions})
+
+    else:
+        return render(request, 'busan/input_form.html')
 
 
 ## 구별 상세페이지로 이동시킬 것.
