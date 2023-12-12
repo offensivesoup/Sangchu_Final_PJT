@@ -206,6 +206,68 @@ def predict_model_view(request):
     else:
         return render(request, 'busan/input_form.html')
 
+# views.py
+from django.shortcuts import render
+from django.db import connection
+import joblib
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import pandas as pd
+import os
+
+# 모델 로드
+model_path = os.path.join(os.path.dirname(__file__), 'static', 'model_cosine', 'cosine_model.joblib')
+loaded_model = joblib.load(model_path)
+
+def cosine_similarity_maemul(input_item, model):
+    # TF-IDF 벡터화
+    tfidf_vect = TfidfVectorizer()
+    tfidf_matrix = tfidf_vect.fit_transform([input_item] + model.columns.astype(str).tolist())
+
+    # 코사인 유사도 계산
+    cosine_matrix = cosine_similarity(tfidf_matrix, tfidf_matrix)
+
+    df_cosine = pd.DataFrame(cosine_matrix, index=['input_item'] + model.columns.astype(str).tolist(),
+                             columns=['input_item'] + model.columns.astype(str).tolist())
+
+    # 입력 아이템에 대한 유사한 아이템 10개 추출
+    input_item_id = 'input_item'
+    recommended_items = df_cosine.loc[df_cosine[input_item_id] < 1, input_item_id].nlargest(11).index[1:]
+
+    # 추천된 아이템 리스트
+    recommended_item_list = [{'index': index, 'item_name': f'매물번호 {index}'} for index in recommended_items]
+    return recommended_item_list
+
+   # 추천된 아이템이 10개 미만인 경우에 대한 처리
+    if len(recommended_item_list) < 10:
+        pass
+
+    return recommended_item_list
+
+def cosine_similarity_view(request, index):
+    # item_id에 해당하는 공실 정보를 데이터베이스에서 가져오기
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT address, deposit, monthly, maintenance_cost, `when`, division, lease_area, my_area, my_floor, total_floor
+            FROM empty_room_data
+            WHERE `index` = %s
+        """, [index])
+        row = cursor.fetchone()
+
+    if row is None:
+        return render(request, 'not_found.html')  # 해당 아이템이 없을 경우 not_found.html로 이동
+
+    # 가져온 공실 정보를 가지고 유사한 아이템 추천
+    input_item = f"{row[0]} {row[1]} {row[2]} {row[3]} {row[4]} {row[5]} {row[6]} {row[7]} {row[8]} {row[9]}"
+    recommended_items = cosine_similarity_maemul(input_item, loaded_model)
+
+    context = {
+        'input_item': input_item,
+        'recommended_items': recommended_items,
+    }
+
+    return render(request, 'busan/cosine_sim.html', context)
+
 
 ## 구별 상세페이지로 이동시킬 것.
 

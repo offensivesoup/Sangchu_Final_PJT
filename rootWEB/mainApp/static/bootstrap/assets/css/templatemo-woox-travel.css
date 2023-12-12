@@ -151,9 +151,9 @@ body {
 
 .border-button a {
   font-size: 14px;
-  color: #244769;
-  background-color: transparent;
-  border: 1px solid #244769;
+  color: #012E4A;
+  background-color: white;
+  border: 1px solid #012E4A;
   padding: 12px 30px;
   display: inline-block;
   border-radius: 25px;
@@ -323,7 +323,7 @@ Header Style
 */
 
 .background-header {
-  background-color: #244769 !important;
+  background-color: #012E4A !important;
   height: 70px!important;
   position: fixed!important;
   top: 0!important;
@@ -614,7 +614,7 @@ Header Style
     width: 100%;
   }
   .header-area {
-    background-color: #244769;
+    background-color: #012E4A;
     padding: 0px 15px;
     height: 100px;
     box-shadow: none;
@@ -819,24 +819,25 @@ Banner Style
 
 }
 #section-1 .content-slider .slider #top-banner-1 {
-  background: url('../images/광안대교.jpg') no-repeat center center;
+  background: linear-gradient( rgba(0,0,0,0.5), rgba(0,0,0,0.5) ), url('../images/광안대교.jpg') no-repeat center center;
   background-size: cover;
+
 
 }
 #section-1 .content-slider .slider #top-banner-2 {
-  background: url('../images/감천문화마을.jpg') no-repeat center center;
+  background: linear-gradient( rgba(0,0,0,0.5), rgba(0,0,0,0.5) ),url('../images/감천문화마을.jpg') no-repeat center center;
   background-size: cover;
-
 
 }
 #section-1 .content-slider .slider #top-banner-3 {
-  background: url('../images/부산야경.jpg') no-repeat center center;
+  background: linear-gradient( rgba(0,0,0,0.5), rgba(0,0,0,0.5) ), url('../images/부산야경.jpg') no-repeat center center;
   background-size: cover;
+
 
 
 }
 #section-1 .content-slider .slider #top-banner-4 {
-  background: url('../images/더베이.jpg') no-repeat center center;
+  background: linear-gradient( rgba(0,0,0,0.5), rgba(0,0,0,0.5) ),url('../images/더베이.jpg') no-repeat center center;
   background-size: cover;
 }
 #section-1 .content-slider nav {
