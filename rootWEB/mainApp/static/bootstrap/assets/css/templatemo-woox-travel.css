@@ -819,25 +819,24 @@ Banner Style
 
 }
 #section-1 .content-slider .slider #top-banner-1 {
-  background: url('../images/더베이.png') no-repeat center center;
+  background: url('../images/광안대교.jpg') no-repeat center center;
   background-size: cover;
-
 
 }
 #section-1 .content-slider .slider #top-banner-2 {
-  background: url('../images/비프광장.png') no-repeat center center;
+  background: url('../images/감천문화마을.jpg') no-repeat center center;
   background-size: cover;
 
 
 }
 #section-1 .content-slider .slider #top-banner-3 {
-  background: url('../images/감천문화마을.png') no-repeat center center;
+  background: url('../images/부산야경.jpg') no-repeat center center;
   background-size: cover;
 
 
 }
 #section-1 .content-slider .slider #top-banner-4 {
-  background: url('../images/부산역.png') no-repeat center center;
+  background: url('../images/더베이.jpg') no-repeat center center;
   background-size: cover;
 }
 #section-1 .content-slider nav {
