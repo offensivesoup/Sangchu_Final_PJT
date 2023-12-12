@@ -816,18 +816,24 @@ Banner Style
   color: #244769;
   border-color: #244769;
   transition: 0.3s;
+
 }
 #section-1 .content-slider .slider #top-banner-1 {
   background: url('../images/더베이.jpg') no-repeat center center;
   background-size: cover;
+  background-color: rgba(0, 0, 0, 0.8);
+
 }
 #section-1 .content-slider .slider #top-banner-2 {
   background: url('../images/south koren.jpg') no-repeat center center;
   background-size: cover;
+
+
 }
 #section-1 .content-slider .slider #top-banner-3 {
   background: url('../images/감천문화마을.jpg') no-repeat center center;
   background-size: cover;
+
 }
 #section-1 .content-slider .slider #top-banner-4 {
   background: url('../images/부산역.jpg') no-repeat center center;
