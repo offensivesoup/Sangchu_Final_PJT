@@ -8,6 +8,32 @@ import joblib
 from joblib import load
 import os
 
+
+
+def index(request):
+    print('debug >>> busanApp/index ')
+    final_dict = {}
+    guLst = []
+    categoryLst = []
+    densityLst = []
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT gu, category, density FROM store_density")
+        # 쿼리 결과를 필요한 형식으로 가공 (예: 딕셔너리 리스트)
+        columns = [col[0] for col in cursor.description]
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        for i in range(len(data)):
+            if data[i]['gu'] == '강서구':
+                guLst.append(data[i]['gu'])
+                categoryLst.append(data[i]['category'])
+                densityLst.append(data[i]['density'])
+        final_dict['gu'] = guLst
+        final_dict['category'] = categoryLst
+        final_dict['density'] = densityLst
+        data = final_dict
+        ctx = {'data': data}
+
+    return render(request, 'busan/index.html',ctx)
+
 def json_store_density_view(request) :
     final_dict = {}
     guLst = []
@@ -172,6 +198,9 @@ def predict_model_view(request):
 
         input_data = [[feature1, feature2, feature3, feature4]]
         predictions = loaded_model.predict(input_data)
+        if predictions <= 0 or predictions >1000:
+            predictions = "제공되지 않는 정보입니다."
+
         return render(request, 'busan/prediction_template.html', {'predictions': predictions})
 
     else:
