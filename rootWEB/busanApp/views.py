@@ -172,6 +172,9 @@ def predict_model_view(request):
 
         input_data = [[feature1, feature2, feature3, feature4]]
         predictions = loaded_model.predict(input_data)
+        if predictions <= 0 or predictions >1000:
+            predictions = "제공되지 않는 정보입니다."
+
         return render(request, 'busan/prediction_template.html', {'predictions': predictions})
 
     else:
