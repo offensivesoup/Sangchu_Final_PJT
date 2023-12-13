@@ -220,10 +220,44 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import os
 
-# 모델 로드
-model_path = os.path.join(os.path.dirname(__file__), 'static', 'model_cosine', 'cosine_model.joblib')
-loaded_model = joblib.load(model_path)
+def cosine_similarity_view(request, index):
+    # 모델 로드
+    model_path = os.path.join(os.path.dirname(__file__), 'static', 'model_cosine', 'cosine_model.pkl')
+    loaded_model = joblib.load(model_path)
 
+    # item_id에 해당하는 공실 정보를 데이터베이스에서 가져오기
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT address, deposit, monthly, maintenance_cost, `when`, division, lease_area, my_area, my_floor, total_floor
+            FROM empty_room_data
+            WHERE `index` = %s
+        """, [index])
+        row = cursor.fetchone()
+
+    if row is None:
+        return render(request, 'not_found.html')  # 해당 아이템이 없을 경우 not_found.html로 이동
+
+    # 가져온 공실 정보를 가지고 유사한 아이템 추천
+    input_item = f"{row[0]} {row[1]} {row[2]} {row[3]} {row[4]} {row[5]} {row[6]} {row[7]} {row[8]} {row[9]}"
+
+    # 이미 계산된 코사인 유사도 가져오기
+    similarities = loaded_model  # 적절한 변수나 메서드를 사용하여 가져와야 함
+
+    current_page_index = index # 여기에 현재 페이지의 인덱스를 설정하세요.
+
+    # 현재 페이지의 유사도를 기준으로 정렬
+    sorted_similar_items = sorted(enumerate(similarities[current_page_index]), key=lambda x: x[1], reverse=True)
+
+    # 상위 10개 아이템의 인덱스 추출
+    top_10_similar_items = [index for index, _ in sorted_similar_items[1:11]]
+
+    context = {
+        'index' : index,
+        'input_item': input_item,
+        'recommended_items': top_10_similar_items,
+    }
+
+    return render(request, 'busan/cosine_sim.html', context)
 
 ## 구별 상세페이지로 이동시킬 것.
 

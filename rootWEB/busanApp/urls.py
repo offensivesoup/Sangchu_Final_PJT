@@ -3,7 +3,7 @@ from django.urls import path, include
 from . import views
 from busanApp import views
 from .views import json_store_density_view,json_lease_trend_view,json_zipgac_number_view,json_population_density_view, json_service_density_view, json_population_cnt_view, predict_model_view
-from .views import cosine_similarity_maemul, cosine_similarity_view, population_density_chart
+from .views import cosine_similarity_view, population_density_chart
 urlpatterns = [
     path("", views.index),
     path("json1/", json_store_density_view    , name='json_store_density_view'),
