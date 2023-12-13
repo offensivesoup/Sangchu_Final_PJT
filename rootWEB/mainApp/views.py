@@ -7,3 +7,5 @@ def map(request) :
     return render(request, 'main/map.html')
 
 # Create your views here.
+def sign(request):
+    return render(request,'main/sign.html')
