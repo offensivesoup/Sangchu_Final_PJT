@@ -17,9 +17,10 @@ def map(request) :
     return render(request, 'main/map.html')
 
 # Create your views here.
-def sign(request):
-    return render(request,'main/sign.html')
+def sign2(request):
+    return render(request,'main/sign2.html')
 
+<<<<<<< HEAD
 def signup(request):
     return render(request, 'main/signup.html')
 def busan(request):
