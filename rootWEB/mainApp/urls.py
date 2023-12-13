@@ -3,5 +3,6 @@ from mainApp import views
 urlpatterns = [
     path("", views.index),
     path("map/", views.map),
+    path("busan/",views.busan),
 
 ]
