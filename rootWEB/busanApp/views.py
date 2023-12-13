@@ -146,28 +146,28 @@ def json_zipgac_number_view(request) :
     # JSON 형식으로 응답
     return JsonResponse({'data': data}, safe=False)
 
-# 인구밀도
-# def json_population_density_view(request) :
-#     final_dict = {}
-#     guLst = []
-#     popuLst = []
-#     with connection.cursor() as cursor:
-#         cursor.execute("SELECT gu, popu_density FROM population_info")
-#         # 쿼리 결과를 필요한 형식으로 가공 (예: 딕셔너리 리스트)
-#         columns = [col[0] for col in cursor.description]
-#         data = [dict(zip(columns, row)) for row in cursor.fetchall()]
-#         for i in range(len(data)):
-#             if data[i]['gu'] == '강서구':
-#                 guLst.append(data[i]['gu'])
-#                 popuLst.append(data[i]['popu_density'])
-#         final_dict['gu'] = guLst
-#         final_dict['popu_density'] = popuLst
-#         data = final_dict
-#     # JSON 형식으로 응답
-#     return JsonResponse({'data': data}, safe=False)
+인구밀도
+def json_population_density_view(request) :
+    final_dict = {}
+    guLst = []
+    popuLst = []
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT gu, popu_density FROM population_info")
+        # 쿼리 결과를 필요한 형식으로 가공 (예: 딕셔너리 리스트)
+        columns = [col[0] for col in cursor.description]
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        for i in range(len(data)):
+            if data[i]['gu'] == '강서구':
+                guLst.append(data[i]['gu'])
+                popuLst.append(data[i]['popu_density'])
+        final_dict['gu'] = guLst
+        final_dict['popu_density'] = popuLst
+        data = final_dict
+    # JSON 형식으로 응답
+    return JsonResponse({'data': data}, safe=False)
 
 # 아래는 구별 인구밀도에 대한 전체 정보를 가져오는 코드입니다.(진우)
-def json_population_density_view(request):
+def json_population_density_view_all(request):
     final_dict = {}
     guLst = []
     popuLst = []
