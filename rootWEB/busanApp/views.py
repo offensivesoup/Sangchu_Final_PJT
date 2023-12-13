@@ -7,6 +7,7 @@ import numpy as np
 import joblib
 from joblib import load
 import os
+import pandas as pd
 
 
 
@@ -125,7 +126,7 @@ def json_zipgac_number_view(request) :
     # JSON 형식으로 응답
     return JsonResponse({'data': data}, safe=False)
 
-# 인구밀도
+인구밀도
 def json_population_density_view(request) :
     final_dict = {}
     guLst = []
@@ -144,6 +145,30 @@ def json_population_density_view(request) :
         data = final_dict
     # JSON 형식으로 응답
     return JsonResponse({'data': data}, safe=False)
+
+# 아래는 구별 인구밀도에 대한 전체 정보를 가져오는 코드입니다.(진우)
+def json_population_density_view_all(request):
+    final_dict = {}
+    guLst = []
+    popuLst = []
+    gu_list = ['강서구', '중구', '서구', '동구', '영도구', '부산진구', '동래구', '남구', '북구', '해운대구', '사하구', '금정구', '강서구', '연제구', '수영구','사상구']
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT gu, popu_density FROM population_info")
+        columns = [col[0] for col in cursor.description]
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        for i in range(len(data)):
+            if data[i]['gu'] in gu_list:
+                guLst.append(data[i]['gu'])
+                popuLst.append(data[i]['popu_density'])
+            else:
+                guLst.append(data[i]['gu'])
+                popuLst.append(data[i]['popu_density'])
+        final_dict['gu'] = guLst
+        final_dict['popu_density'] = popuLst
+    return JsonResponse({'data': final_dict}, safe=False)
+
+def population_density_chart(request):
+    return render(request, 'busan/population_density_chart.html')
 
 def json_population_cnt_view(request) :
     final_dict = {}
