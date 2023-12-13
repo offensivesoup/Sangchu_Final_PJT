@@ -83,15 +83,8 @@ def json_service_density_view(request):
 def json_lease_trend_view(request) :
     final_dict = {}
     guLst = []
-    aLst = []
-    bLst = []
-    cLst = []
-    dLst = []
-    eLst = []
-    fLst = []
-    gLst = []
-    hLst = []
-    iLst = []
+    yearLst = []
+    leaseLst = []
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM lease_trend_final")
 
@@ -101,26 +94,13 @@ def json_lease_trend_view(request) :
         for i in range(len(data)):
             if data[i]['index'] == '수영구':
                 guLst.append(data[i]['index'])
-                aLst.append(data[i]['2014'])
-                bLst.append(data[i]['2015'])
-                cLst.append(data[i]['2016'])
-                dLst.append(data[i]['2017'])
-                eLst.append(data[i]['2018'])
-                fLst.append(data[i]['2019'])
-                gLst.append(data[i]['2020'])
-                hLst.append(data[i]['2021'])
-                iLst.append(data[i]['2022'])
+                yearLst = [i for i in data[i].keys()][1:]
+                leaseLst = [m for m in data[i].values()][1:]
         final_dict['gu'] = guLst
-        final_dict['2014'] = aLst
-        final_dict['2015'] = bLst
-        final_dict['2016'] = cLst
-        final_dict['2017'] = dLst
-        final_dict['2018'] = eLst
-        final_dict['2019'] = fLst
-        final_dict['2020'] = gLst
-        final_dict['2021'] = hLst
-        final_dict['2022'] = iLst
+        final_dict['year'] = yearLst
+        final_dict['lease'] = leaseLst
         data = final_dict
+        print(final_dict)
     # JSON 형식으로 응답
     return JsonResponse({'data': data}, safe=False)
 
