@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cosine Similarity Results</title>
+</head>
+<body>
+    <h1>내가 선택한 공실과 유사한 공실이에요.</h1>
+
+    <p>매물정보: {{ input_item }}</p>
+
+    <h2>{{index}}번 매물과 유사한 Recommended 매물:</h2>
+    <ul>
+        {% for item_index in recommended_items %}
+            <li>
+                <p><strong>매물번호:</strong> {{ item_index  }}</p>
+<!--                <p>정보: {{ similar_items_info }}</p>-->
+                <!-- You can display more information about the recommended item here -->
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
