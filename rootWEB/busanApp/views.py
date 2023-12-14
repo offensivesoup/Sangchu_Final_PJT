@@ -151,7 +151,7 @@ def json_population_density_view_all(request):
     final_dict = {}
     guLst = []
     popuLst = []
-    gu_list = ['강서구', '중구', '서구', '동구', '영도구', '부산진구', '동래구', '남구', '북구', '해운대구', '사하구', '금정구', '강서구', '연제구', '수영구','사상구']
+    gu_list = ['강서구', '중구', '서구', '동구', '영도구', '부산진구', '동래구', '남구', '북구', '해운대구', '사하구', '금정구', '강서구', '연제구', '수영구', '사상구']
     with connection.cursor() as cursor:
         cursor.execute("SELECT gu, popu_density FROM population_info")
         columns = [col[0] for col in cursor.description]
@@ -165,10 +165,31 @@ def json_population_density_view_all(request):
                 popuLst.append(data[i]['popu_density'])
         final_dict['gu'] = guLst
         final_dict['popu_density'] = popuLst
-    return JsonResponse({'data': final_dict}, safe=False)
 
-def population_density_chart(request):
-    return render(request, 'busan/population_density_chart.html')
+        chart_data = {
+            'chart': {
+                'type': 'bar'
+            },
+            'title': {
+                'text': '구별 단위면적 당 인구 수(인구밀도)'
+            },
+            'xAxis': {
+                'categories': final_dict['gu'],  # Corrected this line
+                'title': {
+                    'text': '구 명'
+                }
+            },
+            'yAxis': {
+                'title': {
+                    'text': '단위면적 당 인구 수'
+                }
+            },
+            'series': [{
+                'name': '단위면적 당 인구 수',
+                'data': final_dict['popu_density']
+            }]
+        }
+        return render(request, 'busan/population_density_chart.html', {'chart_data': chart_data})
 
 def json_population_cnt_view(request) :
     final_dict = {}
