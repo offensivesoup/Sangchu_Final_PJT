@@ -7,6 +7,7 @@ import numpy as np
 import joblib
 from joblib import load
 import os
+import pandas as pd
 
 
 
@@ -145,6 +146,30 @@ def json_population_density_view(request) :
     # JSON 형식으로 응답
     return JsonResponse({'data': data}, safe=False)
 
+# 아래는 구별 인구밀도에 대한 전체 정보를 가져오는 코드입니다.(진우)
+def json_population_density_view_all(request):
+    final_dict = {}
+    guLst = []
+    popuLst = []
+    gu_list = ['강서구', '중구', '서구', '동구', '영도구', '부산진구', '동래구', '남구', '북구', '해운대구', '사하구', '금정구', '강서구', '연제구', '수영구','사상구']
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT gu, popu_density FROM population_info")
+        columns = [col[0] for col in cursor.description]
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        for i in range(len(data)):
+            if data[i]['gu'] in gu_list:
+                guLst.append(data[i]['gu'])
+                popuLst.append(data[i]['popu_density'])
+            else:
+                guLst.append(data[i]['gu'])
+                popuLst.append(data[i]['popu_density'])
+        final_dict['gu'] = guLst
+        final_dict['popu_density'] = popuLst
+    return JsonResponse({'data': final_dict}, safe=False)
+
+def population_density_chart(request):
+    return render(request, 'busan/population_density_chart.html')
+
 def json_population_cnt_view(request) :
     final_dict = {}
     guLst = []
@@ -195,36 +220,11 @@ from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import os
 
-# 모델 로드
-model_path = os.path.join(os.path.dirname(__file__), 'static', 'model_cosine', 'cosine_model.joblib')
-loaded_model = joblib.load(model_path)
-
-def cosine_similarity_maemul(input_item, model):
-    # TF-IDF 벡터화
-    tfidf_vect = TfidfVectorizer()
-    tfidf_matrix = tfidf_vect.fit_transform([input_item] + model.columns.astype(str).tolist())
-
-    # 코사인 유사도 계산
-    cosine_matrix = cosine_similarity(tfidf_matrix, tfidf_matrix)
-
-    df_cosine = pd.DataFrame(cosine_matrix, index=['input_item'] + model.columns.astype(str).tolist(),
-                             columns=['input_item'] + model.columns.astype(str).tolist())
-
-    # 입력 아이템에 대한 유사한 아이템 10개 추출
-    input_item_id = 'input_item'
-    recommended_items = df_cosine.loc[df_cosine[input_item_id] < 1, input_item_id].nlargest(11).index[1:]
-
-    # 추천된 아이템 리스트
-    recommended_item_list = [{'index': index, 'item_name': f'매물번호 {index}'} for index in recommended_items]
-    return recommended_item_list
-
-   # 추천된 아이템이 10개 미만인 경우에 대한 처리
-    if len(recommended_item_list) < 10:
-        pass
-
-    return recommended_item_list
-
 def cosine_similarity_view(request, index):
+    # 모델 로드
+    model_path = os.path.join(os.path.dirname(__file__), 'static', 'model_cosine', 'cosine_model.pkl')
+    loaded_model = joblib.load(model_path)
+
     # item_id에 해당하는 공실 정보를 데이터베이스에서 가져오기
     with connection.cursor() as cursor:
         cursor.execute("""
@@ -239,15 +239,25 @@ def cosine_similarity_view(request, index):
 
     # 가져온 공실 정보를 가지고 유사한 아이템 추천
     input_item = f"{row[0]} {row[1]} {row[2]} {row[3]} {row[4]} {row[5]} {row[6]} {row[7]} {row[8]} {row[9]}"
-    recommended_items = cosine_similarity_maemul(input_item, loaded_model)
+
+    # 이미 계산된 코사인 유사도 가져오기
+    similarities = loaded_model  # 적절한 변수나 메서드를 사용하여 가져와야 함
+
+    current_page_index = index # 여기에 현재 페이지의 인덱스를 설정하세요.
+
+    # 현재 페이지의 유사도를 기준으로 정렬
+    sorted_similar_items = sorted(enumerate(similarities[current_page_index]), key=lambda x: x[1], reverse=True)
+
+    # 상위 10개 아이템의 인덱스 추출
+    top_10_similar_items = [index for index, _ in sorted_similar_items[1:11]]
 
     context = {
+        'index' : index,
         'input_item': input_item,
-        'recommended_items': recommended_items,
+        'recommended_items': top_10_similar_items,
     }
 
     return render(request, 'busan/cosine_sim.html', context)
-
 
 ## 구별 상세페이지로 이동시킬 것.
 

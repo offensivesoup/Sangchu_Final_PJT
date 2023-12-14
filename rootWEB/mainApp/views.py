@@ -20,12 +20,10 @@ def map(request) :
 def sign2(request):
     return render(request,'main/sign2.html')
 
-def signup(request):
-    return render(request, 'main/signup.html')
+
 def busan(request):
     print('debug >>> client path, mainApp/busan, render = busan')
     return render(request,'main/busan.html')
-
 
 def analysis_lease(request):
     with connection.cursor() as cursor:
