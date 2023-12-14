@@ -28,17 +28,6 @@ def busan(request):
 
 
 def analysis_lease(request):
-    final_dict = {}
-    guLst = []
-    aLst = []
-    bLst = []
-    cLst = []
-    dLst = []
-    eLst = []
-    fLst = []
-    gLst = []
-    hLst = []
-    iLst = []
     with connection.cursor() as cursor:
         final_dict = {}
         guLst = []
