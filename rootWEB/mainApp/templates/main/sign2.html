@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인 페이지</title>
+    <style>
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        label, input {
+            display: block;
+            margin-bottom: 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #012E4A;
+            color: #fff;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        p {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        a {
+            color: #012E4A;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="login-form">
+        <h2>로그인</h2>
+        <label for="email">이메일:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">비밀번호:</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="button" onclick="login()">로그인</button>
+
+        <p>계정이 없으신가요? <a href="#" onclick="showSignUpForm()">회원가입</a></p>
+    </form>
+
+    <form id="signup-form" style="display:none;">
+        <h2>회원가입</h2>
+        <label for="newUsername">사용자 이름:</label>
+        <input type="text" id="newUsername" name="newUsername" required>
+
+        <label for="newEmail">이메일:</label>
+        <input type="email" id="newEmail" name="newEmail" required>
+
+        <label for="newPhone">전화번호:</label>
+        <input type="tel" id="newPhone" name="newPhone" required pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}" placeholder="010-1234-5678">
+
+        <label for="newPassword">비밀번호:</label>
+        <input type="password" id="newPassword" name="newPassword" required>
+
+        <button type="button" onclick="signup()">가입하기</button>
+
+        <p>이미 계정이 있으신가요? <a href="#" onclick="showLoginForm()">로그인</a></p>
+    </form>
+
+    <script>
+        function login() {
+            var email = document.getElementById("email").value;
+            var password = document.getElementById("password").value;
+
+            console.log("로그인 시도 - 이메일: " + email + ", 비밀번호: " + password);
+
+            // 로그인 로직을 추가 (실제로는 서버로 데이터 전송 등)
+        }
+
+        function signup() {
+            var newUsername = document.getElementById("newUsername").value;
+            var newEmail = document.getElementById("newEmail").value;
+            var newPhone = document.getElementById("newPhone").value;
+            var newPassword = document.getElementById("newPassword").value;
+
+            console.log("회원가입 시도 - 사용자 이름: " + newUsername + ", 이메일: " + newEmail + ", 전화번호: " + newPhone + ", 비밀번호: " + newPassword);
+
+            // 회원가입 로직을 추가 (실제로는 서버로 데이터 전송 등)
+        }
+
+        function showSignUpForm() {
+            document.getElementById("login-form").style.display = "none";
+            document.getElementById("signup-form").style.display = "block";
+        }
+
+        function showLoginForm() {
+            document.getElementById("signup-form").style.display = "none";
+            document.getElementById("login-form").style.display = "block";
+        }
+    </script>
+
+</body>
+</html>

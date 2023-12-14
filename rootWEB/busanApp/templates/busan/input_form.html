@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Input Form</title>
+</head>
+<body>
+
+<h1>Input Form</h1>
+
+<form method="post" action="{% url 'predict_model_view' %}">
+    {% csrf_token %}
+    <label for="feature1">Feature 1:</label>
+    <input type="text" name="feature1" required><br>
+
+    <label for="feature2">Feature 2:</label>
+    <input type="text" name="feature2" required><br>
+
+    <label for="feature3">Feature 3:</label>
+    <input type="text" name="feature3" required><br>
+
+    <label for="feature4">Feature 4:</label>
+    <input type="text" name="feature4" required><br>
+
+    <input type="submit" value="Predict">
+</form>
+
+</body>
+</html>
