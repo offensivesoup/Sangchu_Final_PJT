@@ -8,3 +8,6 @@ db.sqlite3-journal
 media
 my_settings.py
 .idea/
+*.pkl
+model_cosine/
+cosine_model.pkl

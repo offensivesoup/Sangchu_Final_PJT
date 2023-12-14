@@ -126,7 +126,7 @@ def json_zipgac_number_view(request) :
     # JSON 형식으로 응답
     return JsonResponse({'data': data}, safe=False)
 
-인구밀도
+# 인구밀도
 def json_population_density_view(request) :
     final_dict = {}
     guLst = []
