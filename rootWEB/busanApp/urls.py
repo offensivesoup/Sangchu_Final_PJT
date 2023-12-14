@@ -15,4 +15,5 @@ urlpatterns = [
     path('predict/', predict_model_view, name='predict_model_view'),
     path('cosine/<int:index>/', cosine_similarity_view, name = 'cosine'),
     path('json_population_density_view_all/', views.json_population_density_view_all, name='json_population_density_view_all'),
+    path('json_population_cnt_view/', views.json_population_cnt_view, name ='json_population_cnt_view')
 ]
