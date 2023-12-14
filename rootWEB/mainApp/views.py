@@ -20,7 +20,6 @@ def map(request) :
 def sign2(request):
     return render(request,'main/sign2.html')
 
-<<<<<<< HEAD
 def signup(request):
     return render(request, 'main/signup.html')
 def busan(request):
