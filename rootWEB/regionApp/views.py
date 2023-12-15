@@ -16,7 +16,7 @@ def index(request,region_name) :
     region_name = region_name
     print('deubg >>> region_name: ' ,region_name)
     print('debug >>> client path, regionApp/index, render = index')
-    return render(request, 'region/index.html')
+    return render(request, 'region/index.html', {'region_name': region_name})
 
 def zipgac_number_chart(request):
     final_dict = {}
