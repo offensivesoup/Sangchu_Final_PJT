@@ -1,7 +1,7 @@
 from os import path
 from django.urls import path, include
 from . import views
-from .views import json_store_density_view,json_lease_trend_view,json_zipgac_number_view,json_population_density_view, json_service_density_view, json_population_cnt_view, predict_model_view
+from .views import json_store_density_view,json_lease_trend_view,json_population_density_view, json_service_density_view, json_population_cnt_view, predict_model_view, json_zipgac_number_view
 
 from .views import cosine_similarity_view, get_lease_trend_data, lease_trend, service_population_json, service_population
 urlpatterns = [
@@ -20,5 +20,7 @@ urlpatterns = [
     path('service_population_json/'          , service_population_json, name='service_population_json'),
     path('service_population/'               , service_population, name='service_population'),
     path('json_population_density_view_all/', views.json_population_density_view_all, name='json_population_density_view_all'),
-    path('json_population_cnt_view/', views.json_population_cnt_view, name ='json_population_cnt_view')]
-
+    path('json_population_cnt_view/', views.json_population_cnt_view, name ='json_population_cnt_view'),
+    path('analysis_zipgac_number/',views.analysis_zipgac_number),
+    path('json_zipgac_number_view/', views.json_zipgac_number_view, name ='json_zipgac_number_view'),
+]
