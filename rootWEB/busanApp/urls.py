@@ -21,5 +21,7 @@ urlpatterns = [
     path('analysis_zipgac_number/',views.analysis_zipgac_number),
     path('json_zipgac_number_view/', views.json_zipgac_number_view, name ='json_zipgac_number_view'),
     path('population_density/', views.population_density, name ='population_density'),
+    path('population_cnt_view/', views.population_cnt_view , name = 'population_cnt_view'),
+    path('population_cnt/', views.population_cnt, name = 'population_cnt'),
 ]
 
