@@ -7,5 +7,6 @@ urlpatterns = [
     path("sign2/",views.sign2),
     path("analysis1/",views.analysis_lease),
     path("analysis2/",views.analysis_zipgac),
-    # path("analysis3/",)
+    path("analysis3/",views.analysis_pop_density),
+    path("analysis4/",views.analysis_pop_cnt)
 ]

@@ -188,6 +188,29 @@ def json_population_density_view_all(request):
 def population_density(request):
     return render(request, 'busan/population_density_chart.html')
 
+def population_cnt_view(request):
+    final_dict2 = {}
+    guLst2 = []
+    popuLst2 = []
+    gu_list = ['강서구', '중구', '서구', '동구', '영도구', '부산진구', '동래구', '남구', '북구', '해운대구', '사하구', '금정구', '강서구', '연제구', '수영구', '사상구']
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT gu, popu_cnt FROM population_info")
+        columns = [col[0] for col in cursor.description]
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        for i in range(len(data)):
+            if data[i]['gu'] in gu_list:
+                guLst2.append(data[i]['gu'])
+                popuLst2.append(data[i]['popu_cnt'])
+            else:
+                guLst2.append(data[i]['gu'])
+                popuLst2.append(data[i]['popu_cnt'])
+        final_dict2['gu'] = guLst2
+        final_dict2['popu_cnt'] = popuLst2
+        data = final_dict2
+    return JsonResponse({'data': data}, safe=False)
+
+def population_cnt(request):
+    return render(request, 'busan/json_population_cnt_view.html')
 
 def predict_model_view(request):
     model_path = os.path.join(os.path.dirname(__file__), 'static', 'model_1', 'model_1.joblib')
