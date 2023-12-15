@@ -214,7 +214,10 @@ color: gray;
               </h2>
               <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    <figure class="highcharts-figure">
+                       <div id="container-chart5"></div>
+                    </figure>
+<!--                  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.-->
                 </div>
               </div>
             </div>
@@ -226,7 +229,10 @@ color: gray;
               </h2>
               <div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                     <figure class="highcharts-figure">
+                        <div id="container-chart6"></div>
+                    </figure>
+<!--                  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.-->
                 </div>
               </div>
             </div>
@@ -567,9 +573,11 @@ function chart4(data){
 
 });
 
-
-
 }
+
+
+
+
 
 <!--처음 로딩시 아코디언 메뉴 1의  차트1 실행 -->
   $(document).ready(()=>{
@@ -614,8 +622,7 @@ $('#Accbtntwo').click(function(){
             dataType: 'json',
             success: function(data){
                 console.log(data);
-
-                chart2(data);
+                chart2(data)
 
             },
             error: function (error) {
@@ -668,8 +675,130 @@ $('#AccbtnFour').click(function(){
 })
 
 <!--아코디언5 그리기-->
+$('#AccbtnFive').click(function(){
+     $.ajax({
+                url: "/analysis5/",
+                type: "GET",
+                dataType: "json",
+                success: function(response) {
+                    console.log(response);
+                    var serverData = response.data;
+                      Highcharts.chart('container-chart5', {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: '1개의 점포당 서비스하고 있는 인구 수',
+                            align: 'left'
+                        },
+                        subtitle: {
+                            text: 'Source: 부산광역시 제공',
+                            align: 'left'
+                        },
+                        xAxis: {
+                            categories: serverData.map(item => item.gu),
+                            crosshair: true,
+                            accessibility: {
+                                description: '행정구'
+                            }
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: '점포당 서비스인구'
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ''
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0,
+                                dataLabels: { // 각 column 상단에 데이터 표시
+                                    enabled: true,
+                                    format: '{point.y:.2f}' // 소수점 2자리까지 표시
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'Average Service Population per Store',
+                            data: serverData.map(item => parseFloat(item['avg(service_population_per_store)']))
+                        }]
+                    });
 
+                },
+                error: function(error) {
 
+                    console.error(error);
+                }
+            });
+
+})
+
+<!--아코디언6 그리기 -->
+  $('#AccbtnSix').click(function () {
+            $.ajax({
+                url: '/analysis6/',  // 여기에 해당하는 Django 뷰의 URL을 넣어주세요
+                method: 'GET',
+                success: function (response) {
+
+                    console.log('Data from server:', response);
+
+                    // 받은 데이터에서 실제 데이터 부분 추출
+                    var serverData = response.data;
+                    console.log('serverData:', serverData);
+
+                    // Highcharts 차트 생성
+                    Highcharts.chart('container-chart6', {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: '1km^2당 점포 수 (점포밀도)',
+                            align: 'left',
+                        },
+                        subtitle: {
+                            text: 'Source: Sangchu 자체제작',
+                            align: 'left',
+                        },
+                        xAxis: {
+                            categories: serverData.map(item => item.gu),
+                            crosshair: true,
+                            accessibility: {
+                                description: '행정구'
+                            }
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: '점포밀도'
+                            }
+                        },
+                        tooltip: {
+                            valueSuffix: ''
+                        },
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0,
+                                dataLabels: { // 각 column 상단에 데이터 표시
+                                    enabled: true,
+                                    format: '{point.y:.2f}' // 소수점 2자리까지 표시
+                                }
+                            }
+                        },
+                        series: [{
+                            name: '점포밀도',
+                            data: serverData.map(item => parseFloat(item['avg(density)']))
+                        }]
+                    });
+                },
+                error: function (error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        });
 })
 
   </script>

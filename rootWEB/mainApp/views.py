@@ -125,3 +125,25 @@ def analysis_pop_cnt(request):
         final_dict2['popu_cnt'] = popuLst2
         data = final_dict2
     return JsonResponse({'data': data}, safe=False)
+
+
+
+def analysis_service_cnt(request):
+    query = (
+        "SELECT gu, avg(service_population_per_store) FROM store_density group by gu having avg(service_population_per_store)")
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        columns = [col[0] for col in cursor.description]
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+    return JsonResponse({'data': data})
+
+
+def analysis_store_density(request):
+    query = ("SELECT gu, avg(density) FROM store_density group by gu having avg(density)")
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        columns = [col[0] for col in cursor.description]
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+    return JsonResponse({'data': data})
