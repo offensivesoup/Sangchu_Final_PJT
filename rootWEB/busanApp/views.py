@@ -9,8 +9,6 @@ from joblib import load
 import os
 import pandas as pd
 
-
-
 def index(request):
     print('debug >>> busanApp/index ')
     final_dict = {}
