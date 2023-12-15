@@ -10,8 +10,11 @@ import os
 import pandas as pd
 
 # Create your views here.
+# 구별 분석 페이지로 이동
 
-def index(request) :
+def index(request,region_name) :
+    region_name = region_name
+    print('deubg >>> region_name: ' ,region_name)
     print('debug >>> client path, regionApp/index, render = index')
     return render(request, 'region/index.html')
 

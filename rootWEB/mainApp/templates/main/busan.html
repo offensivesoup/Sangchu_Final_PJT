@@ -240,6 +240,15 @@ color: gray;
 
   <!-- 지도 script -->
 <script>
+<!-- 구별 분석 페이지로  이동하는 함수   -->
+function goRegionPage(selectedRegion){
+        var regionUrl = '/region/' + selectedRegion + '/';
+        window.location.href = regionUrl;
+
+}
+
+
+
 geopath = '{% static "busan_gu.json" %}'
 async function geodata() {
 
@@ -325,7 +334,7 @@ async function geodata() {
                 .get(),
             states: {
                 hover: {
-                    color: Highcharts.getOptions().colors[4]
+                    color: Highcharts.getOptions().colors[1]
                 }
             },
             dataLabels: {
@@ -341,7 +350,14 @@ async function geodata() {
             },
             tooltip: {
                 pointFormat: '{point.name}'
-            }
+            },
+            events: {
+                            click: function (event) {
+                                var selectedRegion = event.point.name;
+<!--                                console.log(selectedRegion)-->
+                                goRegionPage(selectedRegion)
+                            }
+                        }
         }, ]
     });
 
@@ -443,7 +459,7 @@ Highcharts.chart('container-chart1', {
     method: 'get',
     dataType: 'json',
     success: function(data){
-      console.log(data);
+      console.log(data.data);
       chart1(data);
 
     },

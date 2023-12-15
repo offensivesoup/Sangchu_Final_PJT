@@ -212,7 +212,7 @@ def json_population_cnt_view(request) :
         final_dict['popu_cnt'] = cntLst
         chart_data = {
             'chart': {
-                'type': 'bar'
+                'type': 'column'
             },
             'title': {
                 'text': '구별 인구수 분포'

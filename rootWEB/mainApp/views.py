@@ -38,7 +38,7 @@ def analysis_lease(request):
             columns = [col[0] for col in cursor.description]
             data = [dict(zip(columns, row)) for row in cursor.fetchall()]
             gulst = [i['index'] for i in data]
-            year = [i for i in range(2014, 2023)]
+            # year = [i for i in range(2014, 2023)]
             datas = []
             for i in data:
                 for gu in gulst:
@@ -48,15 +48,15 @@ def analysis_lease(request):
                         datas.append({'name': gu, 'data' : temp })
 
 
-            for i in range(len(data)):
-                if data[i]['index'] == '수영구':
-                    guLst.append(data[i]['index'])
-                    yearLst = [i for i in data[i].keys()][1:]
-                    leaseLst = [m for m in data[i].values()][1:]
-            final_dict['gu'] = guLst
-            final_dict['year'] = yearLst
-            final_dict['lease'] = leaseLst
-            data = final_dict
-            # print(final_dict)
+            # for i in range(len(data)):
+            #     if data[i]['index'] == '수영구':
+            #         guLst.append(data[i]['index'])
+            #         yearLst = [i for i in data[i].keys()][1:]
+            #         leaseLst = [m for m in data[i].values()][1:]
+            # final_dict['gu'] = guLst
+            # final_dict['year'] = yearLst
+            # final_dict['lease'] = leaseLst
+            # data = final_dict
+            # # print(final_dict)
         # JSON 형식으로 응답
         return JsonResponse({'data': datas}, safe=False)
