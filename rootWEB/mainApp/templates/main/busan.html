@@ -142,6 +142,7 @@ color: gray;
       <div class="row">
         <div class="col-lg-6">
           <div class="accordion" id="accordionExample">
+<!--  아코디언 1              -->
             <div class="accordion-item">
               <h2 class="accordion-header">
                 <button id= "Accbtnone" class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -156,28 +157,27 @@ color: gray;
 </figure>
 
 
-
-
-
-<!--                  <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.-->
                 </div>
               </div>
             </div>
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <button id = "Accbtntwo" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                   집객시설 분포도
                 </button>
               </h2>
               <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                    <figure class="highcharts-figure">
+                        <div id="container-chart2"></div>
+                    </figure>
+
                 </div>
               </div>
             </div>
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <button id = "Accbtnthree" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
                   인구밀도 분포도
                 </button>
               </h2>
@@ -190,7 +190,7 @@ color: gray;
 
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                <button id= "AccbtnFour" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
                   인구수 분포도
                 </button>
               </h2>
@@ -202,7 +202,7 @@ color: gray;
             </div>
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                <button id="AccbtnFive" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
                   구별 서비스 인구 분포도
                 </button>
               </h2>
@@ -214,7 +214,7 @@ color: gray;
             </div>
             <div class="accordion-item">
               <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                <button id = "AccbtnSix" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
                   구별 점포 밀도 분포도
                 </button>
               </h2>
@@ -449,8 +449,50 @@ Highcharts.chart('container-chart1', {
 
 });
 
-
 }
+
+<!--차트2 함수 -->
+function chart2(data){
+       Highcharts.chart('container-chart2', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: '집객시설 수'
+            },
+            xAxis: {
+                categories: data.gu,
+                crosshair: true,
+                accessibility: {
+                    description: 'Gu'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '집객시설 수'
+                }
+            },
+            tooltip: {
+                valueSuffix: '개'
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{ name: '집객시설 수', data: data.data[0].data }]
+
+        });
+}
+
+
+<!--function chart3(data){-->
+
+
+
+<!--}-->
 
 <!--처음 로딩시 아코디언 메뉴 1의  차트1 실행 -->
   $(document).ready(()=>{
@@ -486,9 +528,27 @@ Highcharts.chart('container-chart1', {
 
     })
 
- })
+
+<!--아코디언 메뉴 2 클릭시 차트 그리기-->
+$('#Accbtntwo').click(function(){
+      $.ajax({
+            url: '/analysis2/',
+            method: 'get',
+            dataType: 'json',
+            success: function(data){
+                console.log(data);
+
+                chart2(data);
+
+            },
+            error: function (error) {
+                console.log('Error:', error);
+            }
+        })
+})
 
 
+})
 
   </script>
 

@@ -60,3 +60,22 @@ def analysis_lease(request):
             # # print(final_dict)
         # JSON 형식으로 응답
         return JsonResponse({'data': datas}, safe=False)
+
+
+
+def analysis_zipgac(request):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM zipgac_number")
+
+        # 쿼리 결과를 필요한 형식으로 가공
+        columns = [col[0] for col in cursor.description]
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+        # 데이터를 Highcharts에서 사용할 수 있는 형태로 가공
+        gu_list = [entry['gu'] for entry in data]
+        number_values = [int(entry['number']) for entry in data]
+
+        processed_data = [{'name': '집객시설 수', 'data': number_values}]
+
+        # JSON 형식으로 응답
+        return JsonResponse({'data': processed_data, 'gu': gu_list}, safe=False)
