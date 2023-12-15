@@ -15,45 +15,51 @@ def index(request) :
     print('debug >>> client path, regionApp/index, render = index')
     return render(request, 'region/index.html')
 
-def zipgac_number_chart(request):
-    final_dict = {}
-    gu_list = []
-    number_list = []
-
+def get_region_type_data(request):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT gu, number FROM zipgac_number")
-        columns = [col[0] for col in cursor.description]
-        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM reigon_type_count")
+            # 쿼리 결과를 필요한 형식으로 가공 (예: 딕셔너리 리스트)
+            columns = [col[0] for col in cursor.description]
+            data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+            type = [data[i]['type'] for i in range(len(data))]
+            jingucnt = [data[i]['jingu'] for i in range(len(data))]
+            haeundaegucnt = [data[i]['haeundaegu'] for i in range(len(data))]
+            jungucnt = [data[i]['jungu'] for i in range(len(data))]
+            dongnaegucnt = [data[i]['dongnaegu'] for i in range(len(data))]
+            sasangucnt = [data[i]['sasangu'] for i in range(len(data))]
+            dongucnt = [data[i]['dongu'] for i in range(len(data))]
+            sahagucnt = [data[i]['sahagu'] for i in range(len(data))]
+            gyuemjungucnt = [data[i]['gyuemjungu'] for i in range(len(data))]
+            gijangcnt = [data[i]['gijang'] for i in range(len(data))]
+            bukgucnt = [data[i]['bukgu'] for i in range(len(data))]
+            namgucnt = [data[i]['namgu'] for i in range(len(data))]
+            suyoungucnt = [data[i]['suyoungu'] for i in range(len(data))]
+            yeonjegucnt = [data[i]['yeonjegu'] for i in range(len(data))]
+            gangseogucnt = [data[i]['gangseogu'] for i in range(len(data))]
+            seogucnt = [data[i]['seogu'] for i in range(len(data))]
+            youngdogucnt = [data[i]['youngdogu'] for i in range(len(data))]
 
-        for entry in data:
-            gu_list.append(entry['gu'])
-            number_list.append(entry['number'])
+            jinguDict = { name : value for name, value in zip(type,jingucnt)}
+            haeundaeguDict = {name: value for name, value in zip(type, haeundaegucnt)}
+            junguDict = {name: value for name, value in zip(type, jungucnt)}
+            dongnaeguDict = {name: value for name, value in zip(type, dongnaegucnt)}
+            sasanguDict = {name: value for name, value in zip(type, sasangucnt)}
+            donguDict = {name: value for name, value in zip(type, dongucnt)}
+            sahaguDict = {name: value for name, value in zip(type, sahagucnt)}
+            gyuemjunguDict = {name: value for name, value in zip(type, gyuemjungucnt)}
+            gijangDict = {name: value for name, value in zip(type, gijangcnt)}
+            bukguDict = {name: value for name, value in zip(type, bukgucnt)}
+            namguDict = {name: value for name, value in zip(type, namgucnt)}
+            suyounguDict = {name: value for name, value in zip(type, suyoungucnt)}
+            yeonjeguDict = {name: value for name, value in zip(type, yeonjegucnt)}
+            gangseoguDict = {name: value for name, value in zip(type, gangseogucnt)}
+            seoguDict = {name: value for name, value in zip(type, seogucnt)}
+            youngdoguDict = {name: value for name, value in zip(type, youngdogucnt)}
 
-    final_dict['gu'] = gu_list
-    final_dict['number'] = number_list
-
-    chart_data = {
-        'chart': {
-            'type': 'bar'
-        },
-        'title': {
-            'text': '구별 집객시설 수'
-        },
-        'xAxis': {
-            'categories': final_dict['gu'],
-            'title': {
-                'text': '구'
-            }
-        },
-        'yAxis': {
-            'title': {
-                'text': '시설 수'
-            }
-        },
-        'series': [{
-            'name': '시설 수',
-            'data': final_dict['number']
-        }]
-    }
-
-    return render(request, 'region/chart1.html', {'chart_data': chart_data})
+            return JsonResponse({'jingu': jinguDict, 'haeundaegu' : haeundaeguDict, 'jungu' : junguDict,
+                                 "dongnaegu" : dongnaeguDict, 'sasangu' : sasanguDict, 'dongu' : donguDict,
+                                 'sahagu' : sahaguDict, 'gyumjungu' : gyuemjunguDict, 'gijang' : gijangDict,
+                                 'bukgu' : bukguDict, 'namgu' : namguDict, 'suyoungu' : suyounguDict,
+                                 'yeonjegu' : yeonjeguDict, 'gangseogu' : gangseoguDict,
+                                 "seogu" : seoguDict, "youngdogu" : youngdoguDict}, safe=False)
