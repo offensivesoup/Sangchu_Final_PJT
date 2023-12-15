@@ -60,3 +60,6 @@ def analysis_lease(request):
             # # print(final_dict)
         # JSON 형식으로 응답
         return JsonResponse({'data': datas}, safe=False)
+
+def kakaomap(request):
+    return render(request, 'main/kakaomap.html')

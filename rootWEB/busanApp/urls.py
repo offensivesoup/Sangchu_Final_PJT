@@ -1,7 +1,10 @@
 from os import path
 from django.urls import path, include
 from . import views
+
+from .views import json_store_density_view,json_lease_trend_view,json_zipgac_number_view,json_population_density_view, predict_model_view
 from .views import cosine_similarity_view, service_population_json, service_population, store_density_json, store_density
+
 urlpatterns = [
     path("", views.index),
     path("json1/", json_store_density_view             , name='json_store_density_view'),
