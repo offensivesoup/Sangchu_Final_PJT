@@ -259,39 +259,46 @@ def cosine_similarity_view(request, index):
 
     return render(request, 'busan/cosine_sim.html', context)
 
-def get_lease_trend_data(request):
-    # HeidiSQL로 연결된 상태에서 실제 데이터베이스 테이블과 매칭되는 쿼리 작성
-    query = "SELECT * FROM lease_trend_final"
+# def get_lease_trend_data(request):
+#     # HeidiSQL로 연결된 상태에서 실제 데이터베이스 테이블과 매칭되는 쿼리 작성
+#     query = "SELECT * FROM lease_trend_final"
+#     with connection.cursor() as cursor:
+#         cursor.execute(query)
+#         columns = [col[0] for col in cursor.description]
+#         data = dict(zip(columns, zip(*cursor.fetchall())))
+#
+#     return JsonResponse(data)
+#
+# def lease_trend(request):
+#     return render(request, 'busan/lease_trend.html')
+
+from django.http import JsonResponse
+
+def service_population_json(request):
+    query = ("SELECT gu, avg(service_population_per_store) FROM store_density group by gu having avg(service_population_per_store)")
     with connection.cursor() as cursor:
         cursor.execute(query)
         columns = [col[0] for col in cursor.description]
-        data = dict(zip(columns, zip(*cursor.fetchall())))
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
-    return JsonResponse(data)
-
-def lease_trend(request):
-    return render(request, 'busan/lease_trend.html')
-
-def service_population_json(request):
-    with connection.cursor() as cursor:
-        # store_density 테이블에서 데이터 가져오기
-        sql = "SELECT gu, category, service_population_per_store FROM store_density"
-        cursor.execute(sql)
-        result = cursor.fetchall()
-
-    # 데이터를 가공하여 categoryData에 추가
-    categoryData = {}
-    for row in result:
-        gu, category, value = row
-        if gu not in categoryData:
-            categoryData[gu] = {}
-        categoryData[gu][category] = value
-
-    # 가져온 데이터를 JsonResponse로 반환
-    return JsonResponse({'categoryData': categoryData})
+    return JsonResponse({'data': data})
 
 def service_population(request):
     return render(request, 'busan/service_population.html')
+
+def store_density_json(request):
+    query = ("SELECT gu, avg(density) FROM store_density group by gu having avg(density)")
+    with connection.cursor() as cursor:
+        cursor.execute(query)
+        columns = [col[0] for col in cursor.description]
+        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+
+    return JsonResponse({'data': data})
+
+def store_density(request):
+    return render(request, 'busan/store_density.html')
+
+
 
 
 ## 구별 상세페이지로 이동시킬 것.

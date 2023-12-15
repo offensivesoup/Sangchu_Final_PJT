@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Test_page_1</title>
+    <title>점포밀도</title>
 
     <style>
         .highcharts-figure,
@@ -14,7 +14,7 @@
         }
 
         #container {
-            height: 400px;
+            height: 600px;
         }
 
         .highcharts-data-table table {
@@ -80,7 +80,7 @@
         $(document).ready(function () {
             // Django 뷰에 대한 AJAX 요청
             $.ajax({
-                url: '{% url "service_population_json" %}',  // 여기에 해당하는 Django 뷰의 URL을 넣어주세요
+                url: '{% url "store_density_json" %}',  // 여기에 해당하는 Django 뷰의 URL을 넣어주세요
                 method: 'GET',
                 success: function (response) {
                     // 서버에서 받은 데이터를 콘솔에 출력
@@ -96,12 +96,12 @@
                             type: 'column'
                         },
                         title: {
-                            text: '1개의 점포당 서비스하고 있는 인구 수',
-                            align: 'left'
+                            text: '1km^2당 점포 수 (점포밀도)',
+                            align: 'left',
                         },
                         subtitle: {
-                            text: 'Source: 부산광역시 제공',
-                            align: 'left'
+                            text: 'Source: Sangchu 자체제작',
+                            align: 'left',
                         },
                         xAxis: {
                             categories: serverData.map(item => item.gu),
@@ -113,7 +113,7 @@
                         yAxis: {
                             min: 0,
                             title: {
-                                text: '점포당 서비스인구'
+                                text: '점포밀도'
                             }
                         },
                         tooltip: {
@@ -130,8 +130,8 @@
                             }
                         },
                         series: [{
-                            name: 'Average Service Population per Store',
-                            data: serverData.map(item => parseFloat(item['avg(service_population_per_store)']))
+                            name: '점포밀도',
+                            data: serverData.map(item => parseFloat(item['avg(density)']))
                         }]
                     });
                 },
