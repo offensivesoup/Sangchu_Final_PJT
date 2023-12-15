@@ -6,8 +6,16 @@
     <title>Highcharts Example</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
+
 </head>
 <body>
-    {{data}}
+
+<div id="chart-container"></div>
+<script>
+    $(document).ready(function () {
+        var chartData = {{ chart_data | safe }};
+        Highcharts.chart('chart-container', chartData);
+    });
+</script>
 </body>
 </html>
