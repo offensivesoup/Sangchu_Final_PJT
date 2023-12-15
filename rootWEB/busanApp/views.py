@@ -165,75 +165,13 @@ def json_population_density_view_all(request):
                 popuLst.append(data[i]['popu_density'])
         final_dict['gu'] = guLst
         final_dict['popu_density'] = popuLst
+        data = final_dict
+    return JsonResponse({'data': data}, safe=False)
 
-        chart_data = {
-            'chart': {
-                'type': 'bar'
-            },
-            'title': {
-                'text': '구별 단위면적 당 인구 수(인구밀도)'
-            },
-            'xAxis': {
-                'categories': final_dict['gu'],  # Corrected this line
-                'title': {
-                    'text': '구 명'
-                }
-            },
-            'yAxis': {
-                'title': {
-                    'text': '단위면적 당 인구 수'
-                }
-            },
-            'series': [{
-                'name': '단위면적 당 인구 수',
-                'data': final_dict['popu_density']
-            }]
-        }
-        return render(request, 'busan/population_density_chart.html', {'chart_data': chart_data})
+def population_density(request):
+    return render(request, 'busan/population_density_chart.html')
 
-def json_population_cnt_view(request) :
-    final_dict = {}
-    guLst = []
-    cntLst = []
-    gu_list = ['강서구', '중구', '서구', '동구', '영도구', '부산진구', '동래구', '남구', '북구', '해운대구', '사하구', '금정구', '강서구', '연제구', '수영구','사상구']
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT gu, popu_cnt FROM population_info")
-        # 쿼리 결과를 필요한 형식으로 가공 (예: 딕셔너리 리스트)
-        columns = [col[0] for col in cursor.description]
-        data = [dict(zip(columns, row)) for row in cursor.fetchall()]
-        for i in range(len(data)):
-            if data[i]['gu'] in gu_list:
-                guLst.append(data[i]['gu'])
-                cntLst.append(data[i]['popu_cnt'])
-            else:
-                guLst.append(data[i]['gu'])
-                cntLst.append(data[i]['popu_cnt'])
-        final_dict['gu'] = guLst
-        final_dict['popu_cnt'] = cntLst
-        chart_data = {
-            'chart': {
-                'type': 'bar'
-            },
-            'title': {
-                'text': '구별 인구수 분포'
-            },
-            'xAxis': {
-                'categories': final_dict['gu'],  # Corrected this line
-                'title': {
-                    'text': '구 명'
-                }
-            },
-            'yAxis': {
-                'title': {
-                    'text': '구별 총 인구수 '
-                }
-            },
-            'series': [{
-                'name': '단위면적 당 인구 수',
-                'data': final_dict['popu_cnt']
-            }]
-        }
-        return render(request, 'busan/population_density_chart.html', {'chart_data': chart_data})
+
 
 def predict_model_view(request):
     model_path = os.path.join(os.path.dirname(__file__), 'static', 'model_1', 'model_1.joblib')
