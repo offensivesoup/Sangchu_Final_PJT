@@ -271,9 +271,10 @@
 <script>
 
  $(document).ready(()=>{
+   var region = '{{region_name}}'
    $('#AbtnThree').click(function(){
       $.ajax({
-    url: '/chart_data1/',
+    url: `../${region}/chart_data1/`,
     method: 'get',
     dataType: 'json',
     success: function(data){

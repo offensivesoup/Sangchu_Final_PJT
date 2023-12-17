@@ -12,7 +12,7 @@ import pandas as pd
 # Create your views here.
 # 구별 분석 페이지로 이동
 
-def index(request,region_name) :
+def index(request, region_name) :
     region_name = region_name
     print('deubg >>> region_name: ' ,region_name)
     print('debug >>> client path, regionApp/index, render = index')
@@ -66,3 +66,14 @@ def get_region_type_data(request):
                                  'bukgu' : bukguDict, 'namgu' : namguDict, 'suyoungu' : suyounguDict,
                                  'yeonjegu' : yeonjeguDict, 'gangseogu' : gangseoguDict,
                                  "seogu" : seoguDict, "youngdogu" : youngdoguDict}, safe=False)
+
+
+def chart_float_pop(request,region_name):
+    print('debug >>>>>> chart_float_pop ')
+    print('debug >>>>>> region: ',region_name)
+    # with connection.cursor() as cursor:
+    #     cursor.execute("SELECT gu, popu_density FROM population_info")
+    #     columns = [col[0] for col in cursor.description]
+    #     data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    data = {'name': '기장군', 'value': 7}
+    return JsonResponse({'data': data})
