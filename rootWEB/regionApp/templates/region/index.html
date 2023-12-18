@@ -71,12 +71,15 @@
               <div class="accordion" id="accordionExample">
     <div class="accordion-item">
       <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <button class="accordion-button" id= "Accbtnone" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
           점포 데이터
         </button>
       </h2>
       <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
         <div class="accordion-body">
+          <figure class="highcharts-figure">
+          <div id="container"></div>
+          <p class="highcharts-description">
           <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
         </div>
       </div>
@@ -297,7 +300,80 @@
       $(this).addClass("active");
     });
   </script>
+   <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<!-- Highcharts 라이브러리 추가 -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
 
+<!-- ... (이전 코드) ... -->
+
+<script>
+  // 차트 1 함수
+  function chart1(data) {
+      Highcharts.chart('container', {
+          chart: {
+              type: 'column'
+          },
+          title: {
+              text: 'Corn vs wheat estimated production for 2020',
+              align: 'left'
+          },
+          subtitle: {
+              text:
+                  'Source: <a target="_blank" ' +
+                  'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
+              align: 'left'
+          },
+          xAxis: {
+              categories: data.category,
+              crosshair: true,
+              accessibility: {
+                  description: 'Countries'
+              }
+          },
+          yAxis: {
+              min: 0,
+              title: {
+                  text: '1000 metric tons (MT)'
+              }
+          },
+          tooltip: {
+              valueSuffix: ' (1000 MT)'
+          },
+          plotOptions: {
+              column: {
+                  pointPadding: 0.2,
+                  borderWidth: 0
+              }
+          },
+          series: [
+              {
+                  name: 'Corn',
+                  data: data.cnt  // 수정: data.cnt 사용
+              },
+          ]
+      });
+  }
+
+  $(document).ready(function () {
+      var regionName = '{{region_name}}'
+      var encodedRegionName = encodeURIComponent(regionName);
+      var dynamicUrl = encodedRegionName + '/chart1/';
+      $('#Accbtnone').click(function () {  // 예시로 하드코딩한 값, 혹은 동적으로 가져온 값
+          $.ajax({
+              url: `../${regionName}/chart1/`,
+              method: 'get',
+              dataType: 'json',
+              success: function(data){
+                  console.log(data);
+                  chart1(data);
+              },
+              error: function (error) {
+                  console.log('Error:', error);
+              }
+          });
+      });
+  });
+</script>
   </body>
 
 </html>
