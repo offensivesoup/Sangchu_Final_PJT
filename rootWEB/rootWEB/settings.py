@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "mainApp",
     "busanApp",
-    "regionApp"
+    "regionApp",
+    "finalApp"
 
 ]
 
