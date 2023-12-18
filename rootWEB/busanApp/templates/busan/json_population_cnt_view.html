@@ -2,20 +2,129 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Highcharts Example</title>
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Population Density Chart</title>
+    <!-- 필요한 스타일시트 및 스크립트를 여기에 추가합니다. -->
+    <style>
+        .highcharts-figure,
+.highcharts-data-table table {
+    min-width: 310px;
+    max-width: 800px;
+    margin: 1em auto;
+}
+
+#container {
+    height: 400px;
+}
+
+.highcharts-data-table table {
+    font-family: Verdana, sans-serif;
+    border-collapse: collapse;
+    border: 1px solid #ebebeb;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.highcharts-data-table caption {
+    padding: 1em 0;
+    font-size: 1.2em;
+    color: #555;
+}
+
+.highcharts-data-table th {
+    font-weight: 600;
+    padding: 0.5em;
+}
+
+.highcharts-data-table td,
+.highcharts-data-table th,
+.highcharts-data-table caption {
+    padding: 0.5em;
+}
+
+.highcharts-data-table thead tr,
+.highcharts-data-table tr:nth-child(even) {
+    background: #f8f8f8;
+}
+
+.highcharts-data-table tr:hover {
+    background: #f1f7ff;
+}
+
+    </style>
 </head>
 <body>
-
-<div id="chart-container"></div>
-
+    <!-- 인구 밀도를 표시할 차트를 그릴 부분을 여기에 추가합니다. -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<figure class="highcharts-figure">
+    <div id="container"></div>
+</figure>
 <script>
-    $(document).ready(function () {
-        var chartData = {{ chart_data | safe }};
-        Highcharts.chart('chart-container', chartData);
-    });
+    function drawchart(data){
+Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: '부산시 구별 인구 수',
+        align: 'left'
+    },
+    xAxis: {
+        categories: data.gu,
+        crosshair: true,
+        accessibility: {
+            description: 'Countries'
+        }
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: ''
+        }
+    },
+    tooltip: {
+        valueSuffix: '명'
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{name: '구별 인구수' , data : data.popu_cnt}]
+
+});
+
+    }
+
+            $(document).ready(function() {
+            // AJAX 통신을 이용하여 JSON 데이터를 가져옵니다.
+            $.ajax({
+                url: "{% url 'population_cnt_view' %}",
+                type: "GET",
+                dataType: "json",
+                success: function(data) {
+                    // 데이터를 성공적으로 받아온 경우 처리 로직을 여기에 추가합니다.
+                    console.log(data);
+                    drawchart(data.data)
+                    // 여기에서 받아온 데이터를 이용하여 차트를 그리는 등의 작업을 수행할 수 있습니다.
+                },
+                error: function(error) {
+                    // 오류가 발생한 경우 처리 로직을 여기에 추가합니다.
+                    console.error(error);
+                }
+            });
+        });
 </script>
+    <!-- 인구 밀도를 표시할 차트를 그릴 부분을 여기에 추가합니다. -->
+
+
 
 </body>
 </html>

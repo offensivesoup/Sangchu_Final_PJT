@@ -12,7 +12,7 @@ import pandas as pd
 # Create your views here.
 # 구별 분석 페이지로 이동
 
-def index(request,region_name) :
+def index(request, region_name) :
     region_name = region_name
     print('deubg >>> region_name: ' ,region_name)
     print('debug >>> client path, regionApp/index, render = index')
@@ -62,7 +62,6 @@ def get_region_type_data(request, region_name):
             서구 = {name: value for name, value in zip(type, seogucnt)}
             영도구 = {name: value for name, value in zip(type, youngdogucnt)}
 
-
             final_dict = {'부산진구': 부산진구, '해운대구': 해운대구, '중구': 중구,
              "동래구": 동래구, '사상구': 사상구, '동구': 동구,
              '사하구': 사하구, '금정구': 금정구, '기장군': 기장군,
@@ -74,3 +73,13 @@ def get_region_type_data(request, region_name):
             final_dict_values = [i for i in final_dict[region_name].values()]
             result = {'region' : region_name, "category" : final_dict_keys, "cnt" : final_dict_values}
             return JsonResponse({'data' : result}, safe=False)
+
+def chart_float_pop(request,region_name):
+    print('debug >>>>>> chart_float_pop ')
+    print('debug >>>>>> region: ',region_name)
+    # with connection.cursor() as cursor:
+    #     cursor.execute("SELECT gu, popu_density FROM population_info")
+    #     columns = [col[0] for col in cursor.description]
+    #     data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    data = {'name': '기장군', 'value': 7}
+    return JsonResponse({'data': data})

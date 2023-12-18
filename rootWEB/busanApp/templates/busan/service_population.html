@@ -131,7 +131,7 @@
                         },
                         series: [{
                             name: 'Average Service Population per Store',
-                            data: serverData.map(item => parseFloat(item['avg(service_population_per_store)']))
+                            data: serverData.map(item => Number(item['avg(service_population_per_store)']))
                         }]
                     });
                 },
