@@ -50,11 +50,8 @@ def analysis_lease(request):
         # JSON 형식으로 응답
         return JsonResponse({'data': datas}, safe=False)
 
-<<<<<<< HEAD
 def kakaomap(request):
     return render(request, 'main/kakaomap.html')
-=======
-
 
 def analysis_zipgac(request):
     with connection.cursor() as cursor:
@@ -140,4 +137,3 @@ def analysis_store_density(request):
         data = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
     return JsonResponse({'data': data})
->>>>>>> gu
