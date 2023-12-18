@@ -12,5 +12,4 @@ urlpatterns = [
     path("analysis4/",views.analysis_pop_cnt),
     path("analysis5/",views.analysis_service_cnt),
     path("analysis6/",views.analysis_store_density),
-
 ]

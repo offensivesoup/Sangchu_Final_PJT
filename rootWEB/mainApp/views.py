@@ -53,7 +53,6 @@ def analysis_lease(request):
 def kakaomap(request):
     return render(request, 'main/kakaomap.html')
 
-
 def analysis_zipgac(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM zipgac_number")
@@ -138,4 +137,3 @@ def analysis_store_density(request):
         data = [dict(zip(columns, row)) for row in cursor.fetchall()]
 
     return JsonResponse({'data': data})
-

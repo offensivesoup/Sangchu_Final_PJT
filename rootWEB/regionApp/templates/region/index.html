@@ -124,7 +124,7 @@
     <div class="accordion-item">
       <h2 class="accordion-header">
         <button class="accordion-button" id= "Accbtnone" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          점포 데이터
+          주요 상권 정보
         </button>
       </h2>
       <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
@@ -132,57 +132,78 @@
           <figure class="highcharts-figure">
           <div id="container"></div>
           </figure>
+          <strong><div id = "resultContainer">
+          </div></strong>
         </div>
       </div>
     </div>
     <div class="accordion-item">
       <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          주요 상권 정보
+        <button class="accordion-button collapsed" id= "Accbtntwo" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          업종별 점포 수
         </button>
       </h2>
       <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
         <div class="accordion-body">
-          <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            <figure class="highcharts-figure">
+          <div id="container"></div>
+          <p class="highcharts-description">
         </div>
       </div>
     </div>
-    <div class="accordion-item">
-      <h2 class="accordion-header">
-        <button id="AbtnThree" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          연령, 요인, 시간대 유동인구
-        </button>
-      </h2>
-      <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-<!--          <figure class="highcharts-figure">-->
-<!--            <div id="container-chart3"></div>-->
-<!--            </figure>-->
-        </div>
-      </div>
+ <div class="accordion-item">
+  <h2 class="accordion-header">
+    <button id="AbtnThird" class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+      연령, 요일, 시간대 유동인구
+    </button>
+  </h2>
+  <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+    <div class="accordion-body">
+      <figure class="highcharts-figure">
+        <div id="container2"></div>
+        <p class="highcharts-description"></p>
+      </figure>
+
+      <figure class="highcharts-figure">
+        <div id="container3"></div>
+        <p class="highcharts-description"></p>
+      </figure>
+
+      <figure class="highcharts-figure">
+        <div id="container4"></div>
+        <p class="highcharts-description"></p>
+      </figure>
     </div>
+  </div>
+</div>
 
     <div class="accordion-item">
       <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+        <button class="accordion-button collapsed" id = "Abtnforth" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
           구별 년도별 유동인구
         </button>
       </h2>
       <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
         <div class="accordion-body">
-          <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+          <figure class="highcharts-figure">
+            <div id="container5"></div>
+            <p class="highcharts-description"></p>
         </div>
       </div>
     </div>
     <div class="accordion-item">
       <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+        <button class="accordion-button collapsed" id = "Abtnfifth" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
           월세 비교
         </button>
       </h2>
       <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
         <div class="accordion-body">
-          <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+          <figure class="highcharts-figure">
+    <div id="container6"></div>
+    <p class="highcharts-description">
+    </p>
+</figure>
         </div>
       </div>
     </div>
@@ -225,20 +246,19 @@
       </div>
     </div>
 
-
-
-
-
-
     <div class="accordion-item">
       <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+        <button class="accordion-button collapsed" id = "Abtnsixth" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
           지하철 승하차 인원 데이터
         </button>
       </h2>
       <div id="collapseNine" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
         <div class="accordion-body">
-          <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+          <figure class="highcharts-figure">
+    <div id="container7"></div>
+    <p class="highcharts-description">
+    </p>
+</figure>
         </div>
       </div>
     </div>
@@ -247,13 +267,15 @@
 
     <div class="accordion-item">
       <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+        <button class="accordion-button collapsed" id = 'Abtnseven' type="button" data-bs-toggle="collapse" data-bs-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
           월별/시군구별 업종평가점수
         </button>
       </h2>
       <div id="collapseTen" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
         <div class="accordion-body">
-          <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+          <figure class="highcharts-figure">
+    <div id="container8"></div>
+    <p class="highcharts-description">
         </div>
       </div>
     </div>
@@ -432,6 +454,7 @@
 <!-- ... (이전 코드) ... -->
 
 <script>
+
   // 차트 1 함수
   function chart1(data) {
       Highcharts.chart('container', {
@@ -449,7 +472,7 @@
               align: 'left'
           },
           xAxis: {
-              categories: data.category,
+              categories: ["소매","숙박","음식","부동산","과학기술","시설관리,임대","교육","보건의료","예술 스포츠","수리 개인"],
               crosshair: true,
               accessibility: {
                   description: 'Countries'
@@ -473,24 +496,592 @@
           series: [
               {
                   name: 'Corn',
-                  data: data.cnt  // 수정: data.cnt 사용
+                  data: data.data.cnt  // 수정: data.cnt 사용
               },
           ]
       });
   }
 
-  $(document).ready(function () {
-      var regionName = '{{region_name}}'
+  // 차트 2 함수 (파이차트 - 연령별)
+
+  function chart2(data){
+       Highcharts.chart('container2', {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45
+        }
+    },
+    title: {
+        text: 'Beijing 2022 gold medals by country',
+        align: 'left'
+    },
+    subtitle: {
+        text: '3D donut in Highcharts',
+        align: 'left'
+    },
+    plotOptions: {
+        pie: {
+            innerSize: 100,
+            depth: 45
+        }
+    },
+    series: [{
+        name: 'Medals',
+        data: data.ageLst
+
+    }]
+});
+}
+
+  // 차트 3 함수 (파이차트 - 요일별)
+
+   function chart3(data){
+       Highcharts.chart('container3', {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45
+        }
+    },
+    title: {
+        text: 'Beijing 2022 gold medals by country',
+        align: 'left'
+    },
+    subtitle: {
+        text: '3D donut in Highcharts',
+        align: 'left'
+    },
+    plotOptions: {
+        pie: {
+            innerSize: 100,
+            depth: 45
+        }
+    },
+    series: [{
+        name: 'Medals',
+        data: data.dayLst
+
+    }]
+});
+}
+
+
+  // 차트 4 함수 (파이차트 - 시간대별)
+
+   function chart4(data){
+       Highcharts.chart('container4', {
+    chart: {
+        type: 'pie',
+        options3d: {
+            enabled: true,
+            alpha: 45
+        }
+    },
+    title: {
+        text: 'Beijing 2022 gold medals by country',
+        align: 'left'
+    },
+    subtitle: {
+        text: '3D donut in Highcharts',
+        align: 'left'
+    },
+    plotOptions: {
+        pie: {
+            innerSize: 100,
+            depth: 45
+        }
+    },
+    series: [{
+        name: 'Medals',
+        data: data.timeLst
+
+    }]
+});
+}
+
+  // 차트 5 함수 (라인차트 - 구별 유동인구 추세)
+
+  function chart5(data){
+    Highcharts.chart('container5', {
+
+    title: {
+        text: 'U.S Solar Employment Growth',
+        align: 'left'
+    },
+
+    subtitle: {
+        text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
+        align: 'left'
+    },
+
+    yAxis: {
+        title: {
+            text: 'Number of Employees'
+        }
+    },
+
+    xAxis: {
+        accessibility: {
+            rangeDescription: 'Range: 2016 to 2021'
+        }
+    },
+
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+            pointStart: 2016
+        }
+    },
+
+    series: [{
+        name: 'Installation & Developers',
+        data: data.data
+    }],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+});
+
+  }
+
+  // 차트 6번 함수 - 월세 비교 데이터
+function chart6(data){
+  Highcharts.chart('container6', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: 'Historic World Population by Region',
+        align: 'left'
+    },
+    subtitle: {
+        text: 'Source: <a ' +
+            'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
+            'target="_blank">Wikipedia.org</a>',
+        align: 'left'
+    },
+    xAxis: {
+        categories: data.building,
+        title: {
+            text: null
+        },
+        gridLineWidth: 1,
+        lineWidth: 0
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Population (millions)',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        },
+        gridLineWidth: 0
+    },
+    tooltip: {
+        valueSuffix: ' millions'
+    },
+    plotOptions: {
+        bar: {
+            borderRadius: '50%',
+            dataLabels: {
+                enabled: true
+            },
+            groupPadding: 0.1
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        shadow: true
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: 'Year 2018',
+        data: data.a
+    }, {
+        name: 'Year 2019',
+        data: data.b
+    }, {
+        name: 'Year 2020',
+        data: data.c
+    }, {
+        name: 'Year 2021',
+        data: data.d
+    }, {
+        name: 'Year 2022',
+        data: data.e
+    }]
+});
+
+}
+
+  // 차트 7 함수
+  function chart7(data) {
+      Highcharts.chart('container7', {
+          chart: {
+              type: 'column'
+          },
+          title: {
+              text: 'Corn vs wheat estimated production for 2020',
+              align: 'left'
+          },
+          subtitle: {
+              text:
+                  'Source: <a target="_blank" ' +
+                  'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
+              align: 'left'
+          },
+          xAxis: {
+              categories: data.station,
+              crosshair: true,
+              accessibility: {
+                  description: 'Countries'
+              }
+          },
+          yAxis: {
+              min: 0,
+              title: {
+                  text: '1000 metric tons (MT)'
+              }
+          },
+          tooltip: {
+              valueSuffix: ' (1000 MT)'
+          },
+          plotOptions: {
+              column: {
+                  pointPadding: 0.2,
+                  borderWidth: 0
+              }
+          },
+          series: [
+              {
+                  name: 'Corn',
+                  data: data.sum  // 수정: data.cnt 사용
+              },
+          ]
+      });
+  }
+
+  // 차트 5 함수 (라인차트 - 구별 유동인구 추세)
+
+  function chart5(data){
+    Highcharts.chart('container5', {
+
+    title: {
+        text: 'U.S Solar Employment Growth',
+        align: 'left'
+    },
+
+    subtitle: {
+        text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
+        align: 'left'
+    },
+
+    yAxis: {
+        title: {
+            text: 'Number of Employees'
+        }
+    },
+
+    xAxis: {
+        accessibility: {
+            rangeDescription: 'Range: 2016 to 2021'
+        }
+    },
+
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'middle'
+    },
+
+    plotOptions: {
+        series: {
+            label: {
+                connectorAllowed: false
+            },
+            pointStart: 2016
+        }
+    },
+
+    series: [{
+        name: 'Installation & Developers',
+        data: data.data
+    }],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    layout: 'horizontal',
+                    align: 'center',
+                    verticalAlign: 'bottom'
+                }
+            }
+        }]
+    }
+
+});
+
+  }
+
+
+    // 차트 8번 함수 - 월세 비교 데이터
+function chart8(data){
+  Highcharts.chart('container8', {
+    chart: {
+        type: 'bar'
+    },
+    title: {
+        text: 'Historic World Population by Region',
+        align: 'left'
+    },
+    subtitle: {
+        text: 'Source: <a ' +
+            'href="https://en.wikipedia.org/wiki/List_of_continents_and_continental_subregions_by_population"' +
+            'target="_blank">Wikipedia.org</a>',
+        align: 'left'
+    },
+    xAxis: {
+        categories: data.category,
+        title: {
+            text: null
+        },
+        gridLineWidth: 1,
+        lineWidth: 0
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Population (millions)',
+            align: 'high'
+        },
+        labels: {
+            overflow: 'justify'
+        },
+        gridLineWidth: 0
+    },
+    tooltip: {
+        valueSuffix: ' millions'
+    },
+    plotOptions: {
+        bar: {
+            borderRadius: '50%',
+            dataLabels: {
+                enabled: true
+            },
+            groupPadding: 0.1
+        }
+    },
+    legend: {
+        layout: 'vertical',
+        align: 'right',
+        verticalAlign: 'top',
+        x: -40,
+        y: 80,
+        floating: true,
+        borderWidth: 1,
+        backgroundColor:
+            Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+        shadow: true
+    },
+    credits: {
+        enabled: false
+    },
+    series: [{
+        name: '시장성점수',
+        data: data.marketability
+    }, {
+        name: '잠재점수',
+        data: data.potential
+    }, {
+        name: '안정성점수',
+        data: data.stability
+    }, {
+        name: '유동인구 점수',
+        data: data.floating
+    }]
+});
+
+}
+
+
+
+
+    // 처음 아코디언 1번 띄우기
+$(document).ready(()=>{
+    var regionName = '{{region_name}}'
       var encodedRegionName = encodeURIComponent(regionName);
       var dynamicUrl = encodedRegionName + '/chart1/';
-      $('#Accbtnone').click(function () {  // 예시로 하드코딩한 값, 혹은 동적으로 가져온 값
+
+    $.ajax({
+    url: `../${regionName}/chart2/`,
+    method: 'get',
+    dataType: 'json',
+    success: function(data){
+                console.log(data.data);
+                $('#resultContainer').html(`<p>${data.data}</p>`);
+            },
+    error: function (error) {
+            console.log('Error:', error);
+        }
+  })
+
+
+
+// 아코디언 1번 클릭시 내용 보여주기
+
+$('#Accbtnone').click(function(){
+      var regionName = '{{region_name}}'
+      $.ajax({
+            url: `../${regionName}/chart2/`,
+            method: 'get',
+            dataType: 'json',
+            success: function(data){
+                console.log(data.data);
+                $('#resultContainer').html(`<p>${data.data}</p>`);
+            },
+            error: function (error) {
+                console.log('Error:', error);
+            }
+        })
+})
+
+// 아코디언 2번 클릭시 차트 보여주기
+      var regionName = '{{region_name}}'
+      $('#Accbtntwo').click(function () {  // 예시로 하드코딩한 값, 혹은 동적으로 가져온 값
           $.ajax({
               url: `../${regionName}/chart1/`,
               method: 'get',
               dataType: 'json',
               success: function(data){
+<<<<<<< HEAD
                   console.log(data.data.cnt);
+=======
+>>>>>>> dhwan
                   chart1(data);
+              },
+              error: function (error) {
+                  console.log('Error:', error);
+              }
+          });
+      });
+
+// 아코디언 3번 클릭시 차트 보여주기
+      var regionName = '{{region_name}}'
+      $('#AbtnThird').click(function () {  // 예시로 하드코딩한 값, 혹은 동적으로 가져온 값
+          $.ajax({
+              url: `../${regionName}/chart3/`,
+              method: 'get',
+              dataType: 'json',
+              success: function(data){
+                  chart2(data)
+                  chart3(data)
+                  chart4(data)
+              },
+              error: function (error) {
+                  console.log('Error:', error);
+              }
+          });
+      });
+
+// 아코디언 4번 클릭시 차트 보여주기
+      var regionName = '{{region_name}}'
+      $('#Abtnforth').click(function () {  // 예시로 하드코딩한 값, 혹은 동적으로 가져온 값
+          $.ajax({
+              url: `../${regionName}/chart4/`,
+              method: 'get',
+              dataType: 'json',
+              success: function(data){
+                  chart5(data)
+              },
+              error: function (error) {
+                  console.log('Error:', error);
+              }
+          });
+      });
+
+  // 아코디언 5번 클릭시 차트 보여주기
+      var regionName = '{{region_name}}'
+      $('#Abtnfifth').click(function () {  // 예시로 하드코딩한 값, 혹은 동적으로 가져온 값
+          $.ajax({
+              url: `../${regionName}/chart5/`,
+              method: 'get',
+              dataType: 'json',
+              success: function(data){
+                  chart6(data)
+                  console.log(data)
+              },
+              error: function (error) {
+                  console.log('Error:', error);
+              }
+          });
+      });
+      // 아코디언 6번 클릭시 차트 보여주기
+      var regionName = '{{region_name}}'
+      $('#Abtnsixth').click(function () {  // 예시로 하드코딩한 값, 혹은 동적으로 가져온 값
+          $.ajax({
+              url: `../${regionName}/chart6/`,
+              method: 'get',
+              dataType: 'json',
+              success: function(data){
+                  chart7(data)
+                  console.log(data)
+              },
+              error: function (error) {
+                  console.log('Error:', error);
+              }
+          });
+      });
+
+    // 아코디언 7번 클릭시 차트 보여주기
+      var regionName = '{{region_name}}'
+      $('#Abtnseven').click(function () {  // 예시로 하드코딩한 값, 혹은 동적으로 가져온 값
+          $.ajax({
+              url: `../${regionName}/chart7/`,
+              method: 'get',
+              dataType: 'json',
+              success: function(data){
+                  chart8(data)
+                  console.log(data)
               },
               error: function (error) {
                   console.log('Error:', error);
