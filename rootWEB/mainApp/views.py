@@ -135,5 +135,56 @@ def analysis_store_density(request):
         cursor.execute(query)
         columns = [col[0] for col in cursor.description]
         data = [dict(zip(columns, row)) for row in cursor.fetchall()]
-
     return JsonResponse({'data': data})
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.db import connection
+
+def hospital_json(request):
+    print('debug >>>> ')
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM hospital_20230927")
+            locations = cursor.fetchall()
+
+        data = [
+            {
+                "hospital": location[0],
+                "lat": location[1],
+                "lng": location[2],
+            }
+            for location in locations
+        ]
+
+        return JsonResponse(data, safe=False)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+def hospital(request):
+    return render(request,'main/hospital.html')
+
+def school_json(request):
+    print('debug >>>> ')
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM school_lat_lng")
+            locations = cursor.fetchall()
+
+        data = [
+            {
+                "address": location[0],
+                "lat": location[1],
+                "lng": location[2],
+            }
+            for location in locations
+        ]
+
+        return JsonResponse(data, safe=False)
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+def school(request):
+    return render(request, 'main/school.html')
