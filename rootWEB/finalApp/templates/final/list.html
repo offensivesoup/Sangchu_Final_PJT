@@ -16,7 +16,42 @@
     <link rel="stylesheet" href="{% static '/bootstrap/assets/css/animate.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
   </head>
+<style>
+    .busan-main-content{
+        margin-top: 70px;
+    }
+    .list-group-item{
+        height:100px;
+        display:flex;
+    }
+    .li_img{
+        width:30%;
+        margin-right:5px;
+    }
+    .li_text{
+        padding: 5px 10px;
 
+    }
+    .li_title h4{
+        font-weight: 600;
+        color:black;
+    }
+    .li_price{
+        font-size: 17px;
+        line-height: 22px;
+        margin-top: 4px;
+        font-weight: 600;
+        color: #4c94e8;
+    }
+    .li_info p{
+        font-size: 13px;
+        letter-spacing: -0.5px;
+        color: #555;
+    }
+    .badge bg-secondary{
+      margin-right: 2px;
+    }
+</style>
 <body>
 <!--카카오 지도-->
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7cb27ea2e3e5ce06075cf370062dfb24"></script>
@@ -65,16 +100,91 @@
   <!-- ***** Header Area End ***** -->
 
 
-  <div class="busan-main-content">
+  <div class="busan-main-content" style="oveflow: scroll;">
+       <h2 style="padding:3px; margin-left:20px">{{region_name}} 매물 목록</h2>
     <div class="container" style="margin: 0;">
       <div class="row">
-        <div class="col-lg-5"></div>
+        <div class="col-lg-5">
+<!--                        <div class="list-group" style="margin-bottom:10px">-->
+<!--  <a href="#" class="list-group-item list-group-item-action">A second link item</a>-->
+<!--  <a href="#" class="list-group-item list-group-item-action">A third link item</a>-->
+
+<!--</div>-->
+<div id = "list_body" class="list-group" style="overflow: scroll;height:80vh">
+<!--  <a href="#" class="list-group-item list-group-item-action wrap_li">-->
+<!--      <div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>-->
+<!--      <div class="li_text">-->
+<!--         <div class="li_title"><h4>일반 상가</h4></div>-->
+<!--            <div class="li_price"><span class="badge bg-secondary">월세</span> 1000/60 </div>-->
+<!--            <div class="li_info">-->
+<!--                <span>설명~~~~~</span>-->
+<!--            </div>-->
+<!--      </div>-->
+<!--  </a>-->
+
+</div>
+        </div>
         <div class="col-lg-7">
             <div id="map" style="width:100%;height:98vh;"></div>
         </div>
       </div>
     </div>
   </div>
+<!-- jquery -->
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    function goDetail(id){
+         var maemul_id = id
+         var currentUrl = window.location.href;
+         var url = currentUrl + `${maemul_id}/detail`
+         window.location.href = url;
+
+    }
+
+
+    var region = '{{region_name}}'
+    $(document).ready(()=>{
+        $.ajax({
+              url: `../${region}/getData/`,
+              method: 'get',
+              dataType: 'json',
+              success: function(data){
+                  console.log(data.data);
+
+                  $('#list_tbody').empty();
+                  var txt = ''
+                  $.each(data.data , function(idx,data) {
+                          txt += '<a onclick="goDetail(' + data.index +')" ' +'class="list-group-item list-group-item-action wrap_li">'
+                          txt += `<div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>`
+                          txt +=  '<div class="li_text">'
+                          txt +=  '<div class="li_title"><h4>' + data.criteria + '</h4></div>'
+                          txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + data.deposit +'/'+ data.month+ '</div>'
+                          if(data.my_area!=='' & data.area!==''){
+                          txt +=  '<div class="li_info">'
+                          txt += '<span>'+data.my_area+'/'+data.area+'</span>'
+                          txt += '</div>'
+                          }
+                          txt += '</div>'
+                          txt += '</a>'
+
+
+					})
+					$('#list_body').append(txt) ;
+              },
+              error: function (error) {
+                  console.log('Error:', error);
+              }
+          });
+
+
+
+    })
+
+</script>
+
+
+
+
 <!--지도 -->
 	<script>
 
@@ -172,9 +282,7 @@
 	};
 	</script>
 
-<!--차트 함수-->
-<!-- jquery -->
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
 
 
 

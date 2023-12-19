@@ -63,6 +63,18 @@
     background: #f1f7ff;
 }
 
+.busan-main-content{
+  margin-top: 70px;
+  min-height: 700px;
+  height: 90vh;
+  width:100%;
+  background-color: #777;
+  padding: 10px 0px 10px 0px;
+  position: sticky;
+}
+.col-lg-6 {
+      flex: 1;
+    }
     </style>
 
   </head>
@@ -116,8 +128,12 @@
 
 
   <div class="busan-main-content">
-    <h2 style="padding:3px; margin-left:20px">{{region_name}}</h2>
+
     <div class="container" style="margin: 0;">
+        <div style="display:flex;">
+             <h2 style="padding:3px; margin-left:20px">{{region_name}}</h2> <a class="btn btn-primary" onclick="goMaemulPage()" role="button">Link</a>
+        </div>
+
       <div class="row">
         <div class="col-lg-5">
               <div class="accordion" id="accordionExample">
@@ -389,7 +405,13 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+function goMaemulPage(){
+    var region_name = '{{region_name}}'
+    var url = `../../../maemul/${region_name}/`
+    window.location.href = url;
 
+
+}
  $(document).ready(()=>{
    var region = '{{region_name}}'
    $('#AbtnThree').click(function(){
