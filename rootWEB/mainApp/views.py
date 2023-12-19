@@ -21,11 +21,11 @@ def map(request) :
 # Create your views here.
 def sign(request):
     if request.method == 'POST':
-        username = request.POST.get('username', None)
+        email    = request.POST.get('email', None)
         password = request.POST.get('password', None)
 
         try:
-            me = UserModel.objects.get(username=username)
+            me = UserModel.objects.get(email=email)
 
             if me.password == password:
                 request.session['user'] = me.username
@@ -42,10 +42,11 @@ def signup(request):
     if request.method == "GET":
         return render(request, 'main/signup.html')
     elif request.method == 'POST':
-        username = request.POST.get('username', None)
-        password = request.POST.get('password', None)
+        username  = request.POST.get('username', None)
+        email     = request.POST.get('email', None)
+        password  = request.POST.get('password', None)
         password2 = request.POST.get('password2', None)
-        bio = request.POST.get('bio', None)
+        phone     = request.POST.get('phone', None)
 
         if password != password2:
             return render(request, 'main/signup.html')
@@ -55,9 +56,10 @@ def signup(request):
                 return render(request, 'main/signup.html')
             else:
                 new_user = UserModel()
+                new_user.email    = email
                 new_user.username = username
                 new_user.password = password
-                new_user.bio = bio
+                new_user.phone    = phone
                 new_user.save()
                 return redirect('/sign')
 
