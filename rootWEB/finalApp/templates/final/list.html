@@ -111,16 +111,16 @@
 
 <!--</div>-->
 <div id = "list_body" class="list-group" style="overflow: scroll;height:80vh">
-  <a href="#" class="list-group-item list-group-item-action wrap_li">
-      <div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>
-      <div class="li_text">
-         <div class="li_title"><h4>일반 상가</h4></div>
-            <div class="li_price"><span class="badge bg-secondary">월세</span> 1000/60 </div>
-            <div class="li_info">
-                <span>설명~~~~~</span>
-            </div>
-      </div>
-  </a>
+<!--  <a href="#" class="list-group-item list-group-item-action wrap_li">-->
+<!--      <div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>-->
+<!--      <div class="li_text">-->
+<!--         <div class="li_title"><h4>일반 상가</h4></div>-->
+<!--            <div class="li_price"><span class="badge bg-secondary">월세</span> 1000/60 </div>-->
+<!--            <div class="li_info">-->
+<!--                <span>설명~~~~~</span>-->
+<!--            </div>-->
+<!--      </div>-->
+<!--  </a>-->
 
 </div>
         </div>
@@ -133,6 +133,15 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+    function goDetail(id){
+         var maemul_id = id
+         var currentUrl = window.location.href;
+         var url = currentUrl + `${maemul_id}/detail`
+         window.location.href = url;
+
+    }
+
+
     var region = '{{region_name}}'
     $(document).ready(()=>{
         $.ajax({
@@ -145,14 +154,16 @@
                   $('#list_tbody').empty();
                   var txt = ''
                   $.each(data.data , function(idx,data) {
-                          txt += `<a href="#" class="list-group-item list-group-item-action wrap_li">`
+                          txt += '<a onclick="goDetail(' + data.index +')" ' +'class="list-group-item list-group-item-action wrap_li">'
                           txt += `<div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>`
                           txt +=  '<div class="li_text">'
                           txt +=  '<div class="li_title"><h4>' + data.criteria + '</h4></div>'
                           txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + data.deposit +'/'+ data.month+ '</div>'
+                          if(data.my_area!=='' & data.area!==''){
                           txt +=  '<div class="li_info">'
                           txt += '<span>'+data.my_area+'/'+data.area+'</span>'
                           txt += '</div>'
+                          }
                           txt += '</div>'
                           txt += '</a>'
 
