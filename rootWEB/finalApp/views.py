@@ -14,7 +14,7 @@ def list(request,region_name):
     print('debug >>> client path, finalApp/list, render = list')
     return render(request,'final/list.html',{'region_name':region_name})
 
-def detail(request,maemul_id):
+def detail(request, maemul_id):
     print('debug >>> maemul_id: ',maemul_id)
     print('debug >>> client path, finalApp/detail, render = detail')
     return render(request, 'final/detail.html')
@@ -23,16 +23,22 @@ def detail(request,maemul_id):
 def get_list(request,region_name):
     region_name = region_name
 
-    # sql_query = "SELECT index,address,deposit,montly,division,lease_area,my_area FROM empty_room_data"
+    sql_query = "SELECT * FROM empty_room_data WHERE address = %s"
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM empty_room_data")
+        cursor.execute(sql_query,(region_name,))
         result = cursor.fetchall()
         data = []
         print(result[3][1])
+        for row in result:
+            name = row[15]
+            name = {'address': row[5],'deposit':row[0],'month':row[1],'criteria':row[2],'lat':row[3],'lng':row[4],'area':row[7],'my_area':row[8],
+                    'my_floor':row[9],'total_floor':row[10]}
+            data.append(name)
 
-        # 쿼리 결과를 필요한 형식으로 가공
-        columns = [col[0] for col in cursor.description]
-        print(columns)
+
+        # # 쿼리 결과를 필요한 형식으로 가공
+        # columns = [col[0] for col in cursor.description]
+        # print(columns)
         # data = [dict(zip(columns, row)) for row in cursor.fetchall()]
-        data = {'gu':'기장군','value':7}
+        # data = {'gu':'기장군','value':7}
     return JsonResponse({'data': data})
