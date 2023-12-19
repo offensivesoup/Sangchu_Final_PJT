@@ -129,9 +129,6 @@
       </h2>
       <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
         <div class="accordion-body">
-          <figure class="highcharts-figure">
-          <div id="container2"></div>
-          </figure>
           <strong><div id = "resultContainer">
           </div></strong>
         </div>
@@ -462,12 +459,12 @@
               type: 'column'
           },
           title: {
-              text: 'Corn vs wheat estimated production for 2020',
+              text: '{{region_name}}'+'의 업종별 점포수',
               align: 'left'
           },
           subtitle: {
               text:
-                  'Source: <a target="_blank" ' +
+                  '총 10개 업종" ' +
                   'href="https://www.indexmundi.com/agriculture/?commodity=corn">indexmundi</a>',
               align: 'left'
           },
@@ -475,13 +472,13 @@
               categories: ["소매","숙박","음식","부동산","과학기술","시설관리,임대","교육","보건의료","예술 스포츠","수리 개인"],
               crosshair: true,
               accessibility: {
-                  description: 'Countries'
+                  description: '업종'
               }
           },
           yAxis: {
               min: 0,
               title: {
-                  text: '1000 metric tons (MT)'
+                  text: '1단위'
               }
           },
           tooltip: {
@@ -495,7 +492,7 @@
           },
           series: [
               {
-                  name: 'Corn',
+                  name: '점포 수',
                   data: data.data.cnt
               },
           ]
@@ -514,9 +511,9 @@
         }
     },
     title: {
-        text: 'Beijing 2022 gold medals by country',
+        text: '{{region_name}}의 연령별 유동인구',
         align: 'left'
-    },
+            },
     subtitle: {
         text: '3D donut in Highcharts',
         align: 'left'
@@ -547,7 +544,7 @@
         }
     },
     title: {
-        text: 'Beijing 2022 gold medals by country',
+        text: '{{region_name}}의 요일별 유동인구',
         align: 'left'
     },
     subtitle: {
@@ -581,7 +578,7 @@
         }
     },
     title: {
-        text: 'Beijing 2022 gold medals by country',
+        text: '{{region_name}}의 시간대별 유동인구',
         align: 'left'
     },
     subtitle: {
@@ -608,18 +605,18 @@
     Highcharts.chart('container5', {
 
     title: {
-        text: 'U.S Solar Employment Growth',
+        text: '{{region_name}}의 유동인구 추세',
         align: 'left'
     },
 
     subtitle: {
-        text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
+        text: '2016~2021년 유동인구',
         align: 'left'
     },
 
     yAxis: {
         title: {
-            text: 'Number of Employees'
+            text: '명'
         }
     },
 
@@ -645,7 +642,7 @@
     },
 
     series: [{
-        name: 'Installation & Developers',
+        name: '년도별 유동인구',
         data: data.data
     }],
 
@@ -675,7 +672,7 @@ function chart6(data){
         type: 'bar'
     },
     title: {
-        text: 'Historic World Population by Region',
+        text: '{{region_name}}의 면적별 평균 월세',
         align: 'left'
     },
     subtitle: {

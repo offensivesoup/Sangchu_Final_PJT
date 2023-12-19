@@ -7,7 +7,10 @@ import numpy as np
 import joblib
 from joblib import load
 import os
-
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.hashers import make_password, check_password
+from .models import UserD
 
 def index(request) :
     print('debug >>> client path, mainApp/index, render = index')
