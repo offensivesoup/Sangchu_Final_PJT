@@ -12,4 +12,8 @@ urlpatterns = [
     path("analysis4/",views.analysis_pop_cnt),
     path("analysis5/",views.analysis_service_cnt),
     path("analysis6/",views.analysis_store_density),
+    path('hospital_json/',views.hospital_json),
+    path('hospital/',views.hospital),
+    path('school_json/',views.school_json),
+    path('school/',views.school),
 ]
