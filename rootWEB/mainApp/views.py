@@ -10,7 +10,7 @@ import os
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password, check_password
-
+from .models import UserModel
 def index(request) :
     print('debug >>> client path, mainApp/index, render = index')
     return render(request, 'main/index.html')
@@ -19,8 +19,48 @@ def map(request) :
     return render(request, 'main/map.html')
 
 # Create your views here.
-def sign2(request):
-    return render(request,'main/sign2.html')
+def sign(request):
+    if request.method == 'POST':
+        username = request.POST.get('username', None)
+        password = request.POST.get('password', None)
+
+        try:
+            me = UserModel.objects.get(username=username)
+
+            if me.password == password:
+                request.session['user'] = me.username
+                return redirect('/')
+            else:
+                return redirect('/sign')
+        except UserModel.DoesNotExist:
+            return redirect('/sign')
+
+    elif request.method == 'GET':
+        return render(request, 'main/sign.html')
+
+def signup(request):
+    if request.method == "GET":
+        return render(request, 'main/signup.html')
+    elif request.method == 'POST':
+        username = request.POST.get('username', None)
+        password = request.POST.get('password', None)
+        password2 = request.POST.get('password2', None)
+        bio = request.POST.get('bio', None)
+
+        if password != password2:
+            return render(request, 'main/signup.html')
+        else:
+            exist_user = UserModel.objects.filter(username=username)
+            if exist_user:
+                return render(request, 'main/signup.html')
+            else:
+                new_user = UserModel()
+                new_user.username = username
+                new_user.password = password
+                new_user.bio = bio
+                new_user.save()
+                return redirect('/sign')
+
 
 
 def busan(request):
