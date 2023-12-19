@@ -130,7 +130,7 @@
       <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
         <div class="accordion-body">
           <figure class="highcharts-figure">
-          <div id="container"></div>
+          <div id="container2"></div>
           </figure>
           <strong><div id = "resultContainer">
           </div></strong>
@@ -496,7 +496,7 @@
           series: [
               {
                   name: 'Corn',
-                  data: data.data.cnt  // 수정: data.cnt 사용
+                  data: data.data.cnt
               },
           ]
       });
@@ -797,74 +797,8 @@ function chart6(data){
       });
   }
 
-  // 차트 5 함수 (라인차트 - 구별 유동인구 추세)
 
-  function chart5(data){
-    Highcharts.chart('container5', {
-
-    title: {
-        text: 'U.S Solar Employment Growth',
-        align: 'left'
-    },
-
-    subtitle: {
-        text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
-        align: 'left'
-    },
-
-    yAxis: {
-        title: {
-            text: 'Number of Employees'
-        }
-    },
-
-    xAxis: {
-        accessibility: {
-            rangeDescription: 'Range: 2016 to 2021'
-        }
-    },
-
-    legend: {
-        layout: 'vertical',
-        align: 'right',
-        verticalAlign: 'middle'
-    },
-
-    plotOptions: {
-        series: {
-            label: {
-                connectorAllowed: false
-            },
-            pointStart: 2016
-        }
-    },
-
-    series: [{
-        name: 'Installation & Developers',
-        data: data.data
-    }],
-
-    responsive: {
-        rules: [{
-            condition: {
-                maxWidth: 500
-            },
-            chartOptions: {
-                legend: {
-                    layout: 'horizontal',
-                    align: 'center',
-                    verticalAlign: 'bottom'
-                }
-            }
-        }]
-    }
-
-});
-
-  }
-
-
-    // 차트 8번 함수 - 월세 비교 데이터
+    // 차트 8번 함수 - 업종평가점수
 function chart8(data){
   Highcharts.chart('container8', {
     chart: {
@@ -949,8 +883,6 @@ function chart8(data){
     // 처음 아코디언 1번 띄우기
 $(document).ready(()=>{
     var regionName = '{{region_name}}'
-      var encodedRegionName = encodeURIComponent(regionName);
-      var dynamicUrl = encodedRegionName + '/chart1/';
 
     $.ajax({
     url: `../${regionName}/chart2/`,
@@ -993,10 +925,6 @@ $('#Accbtnone').click(function(){
               method: 'get',
               dataType: 'json',
               success: function(data){
-<<<<<<< HEAD
-                  console.log(data.data.cnt);
-=======
->>>>>>> dhwan
                   chart1(data);
               },
               error: function (error) {
