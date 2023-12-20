@@ -141,6 +141,28 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.db import connection
 
+def get_center_coordinates(gu):
+    gu_coordinates = {
+        "기장군": (35.244394201041416, 129.2227421459612),
+        "해운대구": (35.162995101348564, 129.16356675415742),
+        "수영구": (35.145458076325326, 129.11307922758124),
+        "남구": (35.136262710025456, 129.08468141230728),
+        "연제구": (35.176129771565535, 129.079712017898),
+        "동구": (35.129161209712215, 129.04558174709652),
+        "중구": (35.10621258919303, 129.03247914653906),
+        "서구": (35.09784717231878, 129.0242833944746),
+        "영도구": (35.090989265185435, 129.06778927857764),
+        "부산진구": (35.162697533668855, 129.05307148933218),
+        "동래구": (35.196701579922234, 129.09391527580505),
+        "금정구": (35.24278952025912, 129.09242514119632),
+        "북구": (35.196830935641835, 128.99036558066425),
+        "사상구": (35.15288084181415, 128.99035858685488),
+        "사하구": (35.104261135161906, 128.97500193638786),
+        "강서구": (35.21179065375177, 128.98045854324366),
+    }
+
+    return gu_coordinates.get(gu, (0, 0))
+
 def hospital_json(request):
     print('debug >>>> ')
     try:
@@ -166,25 +188,130 @@ def hospital(request):
     return render(request,'main/hospital.html')
 
 def school_json(request):
-    print('debug >>>> ')
     try:
+        # GET 요청에서 'gu' 매개변수의 값을 추출합니다.
+        gu = request.GET.get('gu', None)
+
+        # 'gu'를 사용하여 중심 좌표를 가져옵니다.
+        center_latitude, center_longitude = get_center_coordinates(gu)
+
+        # 데이터베이스 커서를 사용하여 SQL 쿼리를 실행합니다.
         with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM school_lat_lng")
+            # 'gu'에 따라 필터링된 쿼리를 실행합니다.
+            cursor.execute(
+                "SELECT gu, name, address, category, type, est, lat, lng FROM school_lat_lng where gu=%s",[gu])
+            # 실행된 쿼리에서 모든 결과를 가져옵니다.
             locations = cursor.fetchall()
 
+        # 가져온 데이터를 JSON 직렬화 가능한 형식으로 처리합니다.
         data = [
             {
-                "address": location[0],
-                "lat": location[1],
-                "lng": location[2],
+                "gu": location[0],
+                "name": location[1],
+                "address": location[2],
+                "category": location[3],
+                "type": location[4],
+                "est": location[5],
+                "lat": location[6],
+                "lng": location[7],
             }
             for location in locations
         ]
 
+        # 처리된 데이터와 중심 좌표를 포함한 JSON 응답을 반환합니다.
+        return JsonResponse({"data": data, "center_latitude": center_latitude, "center_longitude": center_longitude},
+                            safe=False)
+
+    except Exception as e:
+        # 예외가 발생하면 에러 메시지를 포함한 500 상태의 JSON 응답을 반환합니다.
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+def school(request):
+    return render(request, 'main/school.html')
+
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.db import connection
+
+
+
+from django.http import JsonResponse
+from django.db import connection
+
+def subwayloc_json(request):
+    try:
+        # GET 요청에서 'gu' 매개변수의 값을 추출합니다.
+        gu = request.GET.get('gu', None)
+
+        # 'gu'를 사용하여 중심 좌표를 가져옵니다.
+        center_latitude, center_longitude = get_center_coordinates(gu)
+
+        # 데이터베이스 커서를 사용하여 SQL 쿼리를 실행합니다.
+        with connection.cursor() as cursor:
+            # 'gu'에 따라 필터링된 쿼리를 실행합니다.
+            cursor.execute("SELECT l.gu, l.sang_name, l.subway_name, l.lat, l.lng, round(p.sum, 1) FROM subway_lat_lng l INNER JOIN subway_session_population p ON l.subway_name = p.station WHERE l.gu = %s", [gu])
+            # 실행된 쿼리에서 모든 결과를 가져옵니다.
+            locations = cursor.fetchall()
+
+        # 가져온 데이터를 JSON 직렬화 가능한 형식으로 처리합니다.
+        data = [
+            {
+                "gu": location[0],
+                "sang_name": location[1],
+                "subway_name": location[2],
+                "lat": location[3],
+                "lng": location[4],
+                "sum": location[5],
+            }
+            for location in locations
+        ]
+
+        # 처리된 데이터와 중심 좌표를 포함한 JSON 응답을 반환합니다.
+        return JsonResponse({"data": data, "center_latitude": center_latitude, "center_longitude": center_longitude}, safe=False)
+
+    except Exception as e:
+        # 예외가 발생하면 에러 메시지를 포함한 500 상태의 JSON 응답을 반환합니다.
+        return JsonResponse({"error": str(e)}, status=500)
+
+def subwayloc(request):
+    return render(request, 'main/subwayloc.html')
+
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.db import connection
+from django.db.models import Count
+from django.core.serializers import serialize
+
+def busstop_json(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("""
+                SELECT
+                    bstopnm,
+                    gpsx,
+                    gpsy,
+                FROM
+                    busstop
+            """)
+            locations = cursor.fetchall()
+
+        data = [
+            {
+                "bstopnm": location[0],
+                "gpsx": location[1],
+                "gpsy": location[2],
+                "count": location[3],
+            }
+            for location in locations
+        ]
         return JsonResponse(data, safe=False)
 
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=500)
 
-def school(request):
-    return render(request, 'main/school.html')
+def busstop(request):
+    return render(request, 'main/busstop_clustered.html')
+
+
