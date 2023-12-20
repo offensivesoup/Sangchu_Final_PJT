@@ -115,6 +115,23 @@ asdfsadfsda
   <script src="{% static '/bootstrap/assets/js/popup.js' %}"></script>
   <script src="{% static '/bootstrap/assets/js/custom.js' %}"></script>
 
+
+
+  <script>
+        var id = '{{maemul_id}}'
+        var region = '{{region_name}}'
+        $(document).ready(() => {
+    $.ajax({
+        url: `../detail/getData/`,
+        method: 'get',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data.data);
+        }
+    });
+});
+
+  </script>
   <script>
     $(".option").click(function(){
       $(".option").removeClass("active");
@@ -122,7 +139,6 @@ asdfsadfsda
     });
   </script>
    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
   </body>
 
 </html>

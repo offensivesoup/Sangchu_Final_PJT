@@ -1,101 +1,149 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <title>학교 시각화</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>학교 정보</title>
+    <!-- Include the Kakao Maps API script -->
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=7cb27ea2e3e5ce06075cf370062dfb24&libraries=clusterer"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 80vh;
+        }
+    </style>
 </head>
 <body>
-    <div id="map" style="width:100%;height:98vh;"></div>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7cb27ea2e3e5ce06075cf370062dfb24&libraries=clusterer"></script>
+
+    <h1>학교 정보</h1>
+    <h4>행정구를 선택하면, 해당 구에 위치한 학교 위치를 확인하실 수 있습니다. 학교 정보를 볼려면 마커를 클릭해보세요.</h4>
+    <h4>확인가능정보: 학교명, 주소, 구분, 개교일</h4>
+
+    <label for="guSelect">구를 선택을 합니다.:</label>
+    <select id="guSelect" onchange="updateMap()">
+        <option value="기장군">기장군</option>
+        <option value="해운대구">해운대구</option>
+        <option value="수영구">수영구</option>
+        <option value="남구">남구</option>
+        <option value="연제구">연제구</option>
+        <option value="동구">동구</option>
+        <option value="중구">중구</option>
+        <option value="서구">서구</option>
+        <option value="영도구">영도구</option>
+        <option value="부산진구">부산진구</option>
+        <option value="동래구">동래구</option>
+        <option value="금정구">금정구</option>
+        <option value="북구">북구</option>
+        <option value="사상구">사상구</option>
+        <option value="사하구">사하구</option>
+        <option value="강서구">강서구</option>
+    </select>
+    <div id="map"></div>
+
     <script>
-        var mapContainer = document.getElementById('map');
-        var mapOption = {
-            center: new kakao.maps.LatLng(35.10482165803885, 129.01972954165134),
-            level: 7,
-        };
-
-        var map = new kakao.maps.Map(mapContainer, mapOption);
+        var map;
         var markers = [];
-        var currentInfowindow = null; // 열린 인포윈도우 추적
+        var currentInfowindow = null;
 
-        // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
-        var mapTypeControl = new kakao.maps.MapTypeControl();
-
-        // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
-        // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
-        map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-
-        // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
-        var zoomControl = new kakao.maps.ZoomControl();
-        map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-
-        // 서버에서 데이터 가져오기
-        fetch('/school_json/')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('서버에서 데이터 가져옴:', data);
-
-                // 데이터를 이용하여 마커 표시
-                data.forEach(position => {
-                    var marker = new kakao.maps.Marker({
-                        map: map,
-                        position: new kakao.maps.LatLng(position.lat, position.lng),
-                    });
-
-                    var infowindow = new kakao.maps.InfoWindow({
-                        content: `<div style="padding:5px;font-size:12px;">
-                                    <div><b>${position.address}</b></div>
-                                    <div>위도: ${position.lat}, 경도: ${position.lng}</div>
-                                </div>`
-                    });
-
-                    kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow, position));
-
-                    // 마커를 markers 배열에 추가
-                    markers.push(marker);
-                });
-
-                // 클러스터러에 마커들을 추가합니다
-                var clusterer = new kakao.maps.MarkerClusterer({
-                    map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-                    averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
-                    minLevel: 6 // 클러스터 할 최소 지도 레벨
-                });
-
-                clusterer.addMarkers(markers);
-
-                console.log(markers);
-            })
-            .catch(error => {
-                console.error('서버에서 데이터 가져오는 중 에러 발생:', error);
+        function initMap() {
+            // 지도 세팅
+            map = new kakao.maps.Map(document.getElementById('map'), {
+                center: new kakao.maps.LatLng(35.10482165803885, 129.01972954165134),
+                level: 7
             });
 
-        // 인포윈도우를 표시 및 숨기는 클로저를 만드는 함수입니다
-        function makeClickListener(map, marker, infowindow, position) {
-            return function () {
-                // 현재 마커에 대한 인포윈도우가 이미 열려 있으면 닫기
-                if (currentInfowindow && currentInfowindow.getMap()) {
-                    currentInfowindow.close();
-                }
-
-                // 현재 마커에 대한 인포윈도우가 열려 있지 않으면 열기
-                if (currentInfowindow !== infowindow) {
-                    infowindow.open(map, marker);
-                    currentInfowindow = infowindow;
-                } else {
-                    currentInfowindow = null; // 이미 열려 있는 인포윈도우를 클릭하면 닫기
-                }
-
-                // 마커의 위치로 지도 이동 및 현재 레벨로 확대/축소
-                map.setCenter(new kakao.maps.LatLng(position.lat, position.lng));
-                map.setLevel(map.getLevel());
-            };
+            // 기본 행정구를 기반으로 마커를 표시하기 위한 함수를 생성하고 호출
+            updateMap();
         }
+
+        function updateMap() {
+            // 기본 존재하는 마커 (전체 데이터에 대한 마커)를 제거
+            clearMarkers();
+
+            // 드롭다운을 통한 구 입력값을 받아옴.
+            var selectedGu = document.getElementById('guSelect').value;
+
+            // 사용자가 선택한 구와, 그에 대한 정보를 서버(비동기통신)에서 받아옴
+            // django url이 변경되었을 경우 수정이 필요.
+            var url = '/school_json/?gu=' + selectedGu;
+
+            // 서버에서 데이터를 가져옴.
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Check if 'center_latitude' and 'center_longitude' are defined in the data
+                    var centerLatitude = data.center_latitude !== undefined ? data.center_latitude : 35.10482165803885;
+                    var centerLongitude = data.center_longitude !== undefined ? data.center_longitude : 129.01972954165134;
+
+                    // 사용자가 선택한 구에 대한 지도 좌표 설정 - view에서 입력한 위경도값을 지도의 중심으로 하도록 설정.
+                    map.setCenter(new kakao.maps.LatLng(centerLatitude, centerLongitude));
+
+                    // 마커를 추가
+                    data.data.forEach(location => {
+                        var marker = new kakao.maps.Marker({
+                            position: new kakao.maps.LatLng(location.lat, location.lng),
+                            map: map,
+                            title: location.name
+                        });
+
+                        // 인포이벤트에 클릭이벤트 추가
+                        kakao.maps.event.addListener(marker, 'click', function() {
+                            var infowindow = new kakao.maps.InfoWindow({
+                                content: `<div style="padding:3px;font-size:12px;">
+                                            <div><b>${location.name}</b></div>
+                                            <div>구분: ${location.category} / ${location.type}</div>
+                                            <div>개교일: ${location.est}</div>`
+                            });
+
+                            if (currentInfowindow) {
+                                // 이미 열려 있는 인포윈도우가 있다면 닫기
+                                if (currentInfowindow.getContent() === infowindow.getContent()) {
+                                    // 클릭한 인포윈도우와 현재 열려 있는 인포윈도우가 같다면 닫기
+                                    currentInfowindow.close();
+                                    currentInfowindow = null;
+                                    return;
+                                } else {
+                                    // 다른 인포윈도우가 열려있다면 닫기
+                                    currentInfowindow.close();
+                                }
+                            }
+
+                            infowindow.open(map, marker);
+
+                            // 열린 인포윈도우를 전역 변수에 저장
+                            currentInfowindow = infowindow;
+
+                            // 클릭한 마커로 지도 중심 이동
+                            map.setCenter(marker.getPosition());
+                        });
+
+                        // 마커 배열에 마커를 저장
+                        markers.push(marker);
+                    });
+
+                    // 마커를 중심으로 지도를 설정
+                    map.setCenter(new kakao.maps.LatLng(data.center_latitude, data.center_longitude));
+                    map.setLevel(map.getLevel());
+                })
+
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        function clearMarkers() {
+            // Remove markers from the map
+            markers.forEach(marker => {
+                marker.setMap(null);
+            });
+            // Clear the markers array
+            markers = [];
+        }
+
+        // Initialize the map when the page is loaded
+        initMap();
     </script>
+
 </body>
 </html>

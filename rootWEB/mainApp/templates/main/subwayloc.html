@@ -1,0 +1,269 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="ko">-->
+
+<!--<head>-->
+<!--    <meta charset="utf-8" />-->
+<!--    <title>도시철도 위치 시각화</title>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--    <h2>주요상권내 위치한 도시철도 핀 시각화</h2>-->
+<!--    <div id="guSelector">-->
+<!--        <label for="guSelect">행정구 선택: </label>-->
+<!--        <select id="guSelect">-->
+<!--            <option value="기장군">기장군</option>-->
+<!--            <option value="해운대구">해운대구</option>-->
+<!--            <option value="수영구">수영구</option>-->
+<!--            <option value="연제구">연제구</option>-->
+<!--            <option value="연제구">연제구</option>-->
+<!--            <option value="중구">중구</option>-->
+<!--            <option value="서구">서구</option>-->
+<!--            <option value="영도구">영도구</option>-->
+<!--            <option value="부산진구">부산진구</option>-->
+<!--            <option value="동래구">동래구</option>-->
+<!--            <option value="금정구">금정구</option>-->
+<!--            <option value="북구">북구</option>-->
+<!--            <option value="사상구">사상구</option>-->
+<!--            <option value="사하구">사하구</option>-->
+<!--            <option value="강서구">강서구</option>-->
+<!--        </select>-->
+<!--        <button onclick="loadMap()">지도 보기</button>-->
+<!--    </div>-->
+<!--    <div id="map" style="width:100%;height:90vh; display:none;"></div>-->
+<!--    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7cb27ea2e3e5ce06075cf370062dfb24&libraries=clusterer"></script>-->
+<!--    <script>-->
+<!--        var mapContainer = document.getElementById('map');-->
+<!--        var markers = [];-->
+<!--        var currentInfowindow = null;-->
+<!--        var map = null; // 맵 변수를 전역으로 선언-->
+
+<!--        function loadMap() {-->
+<!--            var selectedGu = document.getElementById('guSelect').value || null;-->
+<!--            fetch(`/subwayloc_json/?gu=${selectedGu}`)-->
+<!--                .then(response => {-->
+<!--                    if (!response.ok) {-->
+<!--                        throw new Error(`HTTP error! Status: ${response.status}`);-->
+<!--                    }-->
+<!--                    return response.json();-->
+<!--                })-->
+<!--                .then(data => {-->
+<!--                    console.log(selectedGu, data);-->
+
+<!--                    // 맵이 초기화되지 않았을 경우, 초기화를 진행한다.-->
+<!--                    if (!map) {-->
+<!--                        // Use the coordinates from the server response-->
+<!--                        var mapOption = {-->
+<!--                            center: new kakao.maps.LatLng(data.center_latitude, data.center_longitude),-->
+<!--                            level: 5,-->
+<!--                        };-->
+<!--                        map = new kakao.maps.Map(mapContainer, mapOption);-->
+<!--                    }-->
+
+<!--                    // 존재하는 마커를 삭제한다.-->
+<!--                    markers.forEach(marker => marker.setMap(null));-->
+<!--                    markers = [];-->
+
+<!--                    // 새로운 마커를 추가한다.-->
+<!--                    data.data.forEach(position => {-->
+<!--                        var marker = new kakao.maps.Marker({-->
+<!--                            map: map,-->
+<!--                            position: new kakao.maps.LatLng(position.lat, position.lng),-->
+<!--                        });-->
+
+<!--                        var infowindow = new kakao.maps.InfoWindow({-->
+<!--                            content: `<div style="padding:5px;font-size:12px;">-->
+<!--                                                <div><b>${position.subway_name}</b></div>-->
+<!--                                                <div>승하차수: ${position.sum}</div>-->
+<!--                                                <div>행정구명: ${position.gu}</div>-->
+<!--                                                <div>상권명: ${position.sang_name}</div>-->
+<!--                                            </div>`-->
+<!--                        });-->
+
+<!--                        kakao.maps.event.addListener(marker, 'click', makeClickListener(map, marker, infowindow, position));-->
+<!--                        console.log(position)-->
+<!--                        markers.push(marker);-->
+<!--                    });-->
+
+<!--                    // Set map center and show-->
+<!--                    map.setCenter(new kakao.maps.LatLng(data.center_latitude, data.center_longitude));-->
+<!--                    map.setLevel(map.getLevel());-->
+<!--                    document.getElementById('guSelector').style.display = 'none';-->
+<!--                    document.getElementById('map').style.display = 'block';-->
+<!--                })-->
+<!--                .catch(error => {-->
+<!--                    console.error('서버에서 데이터 가져오는 중 에러 발생:', error);-->
+<!--                });-->
+<!--        }-->
+
+<!--function makeClickListener(map, marker, infowindow, position) {-->
+<!--    return function () {-->
+<!--        if (currentInfowindow && currentInfowindow.getMap()) {-->
+<!--            currentInfowindow.close();-->
+<!--        }-->
+
+<!--        if (currentInfowindow !== infowindow) {-->
+<!--            infowindow.open(map, marker);-->
+<!--            currentInfowindow = infowindow;-->
+<!--        } else {-->
+<!--            currentInfowindow = null;-->
+<!--        }-->
+
+<!--        map.setCenter(new kakao.maps.LatLng(position.lat, position.lng));-->
+<!--        map.setLevel(map.getLevel());-->
+<!--    };-->
+<!--}-->
+<!--    </script>-->
+<!--</body>-->
+
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>도시철도 상권정보</title>
+    <!-- Include the Kakao Maps API script -->
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=7cb27ea2e3e5ce06075cf370062dfb24&libraries=clusterer"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        #map {
+            width: 100%;
+            height: 80vh;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>도시철도 상권정보</h1>
+    <h4>행정구를 선택하면, 해당 구의 주요 상권이 위치한 도시철도 역을 확인하실 수 있습니다. 단, 지하철역이 없는 행정구는 표시되지 않을 수 있습니다.</h4>
+    <h4>확인가능정보: 역명, 승하차수, 상권명</h4>
+
+    <label for="guSelect">Select Gu:</label>
+    <select id="guSelect" onchange="updateMap()">
+        <option value="기장군">기장군</option>
+        <option value="해운대구">해운대구</option>
+        <option value="수영구">수영구</option>
+        <option value="남구">남구</option>
+        <option value="연제구">연제구</option>
+        <option value="동구">동구</option>
+        <option value="중구">중구</option>
+        <option value="서구">서구</option>
+        <option value="영도구">영도구</option>
+        <option value="부산진구">부산진구</option>
+        <option value="동래구">동래구</option>
+        <option value="금정구">금정구</option>
+        <option value="북구">북구</option>
+        <option value="사상구">사상구</option>
+        <option value="사하구">사하구</option>
+        <option value="강서구">강서구</option>
+    </select>
+    <div id="map"></div>
+
+    <script>
+        var map;
+        var markers = [];
+        var currentInfowindow = null;
+
+        function initMap() {
+            // 지도 세팅
+            map = new kakao.maps.Map(document.getElementById('map'), {
+                center: new kakao.maps.LatLng(35.10482165803885, 129.01972954165134),
+                level: 6
+            });
+
+            // 기본 행정구를 기반으로 마커를 표시하기 위한 함수를 생성하고 호출
+            updateMap();
+        }
+
+        function updateMap() {
+            // 기본 존재하는 마커 (전체 데이터에 대한 마커)를 제거
+            clearMarkers();
+
+            // 드롭다운을 통한 구 입력값을 받아옴.
+            var selectedGu = document.getElementById('guSelect').value;
+
+            // 사용자가 선택한 구와, 그에 대한 정보를 서버(비동기통신)에서 받아옴
+            // django url이 변경되었을 경우 수정이 필요.
+            var url = '/subwayloc_json/?gu=' + selectedGu;
+
+            // 서버에서 데이터를 가져옴.
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    // Check if 'center_latitude' and 'center_longitude' are defined in the data
+                    var centerLatitude = data.center_latitude !== undefined ? data.center_latitude : 35.10482165803885;
+                    var centerLongitude = data.center_longitude !== undefined ? data.center_longitude : 129.01972954165134;
+
+                    // 사용자가 선택한 구에 대한 지도 좌표 설정 - view에서 입력한 위경도값을 지도의 중심으로 하도록 설정.
+                    map.setCenter(new kakao.maps.LatLng(centerLatitude, centerLongitude));
+
+                    // 마커를 추가
+                    data.data.forEach(location => {
+                        var marker = new kakao.maps.Marker({
+                            position: new kakao.maps.LatLng(location.lat, location.lng),
+                            map: map,
+                            title: location.subway_name
+                        });
+
+                        // 인포이벤트에 클릭이벤트 추가
+                        kakao.maps.event.addListener(marker, 'click', function() {
+                            var infowindow = new kakao.maps.InfoWindow({
+                                content: `<div style="padding:5px;font-size:12px;">
+                                            <div><b>${location.subway_name}</b></div>
+                                            <div>승하차수: ${location.sum}</div>
+                                            <div>행정구명: ${location.gu}</div>
+                                            <div>상권명: ${location.sang_name}</div>`
+                            });
+
+                            if (currentInfowindow) {
+                                // 이미 열려 있는 인포윈도우가 있다면 닫기
+                                if (currentInfowindow.getContent() === infowindow.getContent()) {
+                                    // 클릭한 인포윈도우와 현재 열려 있는 인포윈도우가 같다면 닫기
+                                    currentInfowindow.close();
+                                    currentInfowindow = null;
+                                    return;
+                                } else {
+                                    // 다른 인포윈도우가 열려있다면 닫기
+                                    currentInfowindow.close();
+                                }
+                            }
+
+                            infowindow.open(map, marker);
+
+                            // 열린 인포윈도우를 전역 변수에 저장
+                            currentInfowindow = infowindow;
+
+                            // 클릭한 마커로 지도 중심 이동
+                            map.setCenter(marker.getPosition());
+                        });
+
+                        // 마커 배열에 마커를 저장
+                        markers.push(marker);
+                    });
+
+                    // 마커를 중심으로 지도를 설정
+                    map.setCenter(new kakao.maps.LatLng(data.center_latitude, data.center_longitude));
+                    map.setLevel(map.getLevel());
+                })
+
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        function clearMarkers() {
+            // Remove markers from the map
+            markers.forEach(marker => {
+                marker.setMap(null);
+            });
+            // Clear the markers array
+            markers = [];
+        }
+
+        // Initialize the map when the page is loaded
+        initMap();
+    </script>
+
+</body>
+</html>
