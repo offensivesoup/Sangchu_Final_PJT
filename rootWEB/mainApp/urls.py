@@ -1,7 +1,7 @@
 from django.urls import path, include
 from mainApp import views
 urlpatterns = [
-    path("", views.index),
+    path("", views.index, name = 'index'),
     path("map/", views.map),
     path("busan/",views.busan),
     path("sign/", views.sign, name = 'sign'),

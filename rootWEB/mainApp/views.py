@@ -51,7 +51,7 @@ def signup(request):
         if password != password2:
             return render(request, 'main/signup.html')
         else:
-            exist_user = UserModel.objects.filter(username=username)
+            exist_user = UserModel.objects.filter(username=email)
             if exist_user:
                 return render(request, 'main/signup.html')
             else:
