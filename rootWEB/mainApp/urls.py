@@ -17,4 +17,9 @@ urlpatterns = [
     path('hospital/',views.hospital),
     path('school_json/',views.school_json),
     path('school/',views.school),
+    path('get_center_coordinates/',views.get_center_coordinates),
+    path('subwayloc_json/', views.subwayloc_json),
+    path('subwayloc/', views.subwayloc),
+    path('busstop_json/', views.busstop_json),
+    path('busstop/', views.busstop),
 ]
