@@ -113,7 +113,7 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'busanApp/static'),
+    os.path.join(BASE_DIR, 'finalApp/static'),
 ]
 
 # Default primary key field type

@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password, check_password
 from .models import UserModel
+
 def index(request) :
     print('debug >>> client path, mainApp/index, render = index')
     return render(request, 'main/index.html')
@@ -51,7 +52,7 @@ def signup(request):
         if password != password2:
             return render(request, 'main/signup.html')
         else:
-            exist_user = UserModel.objects.filter(username=username)
+            exist_user = UserModel.objects.filter(email=email)
             if exist_user:
                 return render(request, 'main/signup.html')
             else:
