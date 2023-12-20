@@ -62,7 +62,16 @@ https://templatemo.com/tm-580-woox-travel
                         <li><a href="/busan">Busan Analysis</a></li>
                         <li><a href="/maemul">Property</a></li>
 <!--                        <li><a href="reservation.html">Reservation</a></li>-->
+                        {% if request.session.user %}
+                        <!-- 사용자가 로그인되어 있는 경우 -->
+                        <p>안녕하세요, {{ request.session.user }}님!</p>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit">로그아웃</button>
+                        </form>
+                      {% else %}
                         <li><a href="sign/">Login</a></li>
+                      {% endif %}
                     </ul>   
                     <a class='menu-trigger'>
                         <span>Menu</span>

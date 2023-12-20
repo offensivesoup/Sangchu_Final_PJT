@@ -65,6 +65,12 @@ def signup(request):
                 return redirect('/sign')
 
 
+def logout(request):
+    # 세션 제거
+    if 'user' in request.session:
+        del request.session['user']
+
+    return redirect('/')
 
 def busan(request):
     print('debug >>> client path, mainApp/busan, render = busan')
