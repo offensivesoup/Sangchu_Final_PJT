@@ -61,11 +61,12 @@ https://templatemo.com/tm-580-woox-travel
                         <li><a href="" class="active">Home</a></li>
                         <li><a href="/busan">Busan Analysis</a></li>
                         <li><a href="/maemul/부산진구">Property</a></li>
+                        <li><a href="/predict">predict</a></li>
 <!--                        <li><a href="reservation.html">Reservation</a></li>-->
                         {% if request.session.user %}
                         <!-- 사용자가 로그인되어 있는 경우 -->
 <!--                        <p>안녕하세요, {{ request.session.user }}님!</p>-->
-                         <li><a href="/predict">My Page</a></li>
+                         <li><a href="{% url 'mypage' %}">My Page</a></li>
 <!--                        <form action="{% url 'logout' %}" method="post">-->
 <!--                            {% csrf_token %}-->
 <!--                      <button type="submit">로그아웃</button>-->
@@ -74,7 +75,7 @@ https://templatemo.com/tm-580-woox-travel
                       {% else %}
                         <li><a href="sign/">Login</a></li>
                       {% endif %}
-<!--                        <li><a href="/predict">predict</a></li>-->
+
                     </ul>   
                     <a class='menu-trigger'>
                         <span>Menu</span>

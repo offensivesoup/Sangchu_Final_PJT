@@ -130,6 +130,7 @@
                         <li><a href="../../" >Home</a></li>
                         <li><a href="../../busan" class="active">Busan Analysis</a></li>
                         <li><a href="/maemul/부산진구">Property</a></li>
+                        <li><a href="/predict">predict</a></li>
 <!--                        <li><a href="reservation.html">Reservation</a></li>-->
                         {% if request.session.user %}
                         <!-- 사용자가 로그인되어 있는 경우 -->
@@ -138,12 +139,12 @@
 <!--                            {% csrf_token %}-->
 <!--                            <button type="submit">로그아웃</button>-->
 <!--                        </form>-->
-                         <li><a href="/predict">My Page</a></li>
+                         <li><a href="{% url 'mypage' %}">My Page</a></li>
                           <li><a href="{% url 'logout' %}">Logout</a></li>
                       {% else %}
                         <li><a href="/sign/">Login</a></li>
                       {% endif %}
-<!--                        <li><a href="/predict">predict</a></li>-->
+
                     </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>

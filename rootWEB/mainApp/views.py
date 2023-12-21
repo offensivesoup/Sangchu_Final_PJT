@@ -416,3 +416,6 @@ def predict_model(request) :
     else:
         response_data = {'error': 'Only POST requests are allowed.'}
         return JsonResponse(response_data, status=400)
+
+def mypage(request):
+    return render(request,'main/mypage.html')
