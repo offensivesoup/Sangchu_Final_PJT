@@ -141,8 +141,8 @@ color: gray;
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="" class="active">Home</a></li>
-                        <li><a href="/busan">Busan Analysis</a></li>
+                        <li><a href="../" >Home</a></li>
+                        <li><a href="./"class="active">Busan Analysis</a></li>
                         <li><a href="/maemul">Property</a></li>
 <!--                        <li><a href="reservation.html">Reservation</a></li>-->
                         {% if request.session.user %}
@@ -153,9 +153,9 @@ color: gray;
                             <button type="submit">로그아웃</button>
                         </form>
                       {% else %}
-                        <li><a href="sign/">Login</a></li>
+                        <li><a href="../sign/">Login</a></li>
                       {% endif %}
-                        <li><a href="/predict">predict</a></li>
+                        <li><a href="../predict">predict</a></li>
                     </ul>   
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -302,121 +302,312 @@ function goRegionPage(selectedRegion){
 }
 
 
-
+<!--기본 지도 함수-->
 geopath = '{% static "busan_gu.json" %}'
 async function geodata() {
 
-    const geojson = await fetch(
+const topology = await fetch(
         geopath
     ).then(response => response.json());
 
-    // Prepare the geojson
-    const states = Highcharts.geojson(geojson, 'map'),
-        rivers = Highcharts.geojson(geojson, 'mapline'),
-        cities = Highcharts.geojson(geojson, 'mappoint'),
-        specialCityLabels = {
-            Melbourne: {
-                align: 'right'
-            },
-            Canberra: {
-                align: 'right',
-                y: -5
-            },
-            Wollongong: {
-                y: 5
-            },
-            Brisbane: {
-                y: -5
-            }
-        };
 
-    // Skip or move some labels to avoid collision
-    states.forEach(state => {
-        // Disable data labels
-        if (state.properties.code_hasc === 'AU.CT' || state.properties.code_hasc === 'AU.JB') {
-            state.dataLabels = {
-                enabled: false
-            };
-        }
-        if (state.properties.code_hasc === 'AU.TS') {
-            state.dataLabels = {
-                style: {
-                    color: '#333333'
-                }
-            };
-        }
-        // Move center for data label
-        if (state.properties.code_hasc === 'AU.SA') {
-            state.middleY = 0.3;
-        }
-        if (state.properties.code_hasc === 'AU.QL') {
-            state.middleY = 0.7;
-        }
-    });
+// Instantiate the map
+Highcharts.mapChart('container', {
+    chart: {
+        map: topology,
+        spacingBottom: 20
+    },
 
-    cities.forEach(city => {
-        if (specialCityLabels[city.name]) {
-            city.dataLabels = specialCityLabels[city.name];
-        }
-    });
+    title: {
+        text: '부산시'
+    },
 
-    // Initialize the chart
-    Highcharts.mapChart('container', {
-        title: {
-            text: 'Busan Map'
+    accessibility: {
+        series: {
+            descriptionFormat: 'Timezone {series.name} with {series.points.length} countries.'
         },
+        point: {
+            valueDescriptionFormat: '{point.name}.'
+        }
+    },
 
-        accessibility: {
-            point: {
-                valueDescriptionFormat: '{xDescription}.'
-            },
-            description: 'Map of Australia, showing examples of multiple geometry types in Highcharts Maps: Map areas (used for regions), map lines (used for rivers), and map points (used for cities).'
-        },
+    legend: {
+        enabled: true
+    },
 
-        mapNavigation: {
-            enabled: true,
-            buttonOptions: {
-                verticalAlign: 'bottom'
-            }
-        },
-
-        series: [{
-            name: '구/군',
-            data: states,
-            color: Highcharts.color(Highcharts.getOptions().colors[0])
-                .setOpacity(0.75)
-                .get(),
-            states: {
-                hover: {
-                    color: Highcharts.getOptions().colors[1]
-                }
-            },
+    plotOptions: {
+        map: {
+            allAreas: false,
+            joinBy: ['name', 'code'],
             dataLabels: {
                 enabled: true,
-                format: '{point.name}',
+                color: '#FFFFFF',
                 style: {
-                    width: '80px', // force line-wrap
-                    textTransform: 'uppercase',
-                    fontWeight: 'normal',
-                    textOutline: 'none',
-                    color: 'black'
-                }
+                    fontWeight: 'bold'
+                },
+                // Only show dataLabels for areas with high label rank
+                format:
+                    '{point.properties.name}' +
+                    '{/if}'
             },
             tooltip: {
+                headerFormat: '',
                 pointFormat: '{point.name}'
             },
-            events: {
-                            click: function (event) {
-                                var selectedRegion = event.point.name;
-<!--                                console.log(selectedRegion)-->
-                                goRegionPage(selectedRegion)
-                            }
-                        }
-        }, ]
-    });
+            events:{
+                click: function(event){
+                    console.log(event.point.name)
+                    var selectedRegion = event.point.name;
+                    goRegionPage(selectedRegion)
 
-};
-geodata()
+                }
+            }
+
+        }
+    },
+
+    series:
+    [{
+        name: '중구',
+        data: [{code: '중구'}]
+    },
+    {
+        name: '서구',
+        data: [{code: '서구'}]
+    },
+    {
+        name: '동구',
+        data: [{code: '동구'}]
+    },
+    {
+        name: '영도구',
+        data: [{code: '영도구'}]
+    },
+    {
+        name: '부산진구',
+        data: [{code: '부산진구'}]
+    },
+    {
+        name: '동래구',
+        data: [{code: '동래구'}]
+    },
+    {
+        name: '남구',
+        data: [{code: '남구'}]
+    },
+    {
+        name: '북구',
+        data: [{code: '북구'}]
+    },
+    {
+        name: '해운대구',
+        data: [{code: '해운대구'}]
+    },
+    {
+        name: '사하구',
+        data: [{code: '사하구'}]
+    },
+    {
+        name: '금정구',
+        data: [{code: '금정구'}]
+    },
+    {
+        name: '강서구',
+        data: [{code: '강서구'}]
+    },
+    {
+        name: '연제구',
+        data: [{code: '연제구'}]
+    },
+    {
+        name: '수영구',
+        data: [{code: '수영구'}]
+    },
+    {
+        name: '사상구',
+        data: [{code: '사상구'}]
+    },
+    {
+        name: '기장군',
+        data: [{code: '기장군'}]
+    },
+]
+
+
+});
+
+}
+
+<!--async function geodata() {-->
+
+<!--    const geojson = await fetch(-->
+<!--        geopath-->
+<!--    ).then(response => response.json());-->
+
+<!--    // Prepare the geojson-->
+<!--    const states = Highcharts.geojson(geojson, 'map'),-->
+<!--        rivers = Highcharts.geojson(geojson, 'mapline'),-->
+<!--        cities = Highcharts.geojson(geojson, 'mappoint'),-->
+<!--        specialCityLabels = {-->
+<!--            Melbourne: {-->
+<!--                align: 'right'-->
+<!--            },-->
+<!--            Canberra: {-->
+<!--                align: 'right',-->
+<!--                y: -5-->
+<!--            },-->
+<!--            Wollongong: {-->
+<!--                y: 5-->
+<!--            },-->
+<!--            Brisbane: {-->
+<!--                y: -5-->
+<!--            }-->
+<!--        };-->
+
+<!--    // Skip or move some labels to avoid collision-->
+<!--    states.forEach(state => {-->
+<!--        // Disable data labels-->
+<!--        if (state.properties.code_hasc === 'AU.CT' || state.properties.code_hasc === 'AU.JB') {-->
+<!--            state.dataLabels = {-->
+<!--                enabled: false-->
+<!--            };-->
+<!--        }-->
+<!--        if (state.properties.code_hasc === 'AU.TS') {-->
+<!--            state.dataLabels = {-->
+<!--                style: {-->
+<!--                    color: '#333333'-->
+<!--                }-->
+<!--            };-->
+<!--        }-->
+<!--        // Move center for data label-->
+<!--        if (state.properties.code_hasc === 'AU.SA') {-->
+<!--            state.middleY = 0.3;-->
+<!--        }-->
+<!--        if (state.properties.code_hasc === 'AU.QL') {-->
+<!--            state.middleY = 0.7;-->
+<!--        }-->
+<!--    });-->
+
+<!--    cities.forEach(city => {-->
+<!--        if (specialCityLabels[city.name]) {-->
+<!--            city.dataLabels = specialCityLabels[city.name];-->
+<!--        }-->
+<!--    });-->
+
+<!--    // Initialize the chart-->
+<!--    Highcharts.mapChart('container', {-->
+<!--        title: {-->
+<!--            text: 'Busan Map'-->
+<!--        },-->
+
+<!--        accessibility: {-->
+<!--            point: {-->
+<!--                valueDescriptionFormat: '{xDescription}.'-->
+<!--            },-->
+<!--            description: 'Map of Australia, showing examples of multiple geometry types in Highcharts Maps: Map areas (used for regions), map lines (used for rivers), and map points (used for cities).'-->
+<!--        },-->
+
+<!--        mapNavigation: {-->
+<!--            enabled: true,-->
+<!--            buttonOptions: {-->
+<!--                verticalAlign: 'bottom'-->
+<!--            }-->
+<!--        },-->
+
+<!--        series: [{-->
+<!--            name: '구/군',-->
+<!--            data: states,-->
+<!--            color: Highcharts.color(Highcharts.getOptions().colors[0])-->
+<!--                .setOpacity(0.75)-->
+<!--                .get(),-->
+<!--            states: {-->
+<!--                hover: {-->
+<!--                    color: Highcharts.getOptions().colors[1]-->
+<!--                }-->
+<!--            },-->
+<!--            dataLabels: {-->
+<!--                enabled: true,-->
+<!--                format: '{point.name}',-->
+<!--                style: {-->
+<!--                    width: '80px', // force line-wrap-->
+<!--                    textTransform: 'uppercase',-->
+<!--                    fontWeight: 'normal',-->
+<!--                    textOutline: 'none',-->
+<!--                    color: 'black'-->
+<!--                }-->
+<!--            },-->
+<!--            tooltip: {-->
+<!--                pointFormat: '{point.name}'-->
+<!--            },-->
+<!--            events: {-->
+<!--                            click: function (event) {-->
+<!--                                var selectedRegion = event.point.name;-->
+<!--&lt;!&ndash;                                console.log(selectedRegion)&ndash;&gt;-->
+<!--                                goRegionPage(selectedRegion)-->
+<!--                            }-->
+<!--                        }-->
+<!--        }, ]-->
+<!--    });-->
+
+<!--};-->
+
+<!--    집객시설 지도 -->
+ async function map1(data){
+     const geojson = await fetch(
+        geopath
+    ).then(response => response.json());
+
+    Highcharts.mapChart('container', {
+    chart: {
+        map: geojson
+    },
+
+    title: {
+        text: data.title
+    },
+
+    accessibility: {
+        typeDescription: 'Map of Germany.'
+    },
+
+    mapNavigation: {
+        enabled: true,
+        buttonOptions: {
+            verticalAlign: 'bottom'
+        }
+    },
+
+    colorAxis: {
+        tickPixelInterval: 100
+    },
+
+    series:
+    [{
+        data: data.map,
+        keys: ['name', 'value'],
+        joinBy: 'name',
+        name: data.text,
+        dataLabels: {
+            enabled: true,
+            format: '{point.properties.name}',
+            color: 'black',
+
+        }
+    }],
+    plotOptions: {
+        map:{
+            events:{
+                click: function(event){
+<!--                    console.log(event.point.name)-->
+                        var selectedRegion = event.point.name;
+                        goRegionPage(selectedRegion)
+                }
+    }
+ }
+    }
+});
+}
+
 </script>
 
 
@@ -622,6 +813,7 @@ function chart4(data){
 
 <!--처음 로딩시 아코디언 메뉴 1의  차트1 실행 -->
   $(document).ready(()=>{
+    geodata()
     $.ajax({
     url: '/analysis1/',
     method: 'get',
@@ -645,6 +837,7 @@ function chart4(data){
         success: function(data){
           console.log(data);
           chart1(data);
+          geodata();
 
         },
         error: function (error) {
@@ -662,9 +855,9 @@ $('#Accbtntwo').click(function(){
             method: 'get',
             dataType: 'json',
             success: function(data){
-                console.log(data);
+                console.log(data.data);
                 chart2(data)
-
+                map1(data.data[0])
             },
             error: function (error) {
                 console.log('Error:', error);
@@ -680,7 +873,8 @@ $('#Accbtnthree').click(function(){
                 success: function(data) {
                     // 데이터를 성공적으로 받아온 경우 처리 로직을 여기에 추가합니다.
                     console.log(data);
-                    chart3(data.data)
+                    chart3(data.data);
+                    map1(data.map);
                     // 여기에서 받아온 데이터를 이용하여 차트를 그리는 등의 작업을 수행할 수 있습니다.
                 },
                 error: function(error) {
@@ -704,7 +898,7 @@ $('#AccbtnFour').click(function(){
 
                     console.log(data);
                     chart4(data.data)
-
+                    map1(data.map);
                 },
                 error: function(error) {
 
@@ -722,6 +916,7 @@ $('#AccbtnFive').click(function(){
                 type: "GET",
                 dataType: "json",
                 success: function(response) {
+                    geodata();
                     console.log(response);
                     var serverData = response.data;
                       Highcharts.chart('container-chart5', {
@@ -783,7 +978,7 @@ $('#AccbtnFive').click(function(){
                 url: '/analysis6/',  // 여기에 해당하는 Django 뷰의 URL을 넣어주세요
                 method: 'GET',
                 success: function (response) {
-
+                    map1(response.map)
                     console.log('Data from server:', response);
 
                     // 받은 데이터에서 실제 데이터 부분 추출
