@@ -9,6 +9,7 @@ from joblib import load
 import os
 import pandas as pd
 from django.contrib.staticfiles import finders
+import json
 
 # Create your views here.
 def list(request,region_name):
@@ -118,3 +119,27 @@ def cosine_similarity_view(request, region_name, maemul_id):
         }
 
     return JsonResponse({'data': context})
+
+# def predict_model(request) :
+#     if request.method == 'POST':
+#         try:
+#             data = json.loads(request.body.decode('utf-8'))
+#
+#             # 입력 데이터 예시: {'보증금_y': 1000, '상가구분': 3, '임대(계약)면적': 89.84, '전용면적': 63.20, '해당층': 2, '총층': 3}
+#
+#             model_path = os.path.join(os.path.dirname(__file__), 'static', 'model_predict', 'predict_model.pkl')
+#             predict_model = joblib.load(model_path)
+#
+#             input_data = [data['보증금_y'], data['상가구분'], data['임대(계약)면적'], data['전용면적'], data['해당층'], data['총층']]
+#             prediction = predict_model.predict([input_data])[0]
+#
+#             response_data = {'prediction': prediction}
+#             return JsonResponse(response_data)
+#
+#         except Exception as e:
+#             response_data = {'error': str(e)}
+#             return JsonResponse(response_data, status=400)
+#
+#     else:
+#         response_data = {'error': 'Only POST requests are allowed.'}
+#         return JsonResponse(response_data, status=400)

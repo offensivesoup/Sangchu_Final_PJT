@@ -11,6 +11,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password, check_password
 from .models import UserModel
+import json
 
 def index(request) :
     print('debug >>> client path, mainApp/index, render = index')
@@ -365,4 +366,30 @@ def busstop_json(request):
 def busstop(request):
     return render(request, 'main/busstop_clustered.html')
 
+def predict(request) :
+    return render(request, 'main/predict.html')
 
+def predict_model(request) :
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+
+            # 입력 데이터 예시: {'보증금_y': 1000, '상가구분': 3, '임대(계약)면적': 89.84, '전용면적': 63.20, '해당층': 2, '총층': 3}
+
+            model_path = os.path.join(os.path.dirname(__file__), 'static', 'model_predict', 'predict_model.pkl')
+            predict_model = joblib.load(model_path)
+
+            input_data = [float(data['보증금_y']), float(data['상가구분']), float(data['임대(계약)면적']), float(data['전용면적']), float(data['해당층']), float(data['총층'])]
+
+            prediction = predict_model.predict([input_data])[0]
+
+            response_data = {'prediction': prediction}
+            return JsonResponse(response_data)
+
+        except Exception as e:
+            response_data = {'error': str(e)}
+            return JsonResponse(response_data, status=400)
+
+    else:
+        response_data = {'error': 'Only POST requests are allowed.'}
+        return JsonResponse(response_data, status=400)
