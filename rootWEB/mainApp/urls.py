@@ -23,4 +23,6 @@ urlpatterns = [
     path('subwayloc/', views.subwayloc),
     path('busstop_json/', views.busstop_json),
     path('busstop/', views.busstop),
+    path("predict/", views.predict),
+    path("predict_model/", views.predict_model, name="predict_model"),
 ]
