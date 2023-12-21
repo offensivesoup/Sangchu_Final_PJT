@@ -53,7 +53,12 @@
                         <li><a href="../../../../">Home</a></li>
                         <li><a href="../../../../busan">Busan Analysis</a></li>
                         <li><a href="./" class="active">Property</a></li>
+                      {% if request.session.user %}
+                       <li><a href="/predict">My Page</a></li>
+                         <li><a href="{% url 'logout' %}">Logout</a></li>
+                      {% else %}
                         <li><a href="../../../../sign">Login</a></li>
+                      {% endif %}
                     </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
