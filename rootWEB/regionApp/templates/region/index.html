@@ -127,8 +127,8 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="" class="active">Home</a></li>
-                        <li><a href="/busan">Busan Analysis</a></li>
+                        <li><a href="../../" >Home</a></li>
+                        <li><a href="../../busan" class="active">Busan Analysis</a></li>
                         <li><a href="/maemul">Property</a></li>
 <!--                        <li><a href="reservation.html">Reservation</a></li>-->
                         {% if request.session.user %}
@@ -139,7 +139,7 @@
                             <button type="submit">로그아웃</button>
                         </form>
                       {% else %}
-                        <li><a href="sign/">Login</a></li>
+                        <li><a href="/sign/">Login</a></li>
                       {% endif %}
                         <li><a href="/predict">predict</a></li>
                     </ul>
