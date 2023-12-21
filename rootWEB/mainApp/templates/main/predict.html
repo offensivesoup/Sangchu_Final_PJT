@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>predict</title>
+    {% csrf_token %}
+</head>
+<body>
+    <form id="predictionForm">
+        <label for="deposit">보증금:</label>
+        <input type="text" id="deposit" name="deposit" required><br>
+
+        <label for="storeType">상가구분:</label>
+        <input type="text" id="storeType" name="storeType" required><br>
+
+        <label for="area">임대(계약)면적:</label>
+        <input type="text" id="area" name="area" required><br>
+
+        <label for="exclusiveArea">전용면적:</label>
+        <input type="text" id="exclusiveArea" name="exclusiveArea" required><br>
+
+        <label for="floor">해당층:</label>
+        <input type="text" id="floor" name="floor" required><br>
+
+        <label for="totalFloor">총층:</label>
+        <input type="text" id="totalFloor" name="totalFloor" required><br>
+
+        <button type="button" onclick="predict()">월세 예측</button>
+    </form>
+
+    <div id="predictionResult"></div>
+
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        function predict() {
+            const csrfToken = getCookie('csrftoken');
+
+            const deposit = document.getElementById('deposit').value;
+            const storeType = document.getElementById('storeType').value;
+            const area = document.getElementById('area').value;
+            const exclusiveArea = document.getElementById('exclusiveArea').value;
+            const floor = document.getElementById('floor').value;
+            const totalFloor = document.getElementById('totalFloor').value;
+
+            fetch('/predict_model/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken,
+                },
+                body: JSON.stringify({
+                    '보증금_y': deposit,
+                    '상가구분': storeType,
+                    '임대(계약)면적': area,
+                    '전용면적': exclusiveArea,
+                    '해당층': floor,
+                    '총층': totalFloor,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('predictionResult').innerHTML = '월세 예측 결과: ' + data.prediction;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('predictionResult').innerHTML = '예측 중 오류가 발생했습니다.';
+            });
+        }
+    </script>
+</body>
+</html>
