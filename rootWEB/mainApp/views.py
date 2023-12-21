@@ -116,8 +116,11 @@ def analysis_zipgac(request):
         # 데이터를 Highcharts에서 사용할 수 있는 형태로 가공
         gu_list = [entry['gu'] for entry in data]
         number_values = [int(entry['number']) for entry in data]
+        map = []
+        for idx,e in enumerate(gu_list):
+            map.append([e,number_values[idx]])
 
-        processed_data = [{'name': '집객시설 수', 'data': number_values}]
+        processed_data = [{'name': '집객시설 수', 'data': number_values,'map':map,'title':'부산시 집객 시설 분포도','text': '집객시설 수'}]
 
         # JSON 형식으로 응답
         return JsonResponse({'data': processed_data, 'gu': gu_list}, safe=False)
@@ -133,6 +136,12 @@ def analysis_pop_density(request):
         cursor.execute("SELECT gu, popu_density FROM population_info")
         columns = [col[0] for col in cursor.description]
         data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        map_data = {}
+        map_data['map'] = []
+        for i in data:
+            map_data['map'].append([i['gu'],i['popu_density']])
+        map_data['title'] = '부산시 인구밀도 분포도'
+        map_data['text'] = '인구밀도'
         for i in range(len(data)):
             if data[i]['gu'] in gu_list:
                 guLst.append(data[i]['gu'])
@@ -143,7 +152,9 @@ def analysis_pop_density(request):
         final_dict['gu'] = guLst
         final_dict['popu_density'] = popuLst
         data = final_dict
-    return JsonResponse({'data': data}, safe=False)
+
+
+    return JsonResponse({'data': data, 'map':map_data}, safe=False)
 
 
 def analysis_pop_cnt(request):
@@ -156,6 +167,12 @@ def analysis_pop_cnt(request):
         cursor.execute("SELECT gu, popu_cnt FROM population_info")
         columns = [col[0] for col in cursor.description]
         data = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        map_data= {}
+        map_data['map'] = []
+        for i in data:
+            map_data['map'].append([i['gu'],i['popu_cnt']])
+        map_data['title'] = '부산시 인구수 분포도'
+        map_data['text'] = '인구수'
         for i in range(len(data)):
             if data[i]['gu'] in gu_list:
                 guLst2.append(data[i]['gu'])
@@ -166,7 +183,7 @@ def analysis_pop_cnt(request):
         final_dict2['gu'] = guLst2
         final_dict2['popu_cnt'] = popuLst2
         data = final_dict2
-    return JsonResponse({'data': data}, safe=False)
+    return JsonResponse({'data': data,'map':map_data}, safe=False)
 
 
 
@@ -177,7 +194,6 @@ def analysis_service_cnt(request):
         cursor.execute(query)
         columns = [col[0] for col in cursor.description]
         data = [dict(zip(columns, row)) for row in cursor.fetchall()]
-
     return JsonResponse({'data': data})
 
 
@@ -187,7 +203,14 @@ def analysis_store_density(request):
         cursor.execute(query)
         columns = [col[0] for col in cursor.description]
         data = [dict(zip(columns, row)) for row in cursor.fetchall()]
-    return JsonResponse({'data': data})
+        map_data = {}
+        map_data['map'] = []
+        for i in data:
+            print(i)
+            map_data['map'].append([i['gu'], int(i['avg(density)'])])
+        map_data['title'] = '부산시 점포 밀도 분포도'
+        map_data['text'] = '점포 밀도'
+    return JsonResponse({'data': data,'map':map_data})
 
 from django.shortcuts import render
 from django.http import JsonResponse
