@@ -6,6 +6,7 @@ urlpatterns = [
     path("busan/",views.busan, name = 'busan'),
     path("sign/", views.sign, name = 'sign'),
     path("signup/", views.signup, name = 'signup'),
+    path('logout/', views.logout, name='logout'),
     path("analysis1/",views.analysis_lease),
     path("kakaomap/",views.kakaomap),
     path("analysis2/",views.analysis_zipgac),
@@ -17,4 +18,9 @@ urlpatterns = [
     path('hospital/',views.hospital),
     path('school_json/',views.school_json),
     path('school/',views.school),
+    path('get_center_coordinates/',views.get_center_coordinates),
+    path('subwayloc_json/', views.subwayloc_json),
+    path('subwayloc/', views.subwayloc),
+    path('busstop_json/', views.busstop_json),
+    path('busstop/', views.busstop),
 ]

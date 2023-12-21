@@ -19,6 +19,7 @@
 <style>
     .busan-main-content{
         margin-top: 70px;
+        width: 100vw;
     }
     .list-group-item{
         height:100px;
@@ -100,17 +101,18 @@
   <!-- ***** Header Area End ***** -->
 
 
-  <div class="busan-main-content" style="oveflow: scroll;">
-       <h2 style="padding:3px; margin-left:20px">{{region_name}} 매물 목록</h2>
-    <div class="container" style="margin: 0;">
+  <div class="busan-main-content" style="oveflow: scroll;width:100vw;">
+
+<!--    <div class="container" style="margin: 0 auto;">-->
       <div class="row">
-        <div class="col-lg-5">
+        <div class="col-md-4">
+             <h2 style="padding:5px; margin-left:20px;color:black">{{region_name}} 매물 목록</h2>
 <!--                        <div class="list-group" style="margin-bottom:10px">-->
 <!--  <a href="#" class="list-group-item list-group-item-action">A second link item</a>-->
 <!--  <a href="#" class="list-group-item list-group-item-action">A third link item</a>-->
 
 <!--</div>-->
-<div id = "list_body" class="list-group" style="overflow: scroll;height:80vh">
+<div id = "list_body" class="list-group" style="overflow: scroll;height:80vh;padding:10px 0px">
 <!--  <a href="#" class="list-group-item list-group-item-action wrap_li">-->
 <!--      <div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>-->
 <!--      <div class="li_text">-->
@@ -124,12 +126,12 @@
 
 </div>
         </div>
-        <div class="col-lg-7">
-            <div id="map" style="width:100%;height:98vh;"></div>
+        <div class="col-md-8">
+            <div id="map" style="width:100%;height:90vh;"></div>
         </div>
       </div>
     </div>
-  </div>
+<!--  </div>-->
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script>
@@ -158,7 +160,7 @@
                           txt += `<div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>`
                           txt +=  '<div class="li_text">'
                           txt +=  '<div class="li_title"><h4>' + data.criteria + '</h4></div>'
-                          txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + data.deposit +'/'+ data.month+ '</div>'
+                          txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + data.deposit +'만원/'+ data.month+ '만원</div>'
                           if(data.my_area!=='' & data.area!==''){
                           txt +=  '<div class="li_info">'
                           txt += '<span>'+data.my_area+'/'+data.area+'</span>'
