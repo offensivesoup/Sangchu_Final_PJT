@@ -24,14 +24,16 @@
     .list-group-item{
         height:100px;
         display:flex;
+
     }
     .li_img{
         width:30%;
         margin-right:5px;
+        flex-grow:2;
     }
     .li_text{
         padding: 5px 10px;
-
+        flex-grow:3;
     }
     .li_title h4{
         font-weight: 600;
@@ -51,6 +53,16 @@
     }
     .badge bg-secondary{
       margin-right: 2px;
+    }
+    .like_btn{
+
+        text-align:right;
+        color:#E2E2E2;
+        flex-grow:1;
+
+    }
+    .like_btn span{
+        cursor:pointer;
     }
 </style>
 <body>
@@ -117,10 +129,13 @@
 <!--      <div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>-->
 <!--      <div class="li_text">-->
 <!--         <div class="li_title"><h4>일반 상가</h4></div>-->
-<!--            <div class="li_price"><span class="badge bg-secondary">월세</span> 1000/60 </div>-->
-<!--            <div class="li_info">-->
+<!--          <div class="li_price"><span class="badge bg-secondary">월세</span> 1000/60 </div>-->
+<!--          <div class="li_info">-->
 <!--                <span>설명~~~~~</span>-->
-<!--            </div>-->
+<!--          </div>-->
+<!--      </div>-->
+<!--      <div class="like_btn" >-->
+<!--         <span ><i class="far fa-star" style="font-size:23px;"></i></span>-->
 <!--      </div>-->
 <!--  </a>-->
 
@@ -156,9 +171,10 @@
                   $('#list_tbody').empty();
                   var txt = ''
                   $.each(data.data , function(idx,data) {
-                          txt += '<a onclick="goDetail(' + data.index +')" ' +'class="list-group-item list-group-item-action wrap_li">'
-                          txt += `<div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>`
-                          txt +=  '<div class="li_text">'
+<!--                  onclick="goDetail(' + data.index +')" ' -->
+                          txt += '<a class="list-group-item list-group-item-action wrap_li">'
+                          txt += `<div class="li_img"><img onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>`
+                          txt +=  `<div class="li_text" onclick=goDetail(${data.index})>`
                           txt +=  '<div class="li_title"><h4>' + data.criteria + '</h4></div>'
                           txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + data.deposit +'만원/'+ data.month+ '만원</div>'
                           if(data.my_area!=='' & data.area!==''){
@@ -166,6 +182,10 @@
                           txt += '<span>'+data.my_area+'/'+data.area+'</span>'
                           txt += '</div>'
                           }
+                          txt += '</div>'
+                          txt +=  '<div class="like_btn" >'
+                          txt +=  '<span><i class="far fa-star" style="font-size:23px;"></i></span>'
+                          txt +=  '</div>'
                           txt += '</div>'
                           txt += '</a>'
 
