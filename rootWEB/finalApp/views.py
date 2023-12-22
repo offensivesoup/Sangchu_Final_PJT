@@ -103,7 +103,7 @@ def cosine_similarity_view(request, region_name, maemul_id):
 
                 if data['month'] < input_month:
                     recommendation_list.append(data)
-                    if len(recommendation_list) > 10:
+                    if len(recommendation_list) > 4:
                         break
                 else:
                     pass
