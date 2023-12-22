@@ -64,6 +64,15 @@
     .like_btn span{
         cursor:pointer;
     }
+    .custom-star {
+        font-size: 23px;
+        color: #6495ED; /* 청색(SteelBlue) 계열의 색상 */
+        background-color: #B0C4DE; /* 청색(LightSteelBlue) 계열의 색상 */
+        border-color: #B0C4DE; /* 청색(LightSteelBlue) 계열의 색상 */
+        border-radius: 50%;
+        padding: 5px;
+    }
+
 </style>
 <body>
 <!--카카오 지도-->
@@ -199,7 +208,7 @@
                           }
                           txt += '</div>'
                           txt +=  '<div class="like_btn" >'
-                          txt +=  '<span><i class="far fa-star" style="font-size:23px;"></i></span>'
+                          txt += '<span><button class="far fa-star custom-star" onclick="toggleStar(this)"></button></span>';
                           txt +=  '</div>'
                           txt += '</div>'
                           txt += '</a>'
@@ -216,7 +225,18 @@
 
 
     })
+<!--    즐겨찾기 버튼을 눌렀을 때 색이 바뀌도록 하는 부분-->
+        function toggleStar(button) {
+        // 버튼의 클래스를 검사하여 'fas' 클래스가 있는지 확인
+        var isStarred = button.classList.contains('fas');
 
+        // 'fas' 클래스가 있으면 제거하고, 없으면 추가
+        if (isStarred) {
+            button.classList.remove('fas');
+        } else {
+            button.classList.add('fas');
+        }
+    }
 </script>
 
 
