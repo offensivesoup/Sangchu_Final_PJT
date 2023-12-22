@@ -1,34 +1,113 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>predict</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     {% csrf_token %}
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin-top: 40px;
+            margin-bottom: 70px;
+        }
+
+        .predictionForm {
+            width: 50%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #000000;
+            text-align: left;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+
+        .Result_area {
+            width: 50%;
+            margin: 0 auto;
+            display: block;
+            color: #2055BF;
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff; /* 추가: 결과 영역 배경색 설정 */
+        }
+
+        .predictionForm label, .Result_area label {
+            display: block;
+            margin-bottom: 0px;
+        }
+        .predictionForm input {
+            margin-bottom: 0px;
+        }
+        .home-link {
+            display: block;
+            margin-top: 1px;
+            margin-bottom: 1px;
+            color: #2055BF;
+            text-decoration: none;
+            text-align: center;
+            align-items: center;
+        }
+        .btn-primary {
+            width: 100%;
+            color: #ffffff;
+            background-color: #2055BF;
+            padding: 10px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            border: none;
+            cursor: pointer;
+        }
+        .form-title {
+            text-align: center;
+            color: #2055BF;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+    </style>
+
 </head>
 <body>
     <form id="predictionForm">
-        <label for="deposit">보증금:</label>
-        <input type="text" id="deposit" name="deposit" required><br>
+        <div class = "predictionForm">
+            <div class ="home_button">
+                <a href="{% url 'index' %}" class="home-link">
+                    <img src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt="Main Page" style="width: 150px; height: 50px";>
+                </a>
+            </div>
+            <p class="form-title">월세예측</p>
+            <label for="deposit">보증금(만원)</label>
+            <input type="text" id="deposit" name="deposit" placeholder="1000" required><br>
 
-        <label for="storeType">상가구분:</label>
-        <input type="text" id="storeType" name="storeType" required><br>
+            <label for="storeType">상가구분</label>
+            <input type="text" id="storeType" name="storeType" placeholder="3" required><br>
 
-        <label for="area">임대(계약)면적:</label>
-        <input type="text" id="area" name="area" required><br>
+            <label for="area">임대(계약)면적</label>
+            <input type="text" id="area" name="area" placeholder="89.84" required><br>
 
-        <label for="exclusiveArea">전용면적:</label>
-        <input type="text" id="exclusiveArea" name="exclusiveArea" required><br>
+            <label for="exclusiveArea">전용면적</label>
+            <input type="text" id="exclusiveArea" name="exclusiveArea" placeholder="63.20" required><br>
 
-        <label for="floor">해당층:</label>
-        <input type="text" id="floor" name="floor" required><br>
+            <label for="floor">해당층</label>
+            <input type="text" id="floor" name="floor" placeholder="3" required><br>
 
-        <label for="totalFloor">총층:</label>
-        <input type="text" id="totalFloor" name="totalFloor" required><br>
+            <label for="totalFloor">총층</label>
+            <input type="text" id="totalFloor" name="totalFloor" placeholder="3" required><br>
 
-        <button type="button" onclick="predict()">월세 예측</button>
+            <button type="button" class = btn= btn-primary onclick="predict()">월세 예측</button>
+        </div>
     </form>
 
-    <div id="predictionResult"></div>
+    <div id="predictionResult" class = Result_area></div>
 
     <script>
         function getCookie(name) {
@@ -73,7 +152,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById('predictionResult').innerHTML = '월세 예측 결과: ' + data.prediction;
+                document.getElementById('predictionResult').innerHTML = '월세 예측 결과: ' + data.prediction+'(만원)';
             })
             .catch(error => {
                 console.error('Error:', error);
