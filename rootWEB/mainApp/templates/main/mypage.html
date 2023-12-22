@@ -78,14 +78,20 @@
             align-items: center;
             color: #000000;
             text-align: left;
-            padding: 20px;
+            padding: 300px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .username-mypage{
+        }
+        .useremail-mypage{
+        }
+        .userphone-mypage{
         }
     </style>
     <body>
     <h2>마이페이지</h2>
 
-    <form class="userInfo" action="mypage_view">
+    <form class="userInfo" action="{% url 'mypage_view' %}" method="POST">
         {% if user %}
             <p class="username-mypage"> Welcome, {{ user.username }}!</p>
             <p class="useremail-mypage">Email: {{ user.email }}</p>
@@ -94,7 +100,6 @@
             <p class="no-user-message">Please log in to view this page.</p>
         {% endif %}
     </form>
-
 
 
 

@@ -425,7 +425,6 @@ def mypage_view(request):
         user_id = request.session['user']
         user = UserModel.objects.get(pk=user_id)
         print(user_id)
-
         return render(request, 'main/mypage.html', {'user': user})
     else:
         print("Debug: User does not exist in the view.")
