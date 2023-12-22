@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.db import connections, connection
 from django.http import JsonResponse, HttpResponse
@@ -10,6 +11,8 @@ import os
 import pandas as pd
 from django.contrib.staticfiles import finders
 import json
+
+
 
 # Create your views here.
 def list(request,region_name):
