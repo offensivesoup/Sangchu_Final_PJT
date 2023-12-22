@@ -24,6 +24,8 @@
 </style>
 <body>
 
+
+
   <!-- ***** Preloader Start ***** -->
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
@@ -72,6 +74,24 @@
   </header>
   <!-- ***** Header Area End ***** -->
 
+<div id="result">
+  <div id="deposit"></div>
+  <div id="month"></div>
+  <div id="address"></div>
+  <div id="when"></div>
+  <div id="area"></div>
+  <div id="my_area"></div>
+  <div id="my_floor"></div>
+  <div id="total_floor"></div>
+</div>
+
+  <!-- 결과를 표시할 곳 -->
+<div id="result2">
+  <div id="mainIndex"></div>
+
+  <!-- recommendation 데이터 출력을 위한 부분 -->
+  <div id="recommendations"></div>
+</div>
 
   <div class="main-content">
     <div class="container">
@@ -87,17 +107,17 @@
               <div class="thumb">
                 <img src="assets/images/offers-01.jpg" alt="">
                 <div class="text">
-                  <h4>Havana<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
+                  <h4>{{data.data.index}}<br><span><i class="fa fa-users"></i>즉시입주</span></h4>
+                  <h6>3000/40<br><span>/person</span></h6>
                   <div class="line-dec"></div>
                   <ul>
                     <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
+                    <li><i class="fa fa-taxi"></i>일반상가</li>
+                    <li><i class="fa fa-plane"></i>42.47㎡</li>
+                    <li><i class="fa fa-building"></i>2층/4층</li>
                   </ul>
                   <div class="main-button">
-                    <a href="reservation.html">Make a Reservation</a>
+                    <a href="reservation.html">이동하기</a>
                   </div>
                 </div>
               </div>
@@ -106,17 +126,17 @@
               <div class="thumb">
                 <img src="assets/images/offers-02.jpg" alt="">
                 <div class="text">
-                  <h4>Kingston<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
+                  <h4>부산진구<br><span><i class="fa fa-users"></i>즉시입주</span></h4>
+                  <h6>4000/20<br><span>/person</span></h6>
                   <div class="line-dec"></div>
                   <ul>
                     <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
+                    <li><i class="fa fa-taxi"></i>단지내 상가</li>
+                    <li><i class="fa fa-plane"></i>65.92㎡</li>
+                    <li><i class="fa fa-building"></i>1층/3층</li>
                   </ul>
                   <div class="main-button">
-                    <a href="reservation.html">Make a Reservation</a>
+                    <a href="reservation.html">이동하기</a>
                   </div>
                 </div>
               </div>
@@ -125,17 +145,17 @@
               <div class="thumb">
                 <img src="assets/images/offers-03.jpg" alt="">
                 <div class="text">
-                  <h4>George Town<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
+                  <h4>부산진구<br><span><i class="fa fa-users"></i>즉시입주</span></h4>
+                  <h6>6000/80<br><span>/person</span></h6>
                   <div class="line-dec"></div>
                   <ul>
                     <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
+                    <li><i class="fa fa-taxi"></i>대형상가</li>
+                    <li><i class="fa fa-plane"></i>220.92㎡</li>
+                    <li><i class="fa fa-building"></i>3층/5층</li>
                   </ul>
                   <div class="main-button">
-                    <a href="reservation.html">Make a Reservation</a>
+                    <a href="reservation.html">이동하기</a>
                   </div>
                 </div>
               </div>
@@ -245,21 +265,68 @@
 
 
 
-  <script>
-        var id = '{{maemul_id}}'
-        var region = '{{region_name}}'
-        $(document).ready(() => {
-    $.ajax({
-        url: `../detail/getData/`,
-        method: 'get',
-        dataType: 'json',
-        success: function (data) {
-            console.log(data.data);
-        }
-    });
-});
+<script>
 
-  </script>
+  // 해당 공실의 데이터
+  $.ajax({
+    url: `../detail/getData/`,
+    method: 'get',
+    dataType: 'json',
+    success: function (data) {
+      if (data && data.data && data.data.length > 0) {
+        // 데이터가 존재하고 배열에 최소한 하나의 객체가 있는 경우
+        const propertyDivs = [
+          'deposit', 'month', 'address', 'when', 'area', 'my_area', 'my_floor', 'total_floor'
+        ];
+
+        // 각 속성에 대한 값을 출력할 div에 넣어줍니다.
+        propertyDivs.forEach(property => {
+          $(`#${property}`).text(`${property.charAt(0).toUpperCase() + property.slice(1)}: ${data.data[0][property]}`);
+        });
+      } else {
+        console.error('Data structure is not as expected.');
+      }
+    },
+    error: function (error) {
+      console.error('Error:', error);
+    }
+  });
+
+  // 추천 시스템에 들어갈 데이터
+  $.ajax({
+    url: `../detail/cosine/`,
+    method: 'get',
+    dataType: 'json',
+    success: function (data) {
+      if (data && data.data && data.data.recommendation && data.data.recommendation.length > 0) {
+        // 메인 index 값 출력
+        $('#mainIndex').text(`Main Index: ${data.data.index}`);
+
+        // recommendation 배열 내 각 객체에 대한 div 생성
+        const recommendationsDiv = $('#recommendations');
+
+        data.data.recommendation.forEach((recommendation, index) => {
+          const recommendationDivId = `recommendation_${index + 1}`;
+          recommendationsDiv.append(`<div id="${recommendationDivId}"></div>`);
+
+          // recommendation 객체의 각 속성에 대한 div 생성
+          const recommendationDiv = $(`#${recommendationDivId}`);
+          for (const property in recommendation) {
+            if (recommendation.hasOwnProperty(property)) {
+              recommendationDiv.append(`<div>${property.charAt(0).toUpperCase() + property.slice(1)}: ${recommendation[property]}</div>`);
+            }
+          }
+        });
+      } else {
+        console.error('Data structure is not as expected.');
+      }
+    },
+    error: function (error) {
+      console.error('Error:', error);
+    }
+  });
+
+</script>
   <script>
     $(".option").click(function(){
       $(".option").removeClass("active");
