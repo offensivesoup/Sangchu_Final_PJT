@@ -21,7 +21,22 @@ def detail(request, region_name,maemul_id):
     print('debug >>> region_name: ', region_name)
     print('debug >>> maemul_id: ',maemul_id)
     print('debug >>> client path, finalApp/detail, render = detail')
-    return render(request, 'final/detail.html', {'region_name' : region_name, 'maemul_id' : maemul_id})
+    sql_query = "SELECT * FROM empty_room_data WHERE address = %s"
+    with connection.cursor() as cursor:
+        cursor.execute(sql_query, (region_name,))
+        result = cursor.fetchall()
+        map_data = {}
+        for row in result:
+            if row[16] == maemul_id:
+                map_data['map'] = {'index': row[16], 'deposit': row[0], 'month': row[1], 'criteria': row[2],
+                        'lat': row[3], 'lng': row[4], 'address': row[5], 'when': row[6], 'area': row[7],
+                        'my_area': row[8],
+                        'my_floor': row[9], 'total_floor': row[10], 'now': row[11], 'recommend': row[12],
+                        'parking': row[13], 'usage': row[14], 'direction': row[15]}
+                break
+
+
+    return render(request, 'final/detail.html', {'region_name' : region_name, 'maemul_id' : maemul_id,'map':map_data['map']})
 
 
 def get_list(request,region_name):
