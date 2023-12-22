@@ -20,12 +20,7 @@
 
     <!-- map CSS -->
 <style>
-    @media (max-width: 575px) {
-    .busan-main-content{
-<!--        margin-top: 120px;-->
-    }
 
-    }
 .busan-main-content{
   margin-top: 70px;
   min-height: 700px;
@@ -143,19 +138,22 @@ color: gray;
                     <ul class="nav">
                         <li><a href="../" >Home</a></li>
                         <li><a href="./"class="active">Busan Analysis</a></li>
-                        <li><a href="/maemul">Property</a></li>
+                        <li><a href="/maemul/부산진구">Property</a></li>
+                        <li><a href="../predict">predict</a></li>
 <!--                        <li><a href="reservation.html">Reservation</a></li>-->
                         {% if request.session.user %}
                         <!-- 사용자가 로그인되어 있는 경우 -->
-                        <p>안녕하세요, {{ request.session.user }}님!</p>
-                        <form action="{% url 'logout' %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit">로그아웃</button>
-                        </form>
+<!--                        <p>안녕하세요, {{ request.session.user }}님!</p>-->
+<!--                        <form action="{% url 'logout' %}" method="post">-->
+<!--                            {% csrf_token %}-->
+<!--                            <button type="submit">로그아웃</button>-->
+<!--                        </form>-->
+                             <li><a href="{% url 'mypage' %}">My Page</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
                       {% else %}
                         <li><a href="../sign/">Login</a></li>
                       {% endif %}
-                        <li><a href="../predict">predict</a></li>
+
                     </ul>   
                     <a class='menu-trigger'>
                         <span>Menu</span>

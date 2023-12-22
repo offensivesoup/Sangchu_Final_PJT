@@ -404,7 +404,7 @@ def predict_model(request) :
 
             input_data = [float(data['보증금_y']), float(data['상가구분']), float(data['임대(계약)면적']), float(data['전용면적']), float(data['해당층']), float(data['총층'])]
 
-            prediction = predict_model.predict([input_data])[0]
+            prediction = int(predict_model.predict([input_data])[0])
 
             response_data = {'prediction': prediction}
             return JsonResponse(response_data)
@@ -416,3 +416,6 @@ def predict_model(request) :
     else:
         response_data = {'error': 'Only POST requests are allowed.'}
         return JsonResponse(response_data, status=400)
+
+def mypage(request):
+    return render(request,'main/mypage.html')

@@ -25,4 +25,5 @@ urlpatterns = [
     path('busstop/', views.busstop),
     path("predict/", views.predict),
     path("predict_model/", views.predict_model, name="predict_model"),
+    path("mypage/",views.mypage, name="mypage")
 ]
