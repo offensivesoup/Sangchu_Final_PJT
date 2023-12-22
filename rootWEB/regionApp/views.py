@@ -16,43 +16,68 @@ def index(request, region_name) :
     region_name = region_name
     print('deubg >>> region_name: ' ,region_name)
     print('debug >>> client path, regionApp/index, render = index')
-    return render(request, 'region/index.html', {'region_name': region_name})
+    coordinates_init = [
+        {"기장군": (35.244394201041416, 129.2227421459612)},
+        {"해운대구": (35.162995101348564, 129.16356675415742)},
+        {"수영구": (35.145458076325326, 129.11307922758124)},
+        {"남구": (35.136262710025456, 129.08468141230728)},
+        {"연제구": (35.176129771565535, 129.079712017898)},
+        {"동구": (35.129161209712215, 129.04558174709652)},
+        {"중구": (35.10621258919303, 129.03247914653906)},
+        {"서구": (35.09784717231878, 129.0242833944746)},
+        {"영도구": (35.090989265185435, 129.06778927857764)},
+        {"부산진구": (35.162697533668855, 129.05307148933218)},
+        {"동래구": (35.196701579922234, 129.09391527580505)},
+        {"금정구": (35.24278952025912, 129.09242514119632)},
+        {"북구": (35.196830935641835, 128.99036558066425)},
+        {"사상구": (35.15288084181415, 128.99035858685488)},
+        {"사하구": (35.104261135161906, 128.97500193638786)},
+        {"강서구": (35.21179065375177, 128.98045854324366)}
+    ]
+    temp = []
+    for item in coordinates_init:
+        for key, value in item.items():
+            if key == region_name:
+                temp.append(value[0])
+                temp.append(value[1])
+    print(temp)
+    return render(request, 'region/index.html', {'region_name': region_name,'temp':temp})
 
 ## 주요 상권 설명
 
 def get_information_main_data(request, region_name):
     if region_name == "강서구":
-        contents = "강서구(Gangseo-gu): 부산의 서쪽에 위치하며, 인프라와 산업시설이 발달해 있는 지역."
+        contents = "강서구(Gangseo-gu): 부산의 서쪽에 위치하며, 녹산공단 등 산업시설이 발달해 있는 지역."
     elif region_name == "사상구":
-        contents = "사상구(Sasang-gu): 국내 최대의 물류 단지인 부산진로와 가깝고, 산업 지역."
+        contents = "사상구(Sasang-gu): 부산에서 제일 큰 규모인 사상공업단지가 있는 지역."
     elif region_name == "중구":
-        contents = "중구(Jung-gu): 부산의 중심지로서 남포동과 국제시장 등이 위치하고 있습니다. 역사적인 명소와 번화가가 공존하는 지역."
+        contents = "중구(Jung-gu): 부산의 중심지로서 남포동과 국제시장 등이 위치. 역사적인 명소와 번화가가 공존하는 지역."
     elif region_name == "서구":
-        contents = "서구(Seo-gu): 부산역과 부산진역이 위치하는 교통 중심지로, 상업 및 주거 지역이 혼재되어 있음."
+        contents = "서구(Seo-gu): 상업 및 주거 지역이 혼재되어 있음. 관광지로는 대한민국에서 제일 처음 만들어진 해수욕장인 송도해수욕장과 송림공원 등이 있는 지역"
     elif region_name == "동구":
-        contents = "동구(Dong-gu): 대표적인 명소로는 이기대 동래문 및 부산 시립미술관이 있습니다. 자연환경이 풍부한 구."
+        contents = "동구(Dong-gu): 동구는 부산광역시 중부에 있는 구로, 복합단지 개발지구인 북항재개발구역이 있는 지역."
     elif region_name == "영도구":
-        contents = "영도구(Yeongdo-gu): 부산항이 위치하고 있어 수산물 시장이 발달한 지역이며, 독특한 느낌의 역사적인 지구."
+        contents = "영도구(Yeongdo-gu): 옛 이름은 절영도로, 대한민국의 자치구 중 유일하게 섬으로만 구성된 지역"
     elif region_name == "부산진구":
-        contents = "부산진구(Busanjin-gu): 대중교통이 발달하고 서면과 인접해 있어 상업 및 유흥 시설이 밀집."
+        contents = "부산진구(Busanjin-gu): 대중교통이 발달하고 서면과 인접해 있어 상업 및 유흥 시설이 밀집되어있는 지역."
     elif region_name == "동래구":
-        contents = "동래구(Dongnae-gu): 자연환경이 풍부하며 동래읍성과 동래수목원 등이 위치해 관광 명소로 알려져 있음."
+        contents = "동래구(Dongnae-gu): 부산광역시 중앙부에 있는 구로, 동래읍성과 사직야구장, 온천천 등이 위치해 관광, 상업, 여가 중심지로 알려져 있는 지역."
     elif region_name == "남구":
-        contents = "남구(Nam-gu): 해운대와 가까워 해변과 함께 자연 경관을 즐길 수 있는 구, 또한 대학가로도 유명."
+        contents = "남구(Nam-gu):  부산광역시 동남부에 있는 구로, 부산국제금융센터가 있고 대연혁신지구 및 문현금융단지가 들어서는 지역."
     elif region_name == "북구":
-        contents = "북구(Buk-gu): 대학로가 위치해 있고, 서구와 함께 교통 중심지로 알려져 있음."
+        contents = "북구(Buk-gu): 부산 북서부에 있는 구로, 덕천과 같은 상권과 금곡 등 주거지가 혼재되어 있는 지역"
     elif region_name == "해운대구":
-        contents = "해운대구(Haeundae-gu): 국내외에서 많은 관광객이 찾는 지역으로 해수욕, 호텔, 리조트 등이 발달."
+        contents = "해운대구(Haeundae-gu): 국내외에서 많은 관광객이 찾는 지역으로 해수욕, 호텔, 리조트 등 여가업이 발달한 지역."
     elif region_name == "사하구":
-        contents = "사하구(Saha-gu): 인프라 개발이 활발히 이루어지고 있으며, 대중교통이 향상된 구."
+        contents = "사하구(Saha-gu): 부산 남서부에 있는 구로, 다대포해수욕장이 위치하고 있으며 장림공단 등이 위치해 있는 지역."
     elif region_name == "금정구":
-        contents = "금정구(Geumjeong-gu): 부산의 북동쪽에 위치하며, 부산의 중심지와는 거리가 있지만 자연환경이 풍부한 구."
+        contents = "금정구(Geumjeong-gu): 부산의 북단에 위치하며, 부산대 상권이 발달해 있는 지역"
     elif region_name == "연제구":
         contents = "연제구(Yeonje-gu): 주택가가 많이 있고 교육 기관도 밀집해 있는 지역."
     elif region_name == "수영구":
-        contents = "수영구(Suyeong-gu): 해운대와 인접하며 해수욕과 관련된 시설이 많이 위치한 지역."
+        contents = "수영구(Suyeong-gu): 광안리해수욕장, 수영 상권을 중심으로 주거지가 있는 지역"
     elif region_name == "기장군":
-        contents = "기장군(Gijang-gun): 부산의 동쪽에 위치하며, 해변과 자연 경관이 아름다운 곳으로 최근 관광 및 레저 산업이 활성화되고 있음."
+        contents = "기장군(Gijang-gun): 부산의 동쪽에 위치하며, 해변과 자연 경관이 아름다운 곳으로 최근 관광 및 레저 산업이 활성화되고 있는 지역."
     return JsonResponse({'data': contents}, safe=False)
 ## 업종별 상권 수
 def get_region_type_data(request, region_name):
@@ -224,7 +249,7 @@ def get_eval_score_data(request, region_name):
             return JsonResponse({'marketability' : marketability_list, 'category' : category_list,
                                  'potential' : potential_list, 'stability' : stability_list, 'floating' : floating_list}, safe=False)
 
-def get_center_coordinates(gu):
+def get_center_coordinates(region_name):
     gu_coordinates = {
         "기장군": (35.244394201041416, 129.2227421459612),
         "해운대구": (35.162995101348564, 129.16356675415742),
@@ -244,7 +269,7 @@ def get_center_coordinates(gu):
         "강서구": (35.21179065375177, 128.98045854324366),
     }
 
-    return gu_coordinates.get(gu, (0, 0))
+    return gu_coordinates.get(region_name, (0, 0))
 
 def school_json(request, region_name):
     try:
@@ -319,3 +344,111 @@ def subwayloc_json(request, region_name):
     except Exception as e:
         # 예외가 발생하면 에러 메시지를 포함한 500 상태의 JSON 응답을 반환합니다.
         return JsonResponse({"error": str(e)}, status=500)
+
+def hospital_json(request, region_name):
+    try:
+        # GET 요청에서 'gu' 매개변수의 값을 추출합니다.
+        # gu = request.GET.get('gu', None)
+
+        # 'gu'를 사용하여 중심 좌표를 가져옵니다.
+        center_latitude, center_longitude = get_center_coordinates(region_name)
+
+        # 데이터베이스 커서를 사용하여 SQL 쿼리를 실행합니다.
+        with connection.cursor() as cursor:
+            # 'gu'에 따라 필터링된 쿼리를 실행합니다.
+            cursor.execute(
+                "SELECT name, category, em_cat, gu, address, tel, lat, lng FROM hospital where gu=%s",[region_name])
+            # 실행된 쿼리에서 모든 결과를 가져옵니다.
+            locations = cursor.fetchall()
+
+        # 가져온 데이터를 JSON 직렬화 가능한 형식으로 처리합니다.
+        data = [
+            {
+                "name": location[0],
+                "category": location[1],
+                "em_cat": location[2],
+                "gu": location[3],
+                "address": location[4],
+                "tel": location[5],
+                "lat": location[6],
+                "lng": location[7],
+            }
+            for location in locations
+        ]
+
+        # 처리된 데이터와 중심 좌표를 포함한 JSON 응답을 반환합니다.
+        return JsonResponse({"data": data, "center_latitude": center_latitude, "center_longitude": center_longitude},
+                            safe=False)
+
+    except Exception as e:
+        # 예외가 발생하면 에러 메시지를 포함한 500 상태의 JSON 응답을 반환합니다.
+        return JsonResponse({"error": str(e)}, status=500)
+
+def drug_json(request, region_name):
+    try:
+        # GET 요청에서 'gu' 매개변수의 값을 추출합니다.
+        # gu = request.GET.get('gu', None)
+
+        # 'gu'를 사용하여 중심 좌표를 가져옵니다.
+        center_latitude, center_longitude = get_center_coordinates(region_name)
+
+        # 데이터베이스 커서를 사용하여 SQL 쿼리를 실행합니다.
+        with connection.cursor() as cursor:
+            # 'gu'에 따라 필터링된 쿼리를 실행합니다.
+            cursor.execute(
+                "SELECT name, gu, address, tel, lat, lng FROM drug where gu=%s",[region_name])
+            # 실행된 쿼리에서 모든 결과를 가져옵니다.
+            locations = cursor.fetchall()
+
+        # 가져온 데이터를 JSON 직렬화 가능한 형식으로 처리합니다.
+        data = [
+            {
+                "name": location[0],
+                "gu": location[1],
+                "address": location[2],
+                "tel": location[3],
+                "lat": location[4],
+                "lng": location[5],
+            }
+            for location in locations
+        ]
+
+        # 처리된 데이터와 중심 좌표를 포함한 JSON 응답을 반환합니다.
+        return JsonResponse({"data": data, "center_latitude": center_latitude, "center_longitude": center_longitude},
+                            safe=False)
+
+    except Exception as e:
+        # 예외가 발생하면 에러 메시지를 포함한 500 상태의 JSON 응답을 반환합니다.
+        return JsonResponse({"error": str(e)}, status=500)
+
+def get_coordinates_init(request, region_name):
+    coordinates_init = [
+        {"기장군": (35.244394201041416, 129.2227421459612)},
+        {"해운대구": (35.162995101348564, 129.16356675415742)},
+        {"수영구": (35.145458076325326, 129.11307922758124)},
+        {"남구": (35.136262710025456, 129.08468141230728)},
+        {"연제구": (35.176129771565535, 129.079712017898)},
+        {"동구": (35.129161209712215, 129.04558174709652)},
+        {"중구": (35.10621258919303, 129.03247914653906)},
+        {"서구": (35.09784717231878, 129.0242833944746)},
+        {"영도구": (35.090989265185435, 129.06778927857764)},
+        {"부산진구": (35.162697533668855, 129.05307148933218)},
+        {"동래구": (35.196701579922234, 129.09391527580505)},
+        {"금정구": (35.24278952025912, 129.09242514119632)},
+        {"북구": (35.196830935641835, 128.99036558066425)},
+        {"사상구": (35.15288084181415, 128.99035858685488)},
+        {"사하구": (35.104261135161906, 128.97500193638786)},
+        {"강서구": (35.21179065375177, 128.98045854324366)}
+    ]
+
+    for item in coordinates_init:
+        for key, value in item.items():
+            if key == region_name:
+                return JsonResponse({"region": {key}, "lat": {value[0]}, "lng": {value[1]}},
+                            safe=False)
+                break
+        else:
+            continue
+        break
+    else:
+        return JsonResponse(f"{region_name}에 대한 좌표를 찾을 수 없습니다.")

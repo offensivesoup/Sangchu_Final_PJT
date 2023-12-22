@@ -116,6 +116,30 @@
     position:relative;
     top:1px;
     }
+.myButtonBlue {
+    box-shadow:inset 0px 1px 0px 0px #ffffff;
+    background:linear-gradient(to bottom, #f9f9f9 5%, #e9e9e9 100%);
+    background-color:#012e4b;
+    border-radius:6px;
+    border:1px solid #dcdcdc;
+    display:inline-block;
+    cursor:pointer;
+    color:#666666;
+    font-family:Arial;
+    font-size:15px;
+    font-weight:bold;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #ffffff;
+    }
+    .myButton:hover {
+    background:linear-gradient(to bottom, #e9e9e9 5%, #f9f9f9 100%);
+    background-color:#e9e9e9;
+    }
+    .myButton:active {
+    position:relative;
+    top:1px;
+    }
 
     </style>
 
@@ -313,8 +337,11 @@
 
         <div class="col-md-8">
                 <a href="#" class="myButton" onclick="updateMap('school_json')" style="margin-top: 7vh;">학교</a>
+                <a href="#" class="myButton" onclick="updateMap('hospital_json')">병원</a>
+                <a href="#" class="myButton" onclick="updateMap('drug_json')">약국</a>
                 <a href="#" class="myButton" onclick="updateMap('subwayloc_json')">상권별 도시철도</a>
-                <a href="#" class="myButton" onclick="fetch('../{{ region_name }}/hospital_json/')">병원</a>
+                <a href="#" class="myButtonBlue" onclick="updateMap()" style="float: right; margin-top: 7vh"> 지도 초기화</a>
+
             <div id="map" style="height:75vh; margin-top:2vh">
 
             </div>
@@ -333,7 +360,7 @@
             // 지도 세팅
             map = new kakao.maps.Map(document.getElementById('map'), {
                 center: new kakao.maps.LatLng(35.10482165803885, 129.01972954165134),
-                level: 7
+                level: 8
             });
 
             // 기본 행정구를 기반으로 마커를 표시하기 위한 함수를 생성하고 호출
@@ -341,11 +368,16 @@
         }
 
         function updateMap(a) {
+                var a = a;
+
+            // 기존에 열렸던 인포윈도우가 있다면 닫기
+            if (currentInfowindow) {
+                currentInfowindow.close();
+                currentInfowindow = null;
+            }
+
             // 기본 존재하는 마커 (전체 데이터에 대한 마커)를 제거
             clearMarkers();
-
-            // 구 입력값 받아오기 (views.py에 있는 region_name)
-<!--            var selectedGu = document.getElementById('region_name').value;-->
 
             // 사용자가 선택한 구와, 그에 대한 정보를 서버(비동기통신)에서 받아옴
             // django url이 변경되었을 경우 수정이 필요.
@@ -367,39 +399,108 @@
                         var marker = new kakao.maps.Marker({
                             position: new kakao.maps.LatLng(location.lat, location.lng),
                             map: map,
-                            title: location.name
+                            title: location.name,
                         });
 
                         // 인포이벤트에 클릭이벤트 추가
-                        kakao.maps.event.addListener(marker, 'click', function() {
-                            var infowindow = new kakao.maps.InfoWindow({
-                                content: `<div style="padding:3px;font-size:12px;">
-                                            <div><b>${location.name}</b></div>
-                                            <div>구분: ${location.category} / ${location.type}</div>
-                                            <div>개교일: ${location.est}</div>`
-                            });
+                        if (a == 'school_json') {
+                            kakao.maps.event.addListener(marker, 'click', function () {
+                                var infowindow = new kakao.maps.InfoWindow({
+                                    content: `<div style="padding:3px;font-size:12px;">
+                                                <div><b>${location.name}</b></div>
+                                                <div>구분: ${location.category} / ${location.type}</div>
+                                                <div>개교일: ${location.est}</div>
+                                              </div>`
+                                });
 
-                            if (currentInfowindow) {
-                                // 이미 열려 있는 인포윈도우가 있다면 닫기
-                                if (currentInfowindow.getContent() === infowindow.getContent()) {
-                                    // 클릭한 인포윈도우와 현재 열려 있는 인포윈도우가 같다면 닫기
-                                    currentInfowindow.close();
-                                    currentInfowindow = null;
-                                    return;
-                                } else {
-                                    // 다른 인포윈도우가 열려있다면 닫기
+
+                                // 마커를 클릭했을 때 이미 열려있는 인포윈도우가 있다면 닫기
+                                if (currentInfowindow) {
                                     currentInfowindow.close();
                                 }
-                            }
 
-                            infowindow.open(map, marker);
+                                // 새로운 인포윈도우 열기
+                                infowindow.open(map, marker);
 
-                            // 열린 인포윈도우를 전역 변수에 저장
-                            currentInfowindow = infowindow;
+                                // 열린 인포윈도우를 전역 변수에 저장
+                                currentInfowindow = infowindow;
 
-                            // 클릭한 마커로 지도 중심 이동
-                            map.setCenter(marker.getPosition());
-                        });
+                                // 클릭한 마커로 지도 중심 이동
+                                map.setCenter(marker.getPosition());
+                            });
+                        } else if (a == 'subwayloc_json') {
+                            kakao.maps.event.addListener(marker, 'click', function () {
+                                var infowindow = new kakao.maps.InfoWindow({
+                                    content: `<div style="padding:3px;font-size:12px;">
+                                                <div><b>${location.subway_name}</b></div>
+                                                <div>승하차수: ${location.sum}</div>
+                                                <div>주변상권: ${location.sang_name}</div>
+                                              </div>`
+                                });
+
+                                // 마커를 클릭했을 때 이미 열려있는 인포윈도우가 있다면 닫기
+                                if (currentInfowindow) {
+                                    currentInfowindow.close();
+                                }
+
+                                // 새로운 인포윈도우 열기
+                                infowindow.open(map, marker);
+
+                                // 열린 인포윈도우를 전역 변수에 저장
+                                currentInfowindow = infowindow;
+
+                                // 클릭한 마커로 지도 중심 이동
+                                map.setCenter(marker.getPosition());
+                            });
+                        } else if (a == 'hospital_json') {
+                            kakao.maps.event.addListener(marker, 'click', function () {
+                                var infowindow = new kakao.maps.InfoWindow({
+                                    content: `<div style="padding:3px;font-size:12px;">
+                                                <div><b>${location.name}</b></div>
+                                                <div>구분   : ${location.category}</div>
+                                                <div>전화번호: ${location.tel}</div>
+                                              </div>`
+                                });
+
+                                // 마커를 클릭했을 때 이미 열려있는 인포윈도우가 있다면 닫기
+                                if (currentInfowindow) {
+                                    currentInfowindow.close();
+                                }
+
+                                // 새로운 인포윈도우 열기
+                                infowindow.open(map, marker);
+
+                                // 열린 인포윈도우를 전역 변수에 저장
+                                currentInfowindow = infowindow;
+
+                                // 클릭한 마커로 지도 중심 이동
+                                map.setCenter(marker.getPosition());
+                            });
+
+                        } else if (a == 'drug_json') {
+                            kakao.maps.event.addListener(marker, 'click', function () {
+                                var infowindow = new kakao.maps.InfoWindow({
+                                    content: `<div style="padding:3px;font-size:12px;">
+                                                <div><b>${location.name}</b></div>
+                                                <div>전화번호: ${location.tel}</div>
+                                              </div>`
+                                });
+
+                                // 마커를 클릭했을 때 이미 열려있는 인포윈도우가 있다면 닫기
+                                if (currentInfowindow) {
+                                    currentInfowindow.close();
+                                }
+
+                                // 새로운 인포윈도우 열기
+                                infowindow.open(map, marker);
+
+                                // 열린 인포윈도우를 전역 변수에 저장
+                                currentInfowindow = infowindow;
+
+                                // 클릭한 마커로 지도 중심 이동
+                                map.setCenter(marker.getPosition());
+                            });
+                        }
 
                         // 마커 배열에 마커를 저장
                         markers.push(marker);

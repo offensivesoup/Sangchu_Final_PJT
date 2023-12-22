@@ -13,4 +13,9 @@ urlpatterns = [
     path("<str:region_name>/chart6/",get_subway_session_data, name = 'get_subway_session_data'),
     path("<str:region_name>/chart7/",get_eval_score_data, name = 'get_eval_score_data'),
     path("<str:region_name>/school_json/", school_json, name = 'school_json'),
-    path("<str:region_name>/subwayloc_json/", subwayloc_json, name='subwayloc_json')]
+    path("<str:region_name>/subwayloc_json/", subwayloc_json, name='subwayloc_json'),
+    path("<str:region_name>/hospital_json/", hospital_json, name='hospital_json'),
+    path("<str:region_name>/drug_json/", drug_json, name='drug_json'),
+    path("<str:region_name>/get_coordinates_init", get_coordinates_init, name='get_coordinates_init'),
+    ]
+
