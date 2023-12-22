@@ -25,7 +25,7 @@ def sign(request):
     if request.method == 'POST':
         email    = request.POST.get('email', None)
         password = request.POST.get('password', None)
-
+        username = request.POST.get('username', None)
         try:
             me = UserModel.objects.get(email=email)
 
@@ -419,3 +419,14 @@ def predict_model(request) :
 
 def mypage(request):
     return render(request,'main/mypage.html')
+
+def mypage_view(request):
+    if 'user' in request.session:
+        user_id = request.session['user']
+        user = UserModel.objects.get(pk=user_id)
+        print(user_id)
+
+        return render(request, 'main/mypage.html', {'user': user})
+    else:
+        print("Debug: User does not exist in the view.")
+        return redirect('/login')
