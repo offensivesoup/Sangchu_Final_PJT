@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.db import connections, connection
 from django.http import JsonResponse, HttpResponse
@@ -10,6 +11,8 @@ import os
 import pandas as pd
 from django.contrib.staticfiles import finders
 import json
+from django.db import transaction
+
 
 # Create your views here.
 def list(request,region_name):
@@ -143,3 +146,27 @@ def cosine_similarity_view(request, region_name, maemul_id):
 #     else:
 #         response_data = {'error': 'Only POST requests are allowed.'}
 #         return JsonResponse(response_data, status=400)
+
+from django.db import transaction
+
+
+def detail_view(request, region_name, maemul_id):
+    with connection.cursor() as cursor:
+        cursor.execute("""SELECT views FROM empty_room_data WHERE address = %s AND `index` = %s""",
+                       [region_name, maemul_id])
+        row = cursor.fetchone()
+
+        if row is not None:
+            current_views = row[0]
+            # 트랜잭션 시작
+            with transaction.atomic():
+                cursor.execute("""UPDATE empty_room_data SET views = %s WHERE address = %s AND `index` = %s""",
+                               [current_views + 1, region_name, maemul_id])
+            new_views = current_views + 1
+        else:
+            new_views = None
+
+        data = {'views': new_views}
+
+    print(new_views)
+    return JsonResponse(data)

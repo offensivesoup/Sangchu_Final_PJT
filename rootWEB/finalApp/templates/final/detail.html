@@ -83,6 +83,7 @@
   <div id="my_area"></div>
   <div id="my_floor"></div>
   <div id="total_floor"></div>
+  <div id="viewContainer"></div>
 </div>
 
   <!-- 결과를 표시할 곳 -->
@@ -284,6 +285,28 @@
 
 
 <script>
+  // 조회수 가져오기
+  function fetchViews() {
+    // Ajax 요청을 보냄
+    $.ajax({
+      url: `../detail/view/`,  // 적절한 URL로 변경
+      method: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        // 성공 시 데이터를 출력
+        console.log(data);
+
+        // 고유한 ID를 가진 div에 p 태그를 추가
+        $('#viewContainer').append('<p>Views: ' + data.views + '</p>');
+      },
+      error: function (error) {
+        console.error('Error fetching views data:', error);
+      }
+    });
+  }
+
+  // 페이지 로드 시 조회수 데이터 가져오기
+  fetchViews();
 
   // 해당 공실의 데이터
   $.ajax({
@@ -302,11 +325,11 @@
           $(`#${property}`).text(`${property.charAt(0).toUpperCase() + property.slice(1)}: ${data.data[0][property]}`);
         });
       } else {
-        console.error('Data structure is not as expected.');
+        console.error('Data structure is not as expected for property data.');
       }
     },
     error: function (error) {
-      console.error('Error:', error);
+      console.error('Error fetching property data:', error);
     }
   });
 
@@ -336,11 +359,11 @@
           }
         });
       } else {
-        console.error('Data structure is not as expected.');
+        console.error('Data structure is not as expected for recommendation data.');
       }
     },
     error: function (error) {
-      console.error('Error:', error);
+      console.error('Error fetching recommendation data:', error);
     }
   });
 
