@@ -149,12 +149,15 @@
 <!--    <div class="container" style="margin: 0 auto;">-->
       <div class="row">
         <div class="col-md-4">
-             <h2 style="padding:5px; margin-left:20px;color:black">{{region_name}} 매물 목록</h2>
-<!--                        <div class="list-group" style="margin-bottom:10px">-->
-<!--  <a href="#" class="list-group-item list-group-item-action">A second link item</a>-->
-<!--  <a href="#" class="list-group-item list-group-item-action">A third link item</a>-->
+<!--             <h2 style="padding:5px; margin-left:20px;color:black">{{region_name}} 매물 목록</h2>-->
+<div class="btn-group" style="padding:5px; margin-left:20px;margin-top:5px;">
+  <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      {{region_name}} 매물목록
+  </button>
+  <ul class="dropdown-menu">
 
-<!--</div>-->
+  </ul>
+</div>
 <div id = "list_body" class="list-group" style="overflow: scroll;height:80vh;padding:10px 0px">
 <!--  <a href="#" class="list-group-item list-group-item-action wrap_li">-->
 <!--      <div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>-->
@@ -192,6 +195,19 @@
 
     var region = '{{region_name}}'
     $(document).ready(()=>{
+    var regionName = '{{region_name}}'
+    const gu_list = ['강서구','금정구','기장군','서구','중구','사하구','사상구','연제구','수영구','북구','부산진구','영도구', '동래구','남구','동구','해운대구']
+
+    for(let i=0;i<gu_list.length;i++){
+        if(gu_list[i] == regionName){
+            continue
+        }
+        var txt = ''
+        txt += '<li><a class="dropdown-item" href="../'+ gu_list[i] +'">'+ gu_list[i]+'</a></li>'
+        $('.dropdown-menu').append(txt)
+
+    }
+
         $.ajax({
               url: `../${region}/getData/`,
               method: 'get',

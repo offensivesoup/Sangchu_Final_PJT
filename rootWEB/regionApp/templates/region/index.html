@@ -226,8 +226,17 @@
   <div class="busan-main-content">
       <div class="row">
         <div class="col-md-4" style="">
-            <div style="display:flex;padding-top:10px ">
-             <h2 style="padding:3px; margin-left:20px;color:black;">{{region_name}}</h2> <a class="btn btn-primary" onclick="goMaemulPage()" role="button">매물목록</a>
+            <div style="display:flex;padding-top:10px;margin-left:10px; ">
+<!--             <h2 style="padding:3px; margin-left:20px;color:black;">{{region_name}}</h2> -->
+<div class="btn-group">
+  <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      {{region_name}}
+  </button>
+  <ul class="dropdown-menu">
+
+  </ul>
+</div>
+                <a class="btn btn-primary" onclick="goMaemulPage()" role="button" style="margin-top:3px;">매물목록</a>
         </div>
               <div class="accordion" id="accordionExample" style="padding:5px">
     <div class="accordion-item">
@@ -1159,7 +1168,17 @@ function chart8(data){
     // 처음 아코디언 1번 띄우기
 $(document).ready(()=>{
     var regionName = '{{region_name}}'
+    const gu_list = ['강서구','금정구','기장군','서구','중구','사하구','사상구','연제구','수영구','북구','부산진구','영도구', '동래구','남구','동구','해운대구']
 
+    for(let i=0;i<gu_list.length;i++){
+        if(gu_list[i] == regionName){
+            continue
+        }
+        var txt = ''
+        txt += '<li><a class="dropdown-item" href="../'+ gu_list[i] +'">'+ gu_list[i]+'</a></li>'
+        $('.dropdown-menu').append(txt)
+
+    }
     $.ajax({
     url: `../${regionName}/chart2/`,
     method: 'get',
