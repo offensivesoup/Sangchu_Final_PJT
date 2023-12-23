@@ -58,7 +58,7 @@
                        <li><a href="../../../../predict">predict</a></li>
                       {% if request.session.user %}
                        <li><a href="{% url 'mypage' %}">My Page</a></li>
-                         <li><a href="{% url 'logout' %}">Logout</a></li>
+                   <li onclick="logoutModal()" ><a style="cursor:pointer;">Logout</a></li>
                       {% else %}
                         <li><a href="../../../../sign">Login</a></li>
                       {% endif %}
@@ -73,7 +73,23 @@
     </div>
   </header>
   <!-- ***** Header Area End ***** -->
-
+<div id="modal_box" class="modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">로그아웃</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>로그아웃 하시겠습니까?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >아니오</button>
+        <button onclick="logout()" type="button" class="btn btn-primary" style="background:#244769;">로그아웃</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!--<div id="result">-->
 <!--  <div id="deposit"></div>-->
@@ -331,7 +347,14 @@
   <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
 <script>
+function logoutModal(){
+      $('#modal_box').modal('show');
 
+    }
+    function logout(){
+      window.location.href = "{% url 'logout' %}"
+
+    }
 <!--$(document).ready(()=>{-->
 <!--  // 해당 공실의 데이터-->
 <!--  $.ajax({-->
@@ -392,7 +415,7 @@ $(document).ready(()=>{
             txt += '<li><i class="fa fa-parking"></i> ' + data.parking +'</li>'
             txt +=  '</ul>'
             txt +=  '<div class="main-button">'
-            txt += '<a href="#">매물로 이동</a>'
+            txt += '<a href="../../../' + data.address + '/' + data.index +'/detail">매물로 이동</a>'
             txt +=  '</div>'
             txt +=  '</div>'
             $(`#${maemulId}`).append(txt);
@@ -415,7 +438,7 @@ $(document).ready(()=>{
             txt += '<li><i class="fa fa-parking"></i> ' + data.parking +'</li>'
             txt +=  '</ul>'
             txt +=  '<div class="main-button">'
-            txt += '<a href="#">매물로 이동</a>'
+            txt += '<a href="/../../../' + data.address + '/' + data.index +'/detail">매물로 이동</a>'
             txt +=  '</div>'
             txt +=  '</div>'
             $(`#${maemulId}`).append(txt);
