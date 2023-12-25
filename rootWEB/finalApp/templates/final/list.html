@@ -184,6 +184,16 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+<!-- 로그아웃 모달   -->
+    function logoutModal(){
+      $('#modal_box').modal('show');
+
+    }
+    function logout(){
+      window.location.href = "{% url 'logout' %}"
+
+    }
+
     function goDetail(id){
          var maemul_id = id
          var currentUrl = window.location.href;
@@ -192,10 +202,12 @@
 
     }
 
-
+<!-- ready -->
     var region = '{{region_name}}'
+
     $(document).ready(()=>{
     var regionName = '{{region_name}}'
+<!--    구 드롭다운 -->
     const gu_list = ['강서구','금정구','기장군','서구','중구','사하구','사상구','연제구','수영구','북구','부산진구','영도구', '동래구','남구','동구','해운대구']
 
     for(let i=0;i<gu_list.length;i++){
@@ -208,63 +220,8 @@
 
     }
 
-        $.ajax({
-              url: `../${region}/getData/`,
-              method: 'get',
-              dataType: 'json',
-              success: function(data){
-                  console.log(data.data);
-
-                  $('#list_tbody').empty();
-                  var txt = ''
-                  $.each(data.data , function(idx,data) {
-<!--                  onclick="goDetail(' + data.index +')" ' -->
-                          txt += '<a class="list-group-item list-group-item-action wrap_li">'
-                          txt += `<div class="li_img"><img onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>`
-                          txt +=  `<div class="li_text" onclick=goDetail(${data.index})>`
-                          txt +=  '<div class="li_title"><h4>' + data.criteria + '</h4></div>'
-                          txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + data.deposit +'만원/'+ data.month+ '만원</div>'
-                          if(data.my_area!=='' & data.area!==''){
-                          txt +=  '<div class="li_info">'
-                          txt += '<span>'+data.my_area+'/'+data.area+'</span>'
-                          txt += '</div>'
-                          }
-                          txt += '</div>'
-                          txt +=  '<div class="like_btn" >'
-                          txt +=  '<span><i class="far fa-star" style="font-size:23px;"></i></span>'
-                          txt +=  '</div>'
-                          txt += '</div>'
-                          txt += '</a>'
-
-
-					})
-					$('#list_body').append(txt) ;
-              },
-              error: function (error) {
-                  console.log('Error:', error);
-              }
-          });
-
-
-
-    })
-
-</script>
-
-
-
-
-<!--지도 -->
-	<script>
-function logoutModal(){
-      $('#modal_box').modal('show');
-
-    }
-    function logout(){
-      window.location.href = "{% url 'logout' %}"
-
-    }
-    var latorigin = 35.10482165803885
+<!--    지도       -->
+     var latorigin = 35.10482165803885
     var lngorigin = 129.01972954165134
 
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div
@@ -356,6 +313,61 @@ function logoutModal(){
 
 	}
 	};
+
+
+
+        $.ajax({
+              url: `../${region}/getData/`,
+              method: 'get',
+              dataType: 'json',
+              success: function(data){
+                  console.log(data.data);
+
+                  $('#list_tbody').empty();
+                  var txt = ''
+                  $.each(data.data , function(idx,data) {
+<!--                  onclick="goDetail(' + data.index +')" ' -->
+                          txt += '<a class="list-group-item list-group-item-action wrap_li">'
+                          txt += `<div class="li_img" style="cursor:pointer;"><img style="width:120px;height:95%" onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/이미지준비중1.jpg' %}" alt=""></div>`
+                          txt +=  `<div class="li_text" style="cursor:pointer;" onclick=goDetail(${data.index})>`
+                          txt +=  '<div class="li_title"><h4>' + data.criteria + '</h4></div>'
+                          txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + data.deposit +'만원/'+ data.month+ '만원</div>'
+                          if(data.my_area!=='' & data.area!==''){
+                          txt +=  '<div class="li_info">'
+                          txt += '<span>'+data.my_area+'/'+data.area+'</span>'
+                          txt += '</div>'
+                          }
+                          txt += '</div>'
+                          txt +=  '<div class="like_btn" >'
+                          txt +=  '<span><i class="far fa-star" style="font-size:23px;"></i></span>'
+                          txt +=  '</div>'
+                          txt += '</div>'
+                          txt += '</a>'
+
+
+					})
+					$('#list_body').append(txt) ;
+              },
+              error: function (error) {
+                  console.log('Error:', error);
+              }
+          });
+
+
+
+    })
+
+</script>
+
+
+
+
+<!--지도 -->
+	<script>
+
+
+
+
 	</script>
 
 
