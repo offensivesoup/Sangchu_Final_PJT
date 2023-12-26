@@ -140,6 +140,7 @@
 
 <!--</div>-->
 <div id = "list_body" class="list-group" style="overflow: scroll;height:80vh;padding:10px 0px">
+    <div><button id = "sort_button">보증금순으로 정렬</button></div>
 <!--  <a href="#" class="list-group-item list-group-item-action wrap_li">-->
 <!--      <div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>-->
 <!--      <div class="li_text">-->
@@ -219,7 +220,69 @@
 
 </script>
 
+<script>
+  var data; // 전역 변수로 데이터를 저장
 
+$(document).ready(() => {
+    // 서버로부터 데이터를 비동기로 받아오는 Ajax 요청
+    $.ajax({
+        url: `../${region}/getData/`,
+        method: 'get',
+        dataType: 'json',
+        success: function (responseData) {
+            // 데이터를 받아오면 전역 변수에 저장
+            data = responseData;
+            // 화면에 출력하는 함수 호출
+            processData();
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+});
+
+// 받아온 데이터를 사용하여 화면에 출력하는 함수
+function processData() {
+    // 받아온 데이터를 활용하여 원하는 처리 수행
+    console.log('Received data:', data);
+
+    $('#list_tbody').empty()
+
+    // 예시: 데이터를 사용하여 화면에 출력
+    var txt = '';
+    $.each(data.data, function (idx, item) {
+        txt += '<a class="list-group-item list-group-item-action wrap_li">';
+        txt += `<div class="li_img"><img onclick="goDetail(${item.index})" src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>`;
+        txt += `<div class="li_text" onclick=goDetail(${item.index})>`;
+        txt += '<div class="li_title"><h4>' + item.criteria + '</h4></div>';
+        txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + item.deposit + '만원/' + item.month + '만원</div>';
+        if (item.my_area !== '' && item.area !== '') {
+            txt += '<div class="li_info">';
+            txt += '<span>' + item.my_area + '/' + item.area + '</span>';
+            txt += '</div>';
+        }
+        txt += '</div>';
+        txt += '<div class="like_btn">';
+        txt += '<span><i class="far fa-star" style="font-size:23px;"></i></span>';
+        txt += '</div>';
+        txt += '</div>';
+        txt += '</a>';
+    });
+
+    // 받아온 데이터를 사용하여 화면에 출력
+    $('#list_body').append(txt);
+}
+
+// 정렬 버튼에 이벤트 리스너 추가
+$('#sort_button').on('click', function () {
+    // 가져온 데이터를 월세 기준으로 정렬
+    var sortedData = data.data.sort((a, b) => (a.month * 1 + a.deposit * 1) - (b.month * 1 + b.deposit * 1));
+
+    // 정렬된 데이터로 화면 갱신
+    processData(sortedData);
+});
+
+</script>
 
 
 <!--지도 -->
