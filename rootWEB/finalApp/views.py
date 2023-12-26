@@ -1,8 +1,7 @@
-<<<<<<< HEAD
+
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
-=======
->>>>>>> c33e9888dc846fef468856325e6b7e29b59643b5
+
 from django.shortcuts import render
 from django.db import connections, connection
 from django.http import JsonResponse, HttpResponse
