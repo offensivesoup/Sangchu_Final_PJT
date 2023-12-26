@@ -33,6 +33,7 @@ def sign(request):
 
             if me.password == password:
                 request.session['user'] = me.username
+                request.session['user_id'] = me.id
                 return redirect('/')
             else:
                 return redirect('/sign')
