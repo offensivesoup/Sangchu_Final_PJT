@@ -64,6 +64,10 @@
     .like_btn span{
         cursor:pointer;
     }
+    .like_btn span :hover{
+    color:yellow;
+}
+
 </style>
 <body>
 <!--카카오 지도-->
@@ -323,15 +327,16 @@ fetchData()
         $.ajax({
               url: `../${region}/getData/`,
               method: 'get',
-<!--              data:{ 'page': page},-->
               dataType: 'json',
               success: function(data){
                   console.log(data.data);
 
-<!--                  $('#list_tbody').empty();-->
                   var txt = ''
                   $.each(data.data , function(idx,data) {
-<!--                  onclick="goDetail(' + data.index +')" ' -->
+
+
+
+
                           txt += '<a class="list-group-item list-group-item-action wrap_li">'
                           if ((idx+1)%2 == 0){
                           txt += `<div class="li_img" style="cursor:pointer;"><img style="width:120px;height:95%" onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/상가1.jpg' %}" alt=""></div>`
@@ -351,7 +356,8 @@ fetchData()
                           }
                           txt += '</div>'
                           txt +=  '<div class="like_btn" >'
-                          txt +=  '<span><i class="far fa-star" style="font-size:23px;"></i></span>'
+                          txt += '{% csrf_token %}'
+                          txt +=  `<span onclick="likeToggle(${data.index})"><i class="far fa-star" style="font-size:23px;"></i></span>`
                           txt +=  '</div>'
                           txt += '</div>'
                           txt += '</a>'
@@ -380,6 +386,34 @@ $('#list_body').scroll(function () {
 
 <script>
   var data; // 전역 변수로 데이터를 저장
+function likeToggle(id){
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    var user_id = `{{request.session.user_id}}`
+    var maemul_id = id
+      $.ajax({
+          url: `../like_view/${maemul_id}/${user_id}`,
+          method: 'POST',
+          dataType: 'json',
+          headers: {'X-CSRFToken': csrftoken},
+          success: function(data) {
+              if (data.liked) {
+                  console.log('Liked!');
+<!--                  this.html(`<i class="bi bi-star-fill" style="font-size:23px;"></i>`)-->
+              } else {
+                  console.log('Unliked!');
+<!--                  this.html(`<i class="far fa-star" style="font-size:23px;"></i>`)-->
+              }
+          },
+          error: function(error) {
+              console.error('Error:', error);
+          }
+
+      })
+  }
+
+
+
+
 
 $(document).ready(() => {
     // 서버로부터 데이터를 비동기로 받아오는 Ajax 요청
@@ -421,7 +455,8 @@ function processData() {
         }
         txt += '</div>';
         txt += '<div class="like_btn">';
-        txt += '<span><i class="far fa-star" style="font-size:23px;"></i></span>';
+        txt += '{% csrf_token %}'
+        txt +=  `<span onclick="likeToggle(${data.index})"><i class="far fa-star" style="font-size:23px;"></i></span>`
         txt += '</div>';
         txt += '</div>';
         txt += '</a>';
