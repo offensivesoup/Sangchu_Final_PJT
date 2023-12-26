@@ -219,7 +219,7 @@
             const floor = document.getElementById('floor').value;
             const totalFloor = document.getElementById('totalFloor').value;
 
-            if('{{session.session.user}}'){
+            if('{{request.session.user}}'){
             fetch('/predict_model/', {
                 method: 'POST',
                 headers: {

@@ -27,11 +27,16 @@ TemplateMo 580 Woox Travel
 https://templatemo.com/tm-580-woox-travel
 
 -->
-
+  <style>
+    .items {
+        width: 1300px; /* 원하는 넓이로 설정 */
+        /* 그 외의 스타일 속성들 */
+    }
+  </style>
   </head>
 
 <body>
-
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7cb27ea2e3e5ce06075cf370062dfb24"></script>
   <!-- ***** Preloader Start ***** -->
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
@@ -306,6 +311,7 @@ https://templatemo.com/tm-580-woox-travel
                         </ul>
                         <div class="text-button">
                           <a href="http://127.0.0.1:8000/maemul/%EB%B6%80%EC%82%B0%EC%A7%84%EA%B5%AC/4415/detail/">Need Directions ? <i class="fa fa-arrow-right"></i></a>
+                            <div id="map" style="width:100%;height:50vh;"></div>
                         </div>
                       </div>
                     </div>
@@ -336,6 +342,7 @@ https://templatemo.com/tm-580-woox-travel
                         <div class="text-button">
                           <a href="http://127.0.0.1:8000/maemul/%ED%95%B4%EC%9A%B4%EB%8C%80%EA%B5%AC/7890/detail/">Need Directions ? <i class="fa fa-arrow-right"></i></a>
                         </div>
+                        <div id="map2" style="width:100%;height:50vh;"></div>
                       </div>
                     </div>
                   </div>
@@ -365,6 +372,7 @@ https://templatemo.com/tm-580-woox-travel
                         <div class="text-button">
                           <a href="http://127.0.0.1:8000/maemul/%EB%8F%99%EB%9E%98%EA%B5%AC/1784/detail/">Need Directions ? <i class="fa fa-arrow-right"></i></a>
                         </div>
+                        <div id="map3" style="width:100%;height:50vh;"></div>
                       </div>
                     </div>
                   </div>
@@ -460,6 +468,73 @@ https://templatemo.com/tm-580-woox-travel
     }
 
   </script>
+
+<!--지도-->
+
+<script>
+
+    var latorigin = 35.10482165803885
+    var lngorigin = 129.01972954165134
+
+	var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(latorigin, lngorigin), // 지도의 중심좌표
+        level: 7 // 지도의 확대 레벨
+    };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+    var mapTypeControl = new kakao.maps.MapTypeControl();
+
+    // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+    // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+    // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+    var zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+	var mapContainer = document.getElementById('map2'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(latorigin, lngorigin), // 지도의 중심좌표
+        level: 7 // 지도의 확대 레벨
+    };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+    var mapTypeControl = new kakao.maps.MapTypeControl();
+
+    // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+    // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+    // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+    var zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+	var mapContainer = document.getElementById('map3'), // 지도를 표시할 div
+    mapOption = {
+        center: new kakao.maps.LatLng(latorigin, lngorigin), // 지도의 중심좌표
+        level: 7 // 지도의 확대 레벨
+    };
+
+    var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+
+    // 일반 지도와 스카이뷰로 지도 타입을 전환할 수 있는 지도타입 컨트롤을 생성합니다
+    var mapTypeControl = new kakao.maps.MapTypeControl();
+
+    // 지도에 컨트롤을 추가해야 지도위에 표시됩니다
+    // kakao.maps.ControlPosition은 컨트롤이 표시될 위치를 정의하는데 TOPRIGHT는 오른쪽 위를 의미합니다
+    map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
+
+    // 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+    var zoomControl = new kakao.maps.ZoomControl();
+    map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+</script>
+
 
   </body>
 
