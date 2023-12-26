@@ -117,7 +117,7 @@
 <!--                            <button type="submit">로그아웃</button>-->
 <!--                        </form>-->
                              <li><a href="{% url 'mypage' %}">My Page</a></li>
-                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                 <li onclick="logoutModal()" ><a style="cursor:pointer;">Logout</a></li>
                       {% else %}
                         <li><a href="../../sign/">Login</a></li>
                       {% endif %}
@@ -135,20 +135,40 @@
     </div>
   </header>
   <!-- ***** Header Area End ***** -->
-
+<div id="modal_box" class="modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">로그아웃</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>로그아웃 하시겠습니까?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >아니오</button>
+        <button onclick="logout()" type="button" class="btn btn-primary" style="background:#244769;">로그아웃</button>
+      </div>
+    </div>
+  </div>
+</div>
 
   <div class="busan-main-content" style="oveflow: scroll;width:100vw;">
 
 <!--    <div class="container" style="margin: 0 auto;">-->
       <div class="row">
         <div class="col-md-4">
-             <h2 style="padding:5px; margin-left:20px;color:black">{{region_name}} 매물 목록</h2>
-<!--                        <div class="list-group" style="margin-bottom:10px">-->
-<!--  <a href="#" class="list-group-item list-group-item-action">A second link item</a>-->
-<!--  <a href="#" class="list-group-item list-group-item-action">A third link item</a>-->
+<!--             <h2 style="padding:5px; margin-left:20px;color:black">{{region_name}} 매물 목록</h2>-->
+<div class="btn-group" style="padding:5px; margin-left:20px;margin-top:5px;">
+  <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      {{region_name}} 매물목록
+  </button>
+  <ul class="dropdown-menu">
 
-<!--</div>-->
+  </ul>
+</div>
 <div id = "list_body" class="list-group" style="overflow: scroll;height:80vh;padding:10px 0px">
+    <div><button id = "sort_button">보증금순으로 정렬</button></div>
 <!--  <a href="#" class="list-group-item list-group-item-action wrap_li">-->
 <!--      <div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>-->
 <!--      <div class="li_text">-->
@@ -174,6 +194,16 @@
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script>
+<!-- 로그아웃 모달   -->
+    function logoutModal(){
+      $('#modal_box').modal('show');
+
+    }
+    function logout(){
+      window.location.href = "{% url 'logout' %}"
+
+    }
+
     function goDetail(id){
          var maemul_id = id
          var currentUrl = window.location.href;
@@ -182,16 +212,17 @@
 
     }
 
-
+<!-- ready -->
     var region = '{{region_name}}'
-    $(document).ready(()=>{
-        $.ajax({
-              url: `../${region}/getData/`,
-              method: 'get',
-              dataType: 'json',
-              success: function(data){
-                  console.log(data.data);
+    var isLoading = false;
+    var page = 1;
 
+    $(document).ready(()=>{
+    var regionName = '{{region_name}}'
+<!--    구 드롭다운 -->
+    const gu_list = ['강서구','금정구','기장군','서구','중구','사하구','사상구','연제구','수영구','북구','부산진구','영도구', '동래구','남구','동구','해운대구']
+
+<<<<<<< HEAD
                   $('#list_tbody').empty();
                   var txt = ''
                   $.each(data.data , function(idx,data) {
@@ -212,8 +243,19 @@
                           txt +=  '</div>'
                           txt += '</div>'
                           txt += '</a>'
+=======
+    for(let i=0;i<gu_list.length;i++){
+        if(gu_list[i] == regionName){
+            continue
+        }
+        var txt = ''
+        txt += '<li><a class="dropdown-item" href="../'+ gu_list[i] +'">'+ gu_list[i]+'</a></li>'
+        $('.dropdown-menu').append(txt)
+>>>>>>> c33e9888dc846fef468856325e6b7e29b59643b5
 
+    }
 
+<<<<<<< HEAD
 					})
 					$('#list_body').append(txt) ;
               },
@@ -244,6 +286,9 @@
 
 <!--지도 -->
 	<script>
+=======
+    <!--지도 -->
+>>>>>>> c33e9888dc846fef468856325e6b7e29b59643b5
 
     var latorigin = 35.10482165803885
     var lngorigin = 129.01972954165134
@@ -337,7 +382,131 @@
 
 	}
 	};
-	</script>
+fetchData()
+
+    function fetchData(){
+        $.ajax({
+              url: `../${region}/getData/`,
+              method: 'get',
+<!--              data:{ 'page': page},-->
+              dataType: 'json',
+              success: function(data){
+                  console.log(data.data);
+
+<!--                  $('#list_tbody').empty();-->
+                  var txt = ''
+                  $.each(data.data , function(idx,data) {
+<!--                  onclick="goDetail(' + data.index +')" ' -->
+                          txt += '<a class="list-group-item list-group-item-action wrap_li">'
+                          if ((idx+1)%2 == 0){
+                          txt += `<div class="li_img" style="cursor:pointer;"><img style="width:120px;height:95%" onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/상가1.jpg' %}" alt=""></div>`
+                          } else if((idx+1)%3 == 0){
+                          txt += `<div class="li_img" style="cursor:pointer;"><img style="width:120px;height:95%" onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/상가3.jpg' %}" alt=""></div>`
+                          }
+                          else{
+                          txt += `<div class="li_img" style="cursor:pointer;"><img style="width:120px;height:95%" onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/이미지준비중1.jpg' %}" alt=""></div>`
+                          }
+                          txt +=  `<div class="li_text" style="cursor:pointer;" onclick=goDetail(${data.index})>`
+                          txt +=  '<div class="li_title"><h4>' + data.criteria + '</h4></div>'
+                          txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + data.deposit +'만원/'+ data.month+ '만원</div>'
+                          if(data.my_area!=='' & data.area!==''){
+                          txt +=  '<div class="li_info">'
+                          txt += '<span>'+data.my_area+'/'+data.area+'</span>'
+                          txt += '</div>'
+                          }
+                          txt += '</div>'
+                          txt +=  '<div class="like_btn" >'
+                          txt +=  '<span><i class="far fa-star" style="font-size:23px;"></i></span>'
+                          txt +=  '</div>'
+                          txt += '</div>'
+                          txt += '</a>'
+
+
+					})
+					$('#list_body').append(txt) ;
+					 isLoading = false;
+                     page++;
+              },
+              error: function (error) {
+                  console.log('Error:', error);
+              }
+          });
+    }
+$('#list_body').scroll(function () {
+    if ($('#list_body').scrollTop() + $('#list_body').innerHeight() >= $('#list_body')[0].scrollHeight - 10 && !isLoading) {
+        // 스크롤이 끝에 도달하면 데이터 추가 로드
+        fetchData();
+    }
+});
+
+    })
+
+</script>
+
+<script>
+  var data; // 전역 변수로 데이터를 저장
+
+$(document).ready(() => {
+    // 서버로부터 데이터를 비동기로 받아오는 Ajax 요청
+    $.ajax({
+        url: `../${region}/getData/`,
+        method: 'get',
+        dataType: 'json',
+        success: function (responseData) {
+            // 데이터를 받아오면 전역 변수에 저장
+            data = responseData;
+            // 화면에 출력하는 함수 호출
+            processData();
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+});
+
+// 받아온 데이터를 사용하여 화면에 출력하는 함수
+function processData() {
+    // 받아온 데이터를 활용하여 원하는 처리 수행
+    console.log('Received data:', data);
+
+    $('#list_tbody').empty()
+
+    // 예시: 데이터를 사용하여 화면에 출력
+    var txt = '';
+    $.each(data.data, function (idx, item) {
+        txt += '<a class="list-group-item list-group-item-action wrap_li">';
+        txt += `<div class="li_img"><img onclick="goDetail(${item.index})" src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>`;
+        txt += `<div class="li_text" onclick=goDetail(${item.index})>`;
+        txt += '<div class="li_title"><h4>' + item.criteria + '</h4></div>';
+        txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + item.deposit + '만원/' + item.month + '만원</div>';
+        if (item.my_area !== '' && item.area !== '') {
+            txt += '<div class="li_info">';
+            txt += '<span>' + item.my_area + '/' + item.area + '</span>';
+            txt += '</div>';
+        }
+        txt += '</div>';
+        txt += '<div class="like_btn">';
+        txt += '<span><i class="far fa-star" style="font-size:23px;"></i></span>';
+        txt += '</div>';
+        txt += '</div>';
+        txt += '</a>';
+    });
+
+    // 받아온 데이터를 사용하여 화면에 출력
+    $('#list_body').append(txt);
+}
+
+// 정렬 버튼에 이벤트 리스너 추가
+$('#sort_button').on('click', function () {
+    // 가져온 데이터를 월세 기준으로 정렬
+    var sortedData = data.data.sort((a, b) => (a.month * 1 + a.deposit * 1) - (b.month * 1 + b.deposit * 1));
+
+    // 정렬된 데이터로 화면 갱신
+    processData(sortedData);
+});
+
+</script>
+
 
 
 

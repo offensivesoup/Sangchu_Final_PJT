@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=7cb27ea2e3e5ce06075cf370062dfb24"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <title>Detail</title>
+    <title>My Page</title>
     <!-- Bootstrap core CSS -->
     <link href="{% static '/bootstrap/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Additional CSS Files -->
@@ -14,7 +14,85 @@
     <link rel="stylesheet" href="{% static '/bootstrap/assets/css/owl.css' %}">
     <link rel="stylesheet" href="{% static '/bootstrap/assets/css/animate.css' %}">
     <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+<<<<<<< HEAD
       <!-- ***** Header Area Start ***** -->
+=======
+  </head>
+<style>
+    .main-content{
+        margin-top:70px;
+        height:100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .card-header h4{
+        color:black;
+    }
+
+
+       .list-group-item{
+        height:100px;
+        display:flex;
+
+    }
+    .li_img{
+        width:30%;
+        margin-right:5px;
+        flex-grow:2;
+    }
+    .li_text{
+        padding: 5px 10px;
+        flex-grow:3;
+    }
+    .li_title h4{
+        font-weight: 600;
+        color:black;
+    }
+    .li_price{
+        font-size: 17px;
+        line-height: 22px;
+        margin-top: 4px;
+        font-weight: 600;
+        color: #4c94e8;
+    }
+    .li_info p{
+        font-size: 13px;
+        letter-spacing: -0.5px;
+        color: #555;
+    }
+    .badge bg-secondary{
+      margin-right: 2px;
+    }
+    .like_btn{
+
+        text-align:right;
+        color:#E2E2E2;
+        flex-grow:1;
+
+    }
+    .like_btn span{
+        cursor:pointer;
+    }
+
+</style>
+<body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+  <!-- ***** Preloader End ***** -->
+
+  <!-- ***** Header Area Start ***** -->
+>>>>>>> c33e9888dc846fef468856325e6b7e29b59643b5
   <header class="header-area header-sticky">
     <div class="container">
         <div class="row">
@@ -60,6 +138,7 @@
   <!-- ***** Preloader End ***** -->
   </header>
   <!-- ***** Header Area End ***** -->
+<<<<<<< HEAD
   </head>
     <style>
         .main-content{
@@ -105,6 +184,33 @@
 
 
 
+=======
+  <div class="main-content">
+    <div class="container" style="margin-top:100px;width:50%;height:50%;padding:50px 0;">
+      <div class="row">
+      <div class="col-lg-12 ">
+            <div class="card border-dark mb-3" style="height:500px;">
+                <div class="card-header">
+                 <h4>{{request.session.user}}님의 마이페이지</h4>
+                    <p style="text-align:right;cursor:pointer">비밀번호 변경</p>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">저장한 매물</h5>
+                    {% if data %}
+                    {% else %}
+                    <div style="width:100%;text-align:center;padding-top:70px">
+                    <p>저장한 매물이 없습니다</p>
+                        </div>
+                    {% endif%}
+                </div>
+                  <div class="card-footer bg-transparent border-success" style="text-align:right;">
+                      <p style="cursor:pointer">회원 탈퇴</p></div>
+            </div>
+      </div>
+      </div>
+    </div>
+  </div>
+>>>>>>> c33e9888dc846fef468856325e6b7e29b59643b5
 
 
 

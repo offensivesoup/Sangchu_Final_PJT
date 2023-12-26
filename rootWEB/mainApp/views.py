@@ -10,7 +10,9 @@ import os
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.hashers import make_password, check_password
-from .models import UserModel
+from .models import UserModel, EmptyRoomData
+from .models import LikeModel
+from django.shortcuts import get_object_or_404
 import json
 
 def index(request) :

@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta
+=======
+>>>>>>> c33e9888dc846fef468856325e6b7e29b59643b5
 from django.shortcuts import render
 from django.db import connections, connection
 from django.http import JsonResponse, HttpResponse
@@ -9,10 +12,13 @@ import numpy as np
 import joblib
 from joblib import load
 import os
-import pandas as pd
-from django.contrib.staticfiles import finders
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.hashers import make_password, check_password
+from mainApp.models import UserModel, EmptyRoomData
+from mainApp.models import LikeModel
+from django.shortcuts import get_object_or_404
 import json
-from django.db import transaction
 
 
 
@@ -47,7 +53,10 @@ def detail(request, region_name,maemul_id):
 
 def get_list(request,region_name):
     region_name = region_name
-
+    page = request.GET.get('page', 1)
+    items_per_page = 10
+    start_index = (page - 1) * items_per_page
+    end_index = start_index + items_per_page
     sql_query = "SELECT * FROM empty_room_data WHERE address = %s"
     with connection.cursor() as cursor:
         cursor.execute(sql_query,(region_name,))
@@ -57,7 +66,7 @@ def get_list(request,region_name):
             name = {'index':row[16],'address': row[5],'deposit':row[0],'month':row[1],'criteria':row[2],'lat':row[3],'lng':row[4],'area':row[7],'my_area':row[8],
                     'my_floor':row[9],'total_floor':row[10]}
             data.append(name)
-
+        data = data[start_index:end_index]
 
         # # 쿼리 결과를 필요한 형식으로 가공
         # columns = [col[0] for col in cursor.description]
@@ -188,3 +197,45 @@ def detail_view(request, region_name, maemul_id):
 
     print(new_views)
     return JsonResponse(data)
+
+def like_view(request, maemul_id, user_id):
+    if request.method == 'POST':
+        maemul_instance = maemul_id
+        user_instance = user_id
+
+        # 이미 좋아요한 경우, 중복 생성을 방지하기 위해 먼저 확인
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT * FROM like_data WHERE maemul_id = %s AND user_id = %s",
+                [maemul_instance, user_instance]
+            )
+            existing_like = cursor.fetchall()
+
+        if existing_like:
+            return JsonResponse({'message': 'Already liked.'}, status=400)
+
+        # 새로운 데이터를 like_data 테이블에 추가
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "INSERT INTO like_data (maemul_id, user_id) VALUES (%s, %s)",
+                [maemul_instance, user_instance]
+            )
+
+        # 해당 user_id에 대한 모든 maemul_id를 가져오기
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT maemul_id FROM like_data WHERE user_id = %s",
+                [user_instance]
+            )
+            user_likes = cursor.fetchall()
+
+        # JsonResponse에 user_id, maemul_id 리스트 및 메시지를 포함한 데이터를 전송
+        response_data = {
+            'user_id': user_instance,
+            'maemul_ids': [like[0] for like in user_likes],
+            'message': 'Like created successfully.'
+        }
+
+        return JsonResponse(response_data, status=201)
+
+    return JsonResponse({'message': 'Invalid request method.'}, status=405)
