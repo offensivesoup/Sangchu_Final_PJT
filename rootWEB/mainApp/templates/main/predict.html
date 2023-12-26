@@ -18,7 +18,7 @@
     <style>
         body {
             background-color: white;
-            margin-top: 10px;
+            margin-top: 0px;
             margin-bottom: 0px;
             padding: 1px;
         }
@@ -85,13 +85,29 @@
         .calculator-container {
             display: block;
             margin-top: 1px;
-            margin-bottom: 1px;
+            margin-bottom: 10px;
             color: white;
             text-decoration: none;
             text-align: center;
             align-items: flex-end;
         }
+        .division:hover + .division-text,
+        .contract-extent:hover + .contract-text,
+        .user-extent:hover + .user-extent-text {
+            display: block;
+            position: absolute;
+        }
 
+        .division-text,
+        .contract-text,
+        .user-extent-text {
+        padding: 1px 1px;
+        background-color: #444444;
+        border-radius: 5px;
+        color: #ffffff;
+        position: absolute;
+        display: none;
+        }
     </style>
 
 </head>
@@ -168,10 +184,10 @@
     </div>
   </div>
 </div>
-<div class="container " style="margin-top:150px;" >
+<div class="container " style="margin-top: 100px; >
     <form id="predictionForm">
         <div class="calculator-container">
-            <label for="squareMeters">평수 입력:</label>
+            <label for="squareMeters">면적:</label>
             <input type="number" id="squareMeters" placeholder="평수를 입력하세요" required>
             <button onclick="calculateSquareMeters()">계산하기</button><div id="result" ></div>
         </div>
@@ -185,13 +201,16 @@
             <label for="deposit">보증금(만원)</label>
             <input type="text" id="deposit" name="deposit" placeholder="1000" required><br>
 
-            <label for="storeType">상가구분</label>
+            <label for="storeType" class="division">상가구분</label>
+            <div class="division-text">1:일반상가 2:단지내상가 3:복합상가</div>
             <input type="text" id="storeType" name="storeType" placeholder="3" required><br>
 
-            <label for="area">임대(계약)면적</label>
+            <label for="area" class="contract-extent">임대(계약)면적</label>
+            <div class="contract-text">전용면적 + 공용면적</div>
             <input type="text" id="area" name="area" placeholder="89.84" required><br>
 
-            <label for="exclusiveArea">전용면적</label>
+            <label for="exclusiveArea" class="user-extent">전용면적</label>
+            <div class="user-extent-text">실제로 사용하는 공간의 넓이</div>
             <input type="text" id="exclusiveArea" name="exclusiveArea" placeholder="63.20" required><br>
 
             <label for="floor">해당층</label>
