@@ -209,6 +209,7 @@
         }
 
         function predict() {
+
             const csrfToken = getCookie('csrftoken');
 
             const deposit = document.getElementById('deposit').value;
@@ -218,6 +219,7 @@
             const floor = document.getElementById('floor').value;
             const totalFloor = document.getElementById('totalFloor').value;
 
+            if('{{session.session.user}}'){
             fetch('/predict_model/', {
                 method: 'POST',
                 headers: {
@@ -241,6 +243,11 @@
                 console.error('Error:', error);
                 document.getElementById('predictionResult').innerHTML = '예측 중 오류가 발생했습니다.';
             });
+
+         } else{
+            alert("로그인이 필요한 서비스입니다!")
+
+         }
         }
 
 
