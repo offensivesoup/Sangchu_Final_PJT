@@ -8,5 +8,6 @@ urlpatterns = [
     path("<str:region_name>/getData/",views.get_list),
     path("<str:region_name>/<int:maemul_id>/detail/getData/",views.get_detail),
     path('<str:region_name>/<int:maemul_id>/detail/cosine/', cosine_similarity_view , name = 'cosine'),
-    path('<str:region_name>/<int:maemul_id>/detail/view/', detail_view, name = "views")
+    path('<str:region_name>/<int:maemul_id>/detail/view/', detail_view, name = "views"),
+    path("<str:region_name>/like_view",views.like_view)
 ]

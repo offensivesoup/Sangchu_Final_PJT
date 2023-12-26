@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from django.shortcuts import render
 from django.db import connections, connection
 from django.http import JsonResponse, HttpResponse
@@ -8,10 +7,13 @@ import numpy as np
 import joblib
 from joblib import load
 import os
-import pandas as pd
-from django.contrib.staticfiles import finders
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.hashers import make_password, check_password
+from mainApp.models import UserModel, EmptyRoomData
+from mainApp.models import LikeModel
+from django.shortcuts import get_object_or_404
 import json
-from django.db import transaction
 
 
 # Create your views here.
@@ -188,3 +190,22 @@ def detail_view(request, region_name, maemul_id):
 
     print(new_views)
     return JsonResponse(data)
+
+def like_view(request, region_name, maemul_id, user_id):
+    if request.method == 'POST':
+        # maemul_id와 user_id에 해당하는 EmptyRoomData와 UserModel 인스턴스를 가져옴
+        maemul_instance = get_object_or_404(EmptyRoomData, id=maemul_id)
+        user_instance = get_object_or_404(UserModel, id=user_id)
+
+        # 이미 좋아요한 경우, 중복 생성을 방지하기 위해 먼저 확인
+        existing_like = LikeModel.objects.filter(maemul_id=maemul_instance, user_id=user_instance)
+        if existing_like.exists():
+            return JsonResponse({'message': 'Already liked.'}, status=400)
+
+        # 새로운 LikeModel 인스턴스 생성
+        like_instance = LikeModel(maemul_id=maemul_instance, user_id=user_instance)
+        like_instance.save()
+
+        return JsonResponse({'message': 'Like created successfully.'}, status=201)
+
+    return JsonResponse({'message': 'Invalid request method.'}, status=405)
