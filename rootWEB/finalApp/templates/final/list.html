@@ -204,6 +204,8 @@
 
 <!-- ready -->
     var region = '{{region_name}}'
+    var isLoading = false;
+    var page = 1;
 
     $(document).ready(()=>{
     var regionName = '{{region_name}}'
@@ -313,17 +315,18 @@
 
 	}
 	};
+fetchData()
 
-
-
+    function fetchData(){
         $.ajax({
               url: `../${region}/getData/`,
               method: 'get',
+<!--              data:{ 'page': page},-->
               dataType: 'json',
               success: function(data){
                   console.log(data.data);
 
-                  $('#list_tbody').empty();
+<!--                  $('#list_tbody').empty();-->
                   var txt = ''
                   $.each(data.data , function(idx,data) {
 <!--                  onclick="goDetail(' + data.index +')" ' -->
@@ -347,13 +350,20 @@
 
 					})
 					$('#list_body').append(txt) ;
+					 isLoading = false;
+                     page++;
               },
               error: function (error) {
                   console.log('Error:', error);
               }
           });
-
-
+    }
+$('#list_body').scroll(function () {
+    if ($('#list_body').scrollTop() + $('#list_body').innerHeight() >= $('#list_body')[0].scrollHeight - 10 && !isLoading) {
+        // 스크롤이 끝에 도달하면 데이터 추가 로드
+        fetchData();
+    }
+});
 
     })
 
