@@ -58,7 +58,7 @@
                        <li><a href="../../../../predict">predict</a></li>
                       {% if request.session.user %}
                        <li><a href="{% url 'mypage' %}">My Page</a></li>
-                         <li><a href="{% url 'logout' %}">Logout</a></li>
+                   <li onclick="logoutModal()" ><a style="cursor:pointer;">Logout</a></li>
                       {% else %}
                         <li><a href="../../../../sign">Login</a></li>
                       {% endif %}
@@ -73,137 +73,198 @@
     </div>
   </header>
   <!-- ***** Header Area End ***** -->
-
-<div id="result">
-  <div id="deposit"></div>
-  <div id="month"></div>
-  <div id="address"></div>
-  <div id="when"></div>
-  <div id="area"></div>
-  <div id="my_area"></div>
-  <div id="my_floor"></div>
-  <div id="total_floor"></div>
-  <div id="viewContainer"></div>
+<div id="modal_box" class="modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">로그아웃</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>로그아웃 하시겠습니까?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >아니오</button>
+        <button onclick="logout()" type="button" class="btn btn-primary" style="background:#244769;">로그아웃</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-  <!-- 결과를 표시할 곳 -->
-<div id="result2">
-  <div id="mainIndex"></div>
+<!--<div id="result">-->
+<!--  <div id="deposit"></div>-->
+<!--  <div id="month"></div>-->
+<!--  <div id="address"></div>-->
+<!--  <div id="when"></div>-->
+<!--  <div id="area"></div>-->
+<!--  <div id="my_area"></div>-->
+<!--  <div id="my_floor"></div>-->
+<!--  <div id="total_floor"></div>-->
+<!--</div>-->
 
-  <!-- recommendation 데이터 출력을 위한 부분 -->
-  <div id="recommendations"></div>
-</div>
+
+<!--  &lt;!&ndash; 결과를 표시할 곳 &ndash;&gt;-->
+<!--<div id="result2">-->
+<!--  <div id="mainIndex"></div>-->
+
+<!--  &lt;!&ndash; recommendation 데이터 출력을 위한 부분 &ndash;&gt;-->
+<!--  <div id="recommendations"></div>-->
+<!--</div>-->
 
   <div class="main-content">
-    <div class="container">
-        <div class="weekly-offers" style="padding:0;border:none">
-    <div class="container" style="text-align:center">
-    <h2 >Sangchu 추천 매물</h2>
+    <div class="container" style="width:60%;height:60%;padding:50px 0;">
+      <div class="row">
+      <div class="col-lg-12 ">
+      <div class="card" style="height:500px;">
+  <h4 class="card-header">{{map.criteria}} </h4>
+  <div class="card-body">
+    <p class="card-text" style="padding-bottom:2px;">매물번호: {{map.index}}</p>
+     <h5 class="card-title">보증금: {{map.deposit}} / 월세: {{map.month}}</h5>
+    <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">상세 정보</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">보증금</th>
+      <td>{{map.deposit}}</td>
+      <th scope="row">월세</th>
+      <td>{{map.month}}</td>
+<!--      <td>@mdo</td>-->
+    </tr>
+       <tr>
+      <th scope="row">전용면적</th>
+      <td>{{map.my_area}}</td>
+      <th scope="row">임대(계약)면적</th>
+      <td>{{map.area}}</td>
+<!--      <td>@fat</td>-->
+    </tr>
+    <tr>
+      <th scope="row">입주가능일</th>
+      <td>{{map.when}}</td>
+      <th scope="row">건축물용도</th>
+      <td>{{map.usage}}</td>
+<!--      <td>@fat</td>-->
+    </tr>
+    <tr>
+      <th scope="row">해당층</th>
+       <td>{{map.my_floor}}</td>
+<!--      <td colspan="2">Larry the Bird</td>-->
+      <th scope="row">총층</th>
+       <td>{{map.total_floor}}</td>
+
+<!--      <td>@twitter</td>-->
+    </tr>
+     <tr>
+      <th scope="row">주차가능여부</th>
+       <td>{{map.parking}}</td>
+      <th scope="row">방향</th>
+       <td>{{map.direction}}</td>
+    </tr>
+      <tr>
+      <th scope="row">현재업종</th>
+       <td>{{map.now}}</td>
+      <th scope="row">추천업종</th>
+       <td>{{map.recommend}}</td>
+    </tr>
+       <tr>
+      <th scope="row">상가구분</th>
+       <td>{{map.criteria}}</td>
+      <th scope="row"></th>
+       <td></td>
+    </tr>
+  </tbody>
+</table>
+
+  </div>
+</div>
+      </div>
+      </div>
     </div>
+
+
+
+<!--    <div class="container">-->
+        <div class="weekly-offers" style="padding:0;border:none;margin:0">
+    <div class="container" style="text-align:center;">
+    <h3 style="margin:5px;">[Sangchu 추천] 현재 매물과 비슷한 매물 Top5  </h3>
+    </div>
+
     <div class="container-fluid">
       <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12" style="height:500px;">
           <div class="owl-weekly-offers owl-carousel">
             <div class="item">
-              <div class="thumb">
-                <img src="assets/images/offers-01.jpg" alt="">
-                <div class="text">
-                  <h4>{{data.data.index}}<br><span><i class="fa fa-users"></i>즉시입주</span></h4>
-                  <h6>3000/40<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i>일반상가</li>
-                    <li><i class="fa fa-plane"></i>42.47㎡</li>
-                    <li><i class="fa fa-building"></i>2층/4층</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="reservation.html">이동하기</a>
-                  </div>
-                </div>
+              <div id ="maemul0" class="thumb">
+<!--                <img src="assets/images/offers-01.jpg" alt="">-->
+<!--                <div class="text">-->
+<!--                  <h4><br><span><i class="fa fa-users"></i>즉시입주</span></h4>-->
+<!--                  <h6>3000/40<br><span>/person</span></h6>-->
+<!--                  <div class="line-dec"></div>-->
+<!--                  <ul>-->
+<!--                    <li>Deal Includes:</li>-->
+<!--                    <li><i class="fa fa-taxi"></i>일반상가</li>-->
+<!--                    <li><i class="fa fa-plane"></i>42.47㎡</li>-->
+<!--                    <li><i class="fa fa-building"></i>2층/4층</li>-->
+<!--                  </ul>-->
+<!--                  <div class="main-button">-->
+<!--                    <a href="reservation.html">이동하기</a>-->
+<!--                  </div>-->
+<!--                </div>-->
               </div>
             </div>
+
             <div class="item">
-              <div class="thumb">
-                <img src="assets/images/offers-02.jpg" alt="">
-                <div class="text">
-                  <h4>부산진구<br><span><i class="fa fa-users"></i>즉시입주</span></h4>
-                  <h6>4000/20<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i>단지내 상가</li>
-                    <li><i class="fa fa-plane"></i>65.92㎡</li>
-                    <li><i class="fa fa-building"></i>1층/3층</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="reservation.html">이동하기</a>
-                  </div>
-                </div>
+              <div id ="maemul1" class="thumb">
+<!--                <img src="assets/images/offers-02.jpg" alt="">-->
+<!--                <div class="text">-->
+<!--                  <h4>부산진구<br><span><i class="fa fa-users"></i>즉시입주</span></h4>-->
+<!--                  <h6>4000/20<br><span>/person</span></h6>-->
+<!--                  <div class="line-dec"></div>-->
+<!--                  <ul>-->
+<!--                    <li>Deal Includes:</li>-->
+<!--                    <li><i class="fa fa-taxi"></i>단지내 상가</li>-->
+<!--                    <li><i class="fa fa-plane"></i>65.92㎡</li>-->
+<!--                    <li><i class="fa fa-building"></i>1층/3층</li>-->
+<!--                  </ul>-->
+<!--                  <div class="main-button">-->
+<!--                    <a href="reservation.html">이동하기</a>-->
+<!--                  </div>-->
+<!--                </div>-->
               </div>
             </div>
+
             <div class="item">
-              <div class="thumb">
-                <img src="assets/images/offers-03.jpg" alt="">
-                <div class="text">
-                  <h4>부산진구<br><span><i class="fa fa-users"></i>즉시입주</span></h4>
-                  <h6>6000/80<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i>대형상가</li>
-                    <li><i class="fa fa-plane"></i>220.92㎡</li>
-                    <li><i class="fa fa-building"></i>3층/5층</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="reservation.html">이동하기</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="assets/images/offers-01.jpg" alt="">
-                <div class="text">
-                  <h4>Havana<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="reservation.html">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="item">
-              <div class="thumb">
-                <img src="assets/images/offers-02.jpg" alt="">
-                <div class="text">
-                  <h4>Kingston<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>
-                  <h6>$420<br><span>/person</span></h6>
-                  <div class="line-dec"></div>
-                  <ul>
-                    <li>Deal Includes:</li>
-                    <li><i class="fa fa-taxi"></i> 5 Days Trip > Hotel Included</li>
-                    <li><i class="fa fa-plane"></i> Airplane Bill Included</li>
-                    <li><i class="fa fa-building"></i> Daily Places Visit</li>
-                  </ul>
-                  <div class="main-button">
-                    <a href="reservation.html">Make a Reservation</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-<!--            <div class="item">-->
-<!--              <div class="thumb">-->
+              <div id ="maemul2" class="thumb">
 <!--                <img src="assets/images/offers-03.jpg" alt="">-->
 <!--                <div class="text">-->
-<!--                  <h4>George Town<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>-->
+<!--                  <h4>부산진구<br><span><i class="fa fa-users"></i>즉시입주</span></h4>-->
+<!--                  <h6>6000/80<br><span>/person</span></h6>-->
+<!--                  <div class="line-dec"></div>-->
+<!--                  <ul>-->
+<!--                    <li>Deal Includes:</li>-->
+<!--                    <li><i class="fa fa-taxi"></i>대형상가</li>-->
+<!--                    <li><i class="fa fa-plane"></i>220.92㎡</li>-->
+<!--                    <li><i class="fa fa-building"></i>3층/5층</li>-->
+<!--                  </ul>-->
+<!--                  <div class="main-button">-->
+<!--                    <a href="reservation.html">이동하기</a>-->
+<!--                  </div>-->
+<!--                </div>-->
+              </div>
+            </div>
+
+            <div class="item">
+              <div  id ="maemul3" class="thumb">
+<!--                <img src="assets/images/offers-01.jpg" alt="">-->
+<!--                <div class="text">-->
+<!--                  <h4>Havana<br><span><i class="fa fa-users"></i> 234 Check Ins</span></h4>-->
 <!--                  <h6>$420<br><span>/person</span></h6>-->
 <!--                  <div class="line-dec"></div>-->
 <!--                  <ul>-->
@@ -216,15 +277,64 @@
 <!--                    <a href="reservation.html">Make a Reservation</a>-->
 <!--                  </div>-->
 <!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
+              </div>
+            </div>
+
+            <div class="item">
+              <div  id ="maemul4" class="thumb">
+<!--                <img src="assets/images/offers-02.jpg" alt="">-->
+<!--                <div class="text">-->
+<!--                  <h4>일반 상가<br><span> 매물번호: </span></h4>-->
+<!--                  <h6>4000/30<br></h6>-->
+<!--                  <div class="line-dec"></div>-->
+<!--                  <ul>-->
+<!--                    <li>상세정보</li>-->
+<!--                    <li><i class="fas fa-home"></i> 현재업종</li>-->
+<!--                    <li><i class="fas fa-building"></i> 층수/전체층수</li>-->
+<!--                    <li><i class="fas fa-parking"></i> 주차여부</li>-->
+<!--                  </ul>-->
+<!--                  <div class="main-button">-->
+<!--                    <a href="reservation.html">Make a Reservation</a>-->
+<!--                  </div>-->
+<!--                </div>-->
+              </div>
+            </div>
+<!--              -->
+                     <div class="item">
+              <div  id ="maemul5" class="thumb">
+
+              </div>
+            </div>
+                     <div class="item">
+              <div  id ="maemul6" class="thumb">
+
+              </div>
+            </div>
+                     <div class="item">
+              <div  id ="maemul7" class="thumb">
+
+              </div>
+            </div>
+                     <div class="item">
+              <div  id ="maemul8" class="thumb">
+
+              </div>
+            </div>
+                     <div class="item">
+              <div  id ="maemul9" class="thumb">
+
+              </div>
+            </div>
+
+
+<!--                -->
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-    </div>
-  </div>
+
 
 
 
@@ -234,8 +344,139 @@
 
 
 <!-- jquery -->
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
+<script>
+function logoutModal(){
+      $('#modal_box').modal('show');
+
+    }
+    function logout(){
+      window.location.href = "{% url 'logout' %}"
+
+    }
+<!--$(document).ready(()=>{-->
+<!--  // 해당 공실의 데이터-->
+<!--  $.ajax({-->
+<!--    url: `../detail/getData/`,-->
+<!--    method: 'get',-->
+<!--    dataType: 'json',-->
+<!--    success: function (data) {-->
+<!--      if (data && data.data && data.data.length > 0) {-->
+<!--        // 데이터가 존재하고 배열에 최소한 하나의 객체가 있는 경우-->
+<!--        choice_maemul = data.data[0]-->
+<!--        $('.card-header').text(choice_maemul.criteria)-->
+<!--&lt;!&ndash;        const propertyDivs = [&ndash;&gt;-->
+<!--&lt;!&ndash;          'deposit', 'month', 'address', 'when', 'area', 'my_area', 'my_floor', 'total_floor'&ndash;&gt;-->
+<!--&lt;!&ndash;        ];&ndash;&gt;-->
+
+<!--&lt;!&ndash;        // 각 속성에 대한 값을 출력할 div에 넣어줍니다.&ndash;&gt;-->
+<!--&lt;!&ndash;        propertyDivs.forEach(property => {&ndash;&gt;-->
+<!--&lt;!&ndash;          $(`#${property}`).text(`${property.charAt(0).toUpperCase() + property.slice(1)}: ${data.data[0][property]}`);&ndash;&gt;-->
+<!--&lt;!&ndash;        });&ndash;&gt;-->
+<!--      } else {-->
+<!--        console.error('Data structure is not as expected.');-->
+<!--      }-->
+<!--    },-->
+<!--    error: function (error) {-->
+<!--      console.error('Error:', error);-->
+<!--    }-->
+<!--  });-->
+<!--})-->
+
+  // 추천 시스템에 들어갈 데이터
+$(document).ready(()=>{
+  $.ajax({
+    url: `../detail/cosine/`,
+    method: 'get',
+    dataType: 'json',
+    success: function (data) {
+      if (data && data.data && data.data.recommendation && data.data.recommendation.length > 0) {
+        // 메인 index 값 출력
+        console.log(data)
+          $(".owl-carousel").owlCarousel({
+      items: 3,  // 캐러셀에 표시할 아이템의 수
+      // 그 외 다양한 옵션들...
+    });
+        var rList = data.data.recommendation
+
+        $.each(rList , function(idx,data){
+            var maemulId = 'maemul'+idx
+            var txt = '';
+            if(idx % 2 == 0){
+                txt += `<img src="{% static '/bootstrap/assets/images/상가3.jpg' %}" alt="">`
+            } else{
+                txt += `<img src="{% static '/bootstrap/assets/images/상가1.jpg' %}" alt="">`
+            }
+            txt += '<div class="text">'
+            txt += '<h4>'+data.criteria + '<br><span><i class="fas fa-info-circle"></i> 매물번호: ' + data.index +'</span></h4>'
+            txt +=   '<h6>' + data.deposit + '/' + data.month + '<br></h6>'
+            txt +=  '<div class="line-dec"></div>'
+            txt += '<ul>'
+            txt +=  '<li>상세정보</li>'
+            txt += '<li><i class="fa fa-home"></i> ' + data.area + '/' +data.my_area + '</li>'
+            txt += '<li><i class="fa fa-building"></i> ' + data.my_floor +'/' + data.total_floor + '</li>'
+            txt += '<li><i class="fa fa-parking"></i> ' + data.parking +'</li>'
+            txt +=  '</ul>'
+            txt +=  '<div class="main-button">'
+            txt += '<a href="../../../' + data.address + '/' + data.index +'/detail">매물로 이동</a>'
+            txt +=  '</div>'
+            txt +=  '</div>'
+            $(`#${maemulId}`).append(txt);
+        })
+
+        for(let i = 0;i<rList.length;i++){
+            lst = [5,6,7,8,9]
+            let maemulId = "maemul" + lst[i];
+            data = rList[i]
+            var txt = '';
+            txt += `<img src="{% static '/bootstrap/assets/images/이미지준비중1.jpg' %}" alt="">`
+            txt += '<div class="text">'
+            txt += '<h4>'+data.criteria + '<br><span><i class="fas fa-info-circle"></i> 매물번호: ' + data.index +'</span></h4>'
+            txt +=   '<h6>' + data.deposit + '/' + data.month + '<br></h6>'
+            txt +=  '<div class="line-dec"></div>'
+            txt += '<ul>'
+            txt +=  '<li>상세정보</li>'
+            txt += '<li><i class="fa fa-home"></i> ' + data.area + '/' +data.my_area + '</li>'
+            txt += '<li><i class="fa fa-building"></i> ' + data.my_floor +'/' + data.total_floor + '</li>'
+            txt += '<li><i class="fa fa-parking"></i> ' + data.parking +'</li>'
+            txt +=  '</ul>'
+            txt +=  '<div class="main-button">'
+            txt += '<a href="/../../../' + data.address + '/' + data.index +'/detail">매물로 이동</a>'
+            txt +=  '</div>'
+            txt +=  '</div>'
+            $(`#${maemulId}`).append(txt);
+        }
+
+
+
+<!--        $('#mainIndex').text(`Main Index: ${data.data.index}`);-->
+
+<!--        // recommendation 배열 내 각 객체에 대한 div 생성-->
+<!--        const recommendationsDiv = $('#recommendations');-->
+
+<!--        data.data.recommendation.forEach((recommendation, index) => {-->
+<!--          const recommendationDivId = `recommendation_${index + 1}`;-->
+<!--          recommendationsDiv.append(`<div id="${recommendationDivId}"></div>`);-->
+
+<!--          // recommendation 객체의 각 속성에 대한 div 생성-->
+<!--          const recommendationDiv = $(`#${recommendationDivId}`);-->
+<!--          for (const property in recommendation) {-->
+<!--            if (recommendation.hasOwnProperty(property)) {-->
+<!--              recommendationDiv.append(`<div>${property.charAt(0).toUpperCase() + property.slice(1)}: ${recommendation[property]}</div>`);-->
+<!--            }-->
+<!--          }-->
+<!--        });-->
+      } else {
+        console.error('Data structure is not as expected for recommendation data.');
+      }
+    },
+    error: function (error) {
+      console.error('Error fetching recommendation data:', error);
+    }
+  });
+});
+</script>
 
 
 
@@ -266,97 +507,13 @@
 
 
 
-<script>
-  // 조회수 가져오기
-  function fetchViews() {
-    // Ajax 요청을 보냄
-    $.ajax({
-      url: `../detail/view/`,  // 적절한 URL로 변경
-      method: 'GET',
-      dataType: 'json',
-      success: function (data) {
-        // 성공 시 데이터를 출력
-        console.log(data);
-
-        // 고유한 ID를 가진 div에 p 태그를 추가
-        $('#viewContainer').append('<p>Views: ' + data.views + '</p>');
-      },
-      error: function (error) {
-        console.error('Error fetching views data:', error);
-      }
-    });
-  }
-
-  // 페이지 로드 시 조회수 데이터 가져오기
-  fetchViews();
-
-  // 해당 공실의 데이터
-  $.ajax({
-    url: `../detail/getData/`,
-    method: 'get',
-    dataType: 'json',
-    success: function (data) {
-      if (data && data.data && data.data.length > 0) {
-        // 데이터가 존재하고 배열에 최소한 하나의 객체가 있는 경우
-        const propertyDivs = [
-          'deposit', 'month', 'address', 'when', 'area', 'my_area', 'my_floor', 'total_floor'
-        ];
-
-        // 각 속성에 대한 값을 출력할 div에 넣어줍니다.
-        propertyDivs.forEach(property => {
-          $(`#${property}`).text(`${property.charAt(0).toUpperCase() + property.slice(1)}: ${data.data[0][property]}`);
-        });
-      } else {
-        console.error('Data structure is not as expected for property data.');
-      }
-    },
-    error: function (error) {
-      console.error('Error fetching property data:', error);
-    }
-  });
-
-  // 추천 시스템에 들어갈 데이터
-  $.ajax({
-    url: `../detail/cosine/`,
-    method: 'get',
-    dataType: 'json',
-    success: function (data) {
-      if (data && data.data && data.data.recommendation && data.data.recommendation.length > 0) {
-        // 메인 index 값 출력
-        $('#mainIndex').text(`Main Index: ${data.data.index}`);
-
-        // recommendation 배열 내 각 객체에 대한 div 생성
-        const recommendationsDiv = $('#recommendations');
-
-        data.data.recommendation.forEach((recommendation, index) => {
-          const recommendationDivId = `recommendation_${index + 1}`;
-          recommendationsDiv.append(`<div id="${recommendationDivId}"></div>`);
-
-          // recommendation 객체의 각 속성에 대한 div 생성
-          const recommendationDiv = $(`#${recommendationDivId}`);
-          for (const property in recommendation) {
-            if (recommendation.hasOwnProperty(property)) {
-              recommendationDiv.append(`<div>${property.charAt(0).toUpperCase() + property.slice(1)}: ${recommendation[property]}</div>`);
-            }
-          }
-        });
-      } else {
-        console.error('Data structure is not as expected for recommendation data.');
-      }
-    },
-    error: function (error) {
-      console.error('Error fetching recommendation data:', error);
-    }
-  });
-
-</script>
   <script>
     $(".option").click(function(){
       $(".option").removeClass("active");
       $(this).addClass("active");
     });
   </script>
-   <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
   </body>
 
 </html>

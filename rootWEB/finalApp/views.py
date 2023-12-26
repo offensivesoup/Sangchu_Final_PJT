@@ -24,12 +24,30 @@ def detail(request, region_name,maemul_id):
     print('debug >>> region_name: ', region_name)
     print('debug >>> maemul_id: ',maemul_id)
     print('debug >>> client path, finalApp/detail, render = detail')
-    return render(request, 'final/detail.html', {'region_name' : region_name, 'maemul_id' : maemul_id})
+    sql_query = "SELECT * FROM empty_room_data WHERE address = %s"
+    with connection.cursor() as cursor:
+        cursor.execute(sql_query, (region_name,))
+        result = cursor.fetchall()
+        map_data = {}
+        for row in result:
+            if row[16] == maemul_id:
+                map_data['map'] = {'index': row[16], 'deposit': row[0], 'month': row[1], 'criteria': row[2],
+                        'lat': row[3], 'lng': row[4], 'address': row[5], 'when': row[6], 'area': row[7],
+                        'my_area': row[8],
+                        'my_floor': row[9], 'total_floor': row[10], 'now': row[11], 'recommend': row[12],
+                        'parking': row[13], 'usage': row[14], 'direction': row[15]}
+                break
+
+
+    return render(request, 'final/detail.html', {'region_name' : region_name, 'maemul_id' : maemul_id,'map':map_data['map']})
 
 
 def get_list(request,region_name):
     region_name = region_name
-
+    page = request.GET.get('page', 1)
+    items_per_page = 10
+    start_index = (page - 1) * items_per_page
+    end_index = start_index + items_per_page
     sql_query = "SELECT * FROM empty_room_data WHERE address = %s"
     with connection.cursor() as cursor:
         cursor.execute(sql_query,(region_name,))
@@ -39,7 +57,7 @@ def get_list(request,region_name):
             name = {'index':row[16],'address': row[5],'deposit':row[0],'month':row[1],'criteria':row[2],'lat':row[3],'lng':row[4],'area':row[7],'my_area':row[8],
                     'my_floor':row[9],'total_floor':row[10]}
             data.append(name)
-
+        data = data[start_index:end_index]
 
         # # 쿼리 결과를 필요한 형식으로 가공
         # columns = [col[0] for col in cursor.description]
