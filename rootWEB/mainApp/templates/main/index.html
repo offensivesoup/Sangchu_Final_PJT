@@ -372,7 +372,7 @@ https://templatemo.com/tm-580-woox-travel
                         <div class="text-button">
                           <a href="http://127.0.0.1:8000/maemul/%EB%8F%99%EB%9E%98%EA%B5%AC/1784/detail/">Need Directions ? <i class="fa fa-arrow-right"></i></a>
                         </div>
-                        <div id="map3" style="width:100%;height:50vh;"></div>
+                        <div id="map3" style="width:100%;height:50vh"></div>
                       </div>
                     </div>
                   </div>
@@ -473,12 +473,18 @@ https://templatemo.com/tm-580-woox-travel
 
 <script>
 
-    var latorigin = 35.10482165803885
-    var lngorigin = 129.01972954165134
+    var latorigin1 = 35.156973
+    var lngorigin1 = 129.066592
+
+    var latorigin2 = 35.165036
+    var lngorigin2 = 129.159161
+
+    var latorigin3 = 35.156973
+    var lngorigin3 = 129.066592
 
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
-        center: new kakao.maps.LatLng(latorigin, lngorigin), // 지도의 중심좌표
+        center: new kakao.maps.LatLng(latorigin1, lngorigin1), // 지도의 중심좌표
         level: 7 // 지도의 확대 레벨
     };
 
@@ -497,7 +503,7 @@ https://templatemo.com/tm-580-woox-travel
 
 	var mapContainer = document.getElementById('map2'), // 지도를 표시할 div
     mapOption = {
-        center: new kakao.maps.LatLng(latorigin, lngorigin), // 지도의 중심좌표
+        center: new kakao.maps.LatLng(latorigin2, lngorigin2), // 지도의 중심좌표
         level: 7 // 지도의 확대 레벨
     };
 
@@ -516,7 +522,7 @@ https://templatemo.com/tm-580-woox-travel
 
 	var mapContainer = document.getElementById('map3'), // 지도를 표시할 div
     mapOption = {
-        center: new kakao.maps.LatLng(latorigin, lngorigin), // 지도의 중심좌표
+        center: new kakao.maps.LatLng(latorigin3, lngorigin3), // 지도의 중심좌표
         level: 7 // 지도의 확대 레벨
     };
 
