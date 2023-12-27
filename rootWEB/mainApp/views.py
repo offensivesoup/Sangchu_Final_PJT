@@ -43,6 +43,25 @@ def sign(request):
     elif request.method == 'GET':
         return render(request, 'main/sign.html')
 
+def sign_like_view(request, user_id):
+    if request.method == 'POST':
+        user_instance = user_id
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT maemul_id FROM like_data WHERE user_id = %s",
+                [user_instance]
+            )
+            user_likes = cursor.fetchall()
+
+            response_data = {
+                'user_id': user_instance,
+                'maemul_ids': [like[0] for like in user_likes]
+            }
+
+            return JsonResponse(response_data, status=201)
+
+    return JsonResponse({'message': '선택한 매물이 없습니다.'}, status=405)
+
 def signup(request):
     if request.method == "GET":
         return render(request, 'main/signup.html')
