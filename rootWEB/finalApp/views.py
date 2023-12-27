@@ -274,4 +274,62 @@ def like_view(request, maemul_id, user_id):
     #
     # return JsonResponse({'message': 'Invalid request method.'}, status=405)
 
+def get_center_coordinates(region_name):
+    gu_coordinates = {
+        "기장군": (35.244394201041416, 129.2227421459612),
+        "해운대구": (35.162995101348564, 129.16356675415742),
+        "수영구": (35.145458076325326, 129.11307922758124),
+        "남구": (35.136262710025456, 129.08468141230728),
+        "연제구": (35.176129771565535, 129.079712017898),
+        "동구": (35.129161209712215, 129.04558174709652),
+        "중구": (35.10621258919303, 129.03247914653906),
+        "서구": (35.09784717231878, 129.0242833944746),
+        "영도구": (35.090989265185435, 129.06778927857764),
+        "부산진구": (35.162697533668855, 129.05307148933218),
+        "동래구": (35.196701579922234, 129.09391527580505),
+        "금정구": (35.24278952025912, 129.09242514119632),
+        "북구": (35.196830935641835, 128.99036558066425),
+        "사상구": (35.15288084181415, 128.99035858685488),
+        "사하구": (35.104261135161906, 128.97500193638786),
+        "강서구": (35.21179065375177, 128.98045854324366),
+    }
 
+    return gu_coordinates.get(region_name, (0, 0))
+    print(f"Region: {region_name}, Coordinates: {result}")
+    return result
+
+def gongsilmap(request, region_name):
+    try:
+        # 'gu'를 사용하여 중심 좌표를 가져옵니다.
+        center_latitude, center_longitude = get_center_coordinates(region_name)
+
+        # 데이터베이스 커서를 사용하여 SQL 쿼리를 실행합니다.
+        with connection.cursor() as cursor:
+            # 'gu'에 따라 필터링된 쿼리를 실행합니다.
+            cursor.execute(
+                "SELECT index, address, lat, lng, deposit, month FROM empty_room_data where address=%s",[region_name])
+            # 실행된 쿼리에서 모든 결과를 가져옵니다.
+            locations = cursor.fetchall()
+
+        # 가져온 데이터를 JSON 직렬화 가능한 형식으로 처리합니다.
+        data = [
+            {
+                "index": location[0],
+                "address": location[1],
+                "lat": location[2],
+                "lng": location[3],
+                "deposit": location[4],
+                "month": location[5]
+            }
+            for location in locations
+        ]
+
+        print("JSON Result:", data)
+
+        # 처리된 데이터와 중심 좌표를 포함한 JSON 응답을 반환합니다.
+        return JsonResponse({"data": data, "center_latitude": center_latitude, "center_longitude": center_longitude},
+                            safe=False)
+
+    except Exception as e:
+        # 예외가 발생하면 에러 메시지를 포함한 500 상태의 JSON 응답을 반환합니다.
+        return JsonResponse({"error": str(e)}, status=500)

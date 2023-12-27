@@ -27,5 +27,5 @@ urlpatterns = [
     path("predict_model/", views.predict_model, name="predict_model"),
     path("mypage/",views.mypage, name="mypage"),
     path("liked/",views.sign_like_view, name="liked"),
-    path("mypage_view/",views.mypage_view, name="mypage_view")
+    path("mypage_view/",views.mypage_view, name="mypage_view"),
 ]
