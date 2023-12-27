@@ -64,7 +64,6 @@
     .like_btn span{
         cursor:pointer;
     }
-<<<<<<< HEAD
     .custom-star {
         font-size: 23px;
         color: #6495ED; /* 청색(SteelBlue) 계열의 색상 */
@@ -73,11 +72,6 @@
         border-radius: 50%;
         padding: 5px;
     }
-=======
-    .like_btn span :hover{
-    color:yellow;
-}
->>>>>>> 7a64a53ffa7cb6f7d4f4f77504c0919c88fd147a
 
 </style>
 <body>
@@ -392,18 +386,15 @@ fetchData()
 
     function fetchData(){
         $.ajax({
-              url: `../${region}/getData/`,
+              url: `../${region}/getData/?page=`+page,
               method: 'get',
               dataType: 'json',
               success: function(data){
                   console.log(data.data);
-
+                  var like_list = data.like_list
                   var txt = ''
+                  page++;
                   $.each(data.data , function(idx,data) {
-
-
-
-
                           txt += '<a class="list-group-item list-group-item-action wrap_li">'
                           if ((idx+1)%2 == 0){
                           txt += `<div class="li_img" style="cursor:pointer;"><img style="width:120px;height:95%" onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/상가1.jpg' %}" alt=""></div>`
@@ -424,7 +415,11 @@ fetchData()
                           txt += '</div>'
                           txt +=  '<div class="like_btn" >'
                           txt += '{% csrf_token %}'
+                          if(like_list.includes(data.index)){
+                          txt +=  `<span onclick="likeToggle(${data.index})"><i class="fas fa-star" style="font-size:23px;"></i></span>`
+                          } else{
                           txt +=  `<span onclick="likeToggle(${data.index})"><i class="far fa-star" style="font-size:23px;"></i></span>`
+                          }
                           txt +=  '</div>'
                           txt += '</div>'
                           txt += '</a>'
@@ -433,7 +428,8 @@ fetchData()
 					})
 					$('#list_body').append(txt) ;
 					 isLoading = false;
-                     page++;
+
+
               },
               error: function (error) {
                   console.log('Error:', error);

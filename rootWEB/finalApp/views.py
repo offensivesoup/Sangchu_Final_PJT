@@ -51,8 +51,19 @@ def detail(request, region_name,maemul_id):
 
 
 def get_list(request,region_name):
+    user_id = request.session.get('user_id')
+    like_list = []
+    if user_id:
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "SELECT * FROM like_data WHERE user_id = %s",
+                [user_id]
+            )
+            like = cursor.fetchall()
+            like_list = [i[1] for i in like]
     region_name = region_name
-    page = request.GET.get('page', 1)
+    page_str = request.GET.get('page',1)
+    page = int(page_str)
     items_per_page = 10
     start_index = (page - 1) * items_per_page
     end_index = start_index + items_per_page
@@ -61,18 +72,16 @@ def get_list(request,region_name):
         cursor.execute(sql_query,(region_name,))
         result = cursor.fetchall()
         data = []
-        for row in result:
+        for row in result[start_index:end_index]:
             name = {'index':row[16],'address': row[5],'deposit':row[0],'month':row[1],'criteria':row[2],'lat':row[3],'lng':row[4],'area':row[7],'my_area':row[8],
                     'my_floor':row[9],'total_floor':row[10]}
             data.append(name)
-        data = data[start_index:end_index]
-
         # # 쿼리 결과를 필요한 형식으로 가공
         # columns = [col[0] for col in cursor.description]
         # print(columns)
         # data = [dict(zip(columns, row)) for row in cursor.fetchall()]
         # data = {'gu':'기장군','value':7}
-    return JsonResponse({'data': data})
+    return JsonResponse({'data': data,'like_list':like_list})
 
 
 
@@ -266,6 +275,3 @@ def like_view(request, maemul_id, user_id):
     # return JsonResponse({'message': 'Invalid request method.'}, status=405)
 
 
-
-def like_status(request):
-    pass
