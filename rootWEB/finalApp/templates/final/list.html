@@ -64,7 +64,7 @@
     .like_btn span{
         cursor:pointer;
     }
-    .like_btn span :hover{
+    .far :hover{
     color:yellow;
 }
 
@@ -325,18 +325,15 @@ fetchData()
 
     function fetchData(){
         $.ajax({
-              url: `../${region}/getData/`,
+              url: `../${region}/getData/?page=`+page,
               method: 'get',
               dataType: 'json',
               success: function(data){
                   console.log(data.data);
-
+                  var like_list = data.like_list
                   var txt = ''
+                  page++;
                   $.each(data.data , function(idx,data) {
-
-
-
-
                           txt += '<a class="list-group-item list-group-item-action wrap_li">'
                           if ((idx+1)%2 == 0){
                           txt += `<div class="li_img" style="cursor:pointer;"><img style="width:120px;height:95%" onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/상가1.jpg' %}" alt=""></div>`
@@ -357,7 +354,11 @@ fetchData()
                           txt += '</div>'
                           txt +=  '<div class="like_btn" >'
                           txt += '{% csrf_token %}'
+                          if(like_list.includes(data.index)){
+                          txt +=  `<span onclick="likeToggle(${data.index})"><i class="fas fa-star" style="font-size:23px;"></i></span>`
+                          } else{
                           txt +=  `<span onclick="likeToggle(${data.index})"><i class="far fa-star" style="font-size:23px;"></i></span>`
+                          }
                           txt +=  '</div>'
                           txt += '</div>'
                           txt += '</a>'
@@ -366,7 +367,8 @@ fetchData()
 					})
 					$('#list_body').append(txt) ;
 					 isLoading = false;
-                     page++;
+
+
               },
               error: function (error) {
                   console.log('Error:', error);

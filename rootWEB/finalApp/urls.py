@@ -10,5 +10,4 @@ urlpatterns = [
     path('<str:region_name>/<int:maemul_id>/detail/cosine/', cosine_similarity_view , name = 'cosine'),
     path('<str:region_name>/<int:maemul_id>/detail/view/', detail_view, name = "views"),
     path("like_view/<int:maemul_id>/<int:user_id>",views.like_view, name = "like_view"),
-    path('<str:region_name>/<int:maemul_id>/detail/like_status/',views.like_status)
 ]
