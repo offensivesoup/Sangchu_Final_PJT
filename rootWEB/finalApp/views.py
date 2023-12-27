@@ -192,22 +192,21 @@ def detail_view(request, region_name, maemul_id):
     return JsonResponse(data)
 
 def like_view(request, maemul_id, user_id):
-    maemul_instance = maemul_id
-    user_instance = user_id
+    liked = None
     if request.method == 'POST':
-     # 새로운 데이터를 like_data 테이블에 추가
+        # 새로운 데이터를 like_data 테이블에 추가
         with connection.cursor() as cursor:
             cursor.execute(
                 "INSERT INTO like_data (maemul_id, user_id) VALUES (%s, %s)",
-                [maemul_instance, user_instance]
+                [maemul_id, user_id]
             )
-            liked = True
+        liked = True
 
     elif request.method == 'DELETE':
         with connection.cursor() as cursor:
             cursor.execute(
                 "SELECT * FROM like_data WHERE maemul_id = %s AND user_id = %s",
-                [maemul_instance, user_instance]
+                [maemul_id, user_id]
             )
             existing_like = cursor.fetchall()
 
@@ -217,48 +216,13 @@ def like_view(request, maemul_id, user_id):
                     [maemul_id, user_id]
                 )
                 liked = False
-    return JsonResponse({'liked': liked})
-    # if request.method == 'POST':
-    #     maemul_instance = maemul_id
-    #     user_instance = user_id
-    #
-    #     # 이미 좋아요한 경우, 중복 생성을 방지하기 위해 먼저 확인
-    #     with connection.cursor() as cursor:
-    #         cursor.execute(
-    #             "SELECT * FROM like_data WHERE maemul_id = %s AND user_id = %s",
-    #             [maemul_instance, user_instance]
-    #         )
-    #         existing_like = cursor.fetchall()
-    #
-    #     if existing_like:
-    #         return JsonResponse({'message': 'Already liked.'}, status=400)
-    #
-    #     # 새로운 데이터를 like_data 테이블에 추가
-    #     with connection.cursor() as cursor:
-    #         cursor.execute(
-    #             "INSERT INTO like_data (maemul_id, user_id) VALUES (%s, %s)",
-    #             [maemul_instance, user_instance]
-    #         )
-    #
-    #     # 해당 user_id에 대한 모든 maemul_id를 가져오기
-    #     with connection.cursor() as cursor:
-    #         cursor.execute(
-    #             "SELECT maemul_id FROM like_data WHERE user_id = %s",
-    #             [user_instance]
-    #         )
-    #         user_likes = cursor.fetchall()
-    #
-    #     # JsonResponse에 user_id, maemul_id 리스트 및 메시지를 포함한 데이터를 전송
-    #     response_data = {
-    #         'user_id': user_instance,
-    #         'maemul_ids': [like[0] for like in user_likes],
-    #         'message': 'Like created successfully.'
-    #     }
-    #
-    #     return JsonResponse(response_data, status=201)
-    #
-    # return JsonResponse({'message': 'Invalid request method.'}, status=405)
 
+    # 추가: 모든 조건에 대해 liked 초기화
+    if liked is None:
+        liked = False
+
+    # JsonResponse에 liked 값을 전송
+    return JsonResponse({'liked': liked})
 
 
 def like_status(request):
