@@ -14,6 +14,7 @@ from .models import UserModel, EmptyRoomData
 from .models import LikeModel
 from django.shortcuts import get_object_or_404
 import json
+from django.contrib import messages
 
 def index(request) :
     print('debug >>> client path, mainApp/index, render = index')
@@ -24,24 +25,33 @@ def map(request) :
 
 # Create your views here.
 def sign(request):
-    if request.method == 'POST':
-        email    = request.POST.get('email', None)
-        password = request.POST.get('password', None)
-        username = request.POST.get('username', None)
-        try:
-            me = UserModel.objects.get(email=email)
+    login_failed = False
 
-            if me.password == password:
-                request.session['user'] = me.username
-                request.session['user_id'] = me.id
+    if request.method == 'POST':
+        email = request.POST.get('email', None)
+        password = request.POST.get('password', None)
+
+        try:
+            user = UserModel.objects.get(email=email)
+
+            if user.password == password:
+                # Successful login
+                request.session['user'] = user.username
+                request.session['user_id'] = user.id
                 return redirect('/')
             else:
-                return redirect('/sign')
+                # Login failed
+                login_failed = True
+                messages.error(request, '로그인에 실패했습니다. 다시 시도해주세요.')
         except UserModel.DoesNotExist:
-            return redirect('/sign')
+            # User does not exist
+            login_failed = True
+            messages.error(request, '로그인에 실패했습니다. 다시 시도해주세요.')
 
     elif request.method == 'GET':
-        return render(request, 'main/sign.html')
+        return render(request, 'main/sign.html', {'login_failed': login_failed})
+
+    return render(request, 'main/sign.html', {'login_failed': login_failed})
 
 def sign_like_view(request, user_id):
     if request.method == 'POST':

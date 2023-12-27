@@ -91,5 +91,12 @@
             <a href="{% url 'signup' %}" class="login_link">회원가입 하기</a>
         </div>
     </div>
+    <script>
+        {% if login_failed %}
+            window.onload = function() {
+                alert("로그인에 실패했습니다. 다시 시도해주세요.");
+            }
+        {% endif %}
+    </script>
 </body>
 </html>
