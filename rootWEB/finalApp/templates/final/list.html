@@ -64,9 +64,20 @@
     .like_btn span{
         cursor:pointer;
     }
+<<<<<<< HEAD
+    .custom-star {
+        font-size: 23px;
+        color: #6495ED; /* 청색(SteelBlue) 계열의 색상 */
+        background-color: #B0C4DE; /* 청색(LightSteelBlue) 계열의 색상 */
+        border-color: #B0C4DE; /* 청색(LightSteelBlue) 계열의 색상 */
+        border-radius: 50%;
+        padding: 5px;
+    }
+=======
     .like_btn span :hover{
     color:yellow;
 }
+>>>>>>> 7a64a53ffa7cb6f7d4f4f77504c0919c88fd147a
 
 </style>
 <body>
@@ -217,6 +228,28 @@
 <!--    구 드롭다운 -->
     const gu_list = ['강서구','금정구','기장군','서구','중구','사하구','사상구','연제구','수영구','북구','부산진구','영도구', '동래구','남구','동구','해운대구']
 
+<<<<<<< HEAD
+                  $('#list_tbody').empty();
+                  var txt = ''
+                  $.each(data.data , function(idx,data) {
+<!--                  onclick="goDetail(' + data.index +')" ' -->
+                          txt += '<a class="list-group-item list-group-item-action wrap_li">'
+                          txt += `<div class="li_img"><img onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>`
+                          txt +=  `<div class="li_text" onclick=goDetail(${data.index})>`
+                          txt +=  '<div class="li_title"><h4>' + data.criteria + '</h4></div>'
+                          txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + data.deposit +'만원/'+ data.month+ '만원</div>'
+                          if(data.my_area!=='' & data.area!==''){
+                          txt +=  '<div class="li_info">'
+                          txt += '<span>'+data.my_area+'/'+data.area+'</span>'
+                          txt += '</div>'
+                          }
+                          txt += '</div>'
+                          txt +=  '<div class="like_btn" >'
+                          txt += '<span><button class="far fa-star custom-star" onclick="toggleStar(this)"></button></span>';
+                          txt +=  '</div>'
+                          txt += '</div>'
+                          txt += '</a>'
+=======
     for(let i=0;i<gu_list.length;i++){
         if(gu_list[i] == regionName){
             continue
@@ -224,10 +257,44 @@
         var txt = ''
         txt += '<li><a class="dropdown-item" href="../'+ gu_list[i] +'">'+ gu_list[i]+'</a></li>'
         $('.dropdown-menu').append(txt)
+>>>>>>> c33e9888dc846fef468856325e6b7e29b59643b5
 
     }
 
+<<<<<<< HEAD
+					})
+					$('#list_body').append(txt) ;
+              },
+              error: function (error) {
+                  console.log('Error:', error);
+              }
+          });
+
+
+
+    })
+<!--    즐겨찾기 버튼을 눌렀을 때 색이 바뀌도록 하는 부분-->
+        function toggleStar(button) {
+        // 버튼의 클래스를 검사하여 'fas' 클래스가 있는지 확인
+        var isStarred = button.classList.contains('fas');
+
+        // 'fas' 클래스가 있으면 제거하고, 없으면 추가
+        if (isStarred) {
+            button.classList.remove('fas');
+        } else {
+            button.classList.add('fas');
+        }
+    }
+</script>
+
+
+
+
+<!--지도 -->
+	<script>
+=======
     <!--지도 -->
+>>>>>>> c33e9888dc846fef468856325e6b7e29b59643b5
 
     var latorigin = 35.10482165803885
     var lngorigin = 129.01972954165134

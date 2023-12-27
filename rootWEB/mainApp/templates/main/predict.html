@@ -17,21 +17,22 @@
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
     <style>
         body {
-            background-color: #f8f9fa;
-<!--            margin-top: 40px;-->
-<!--            margin-bottom: 70px;-->
+            background-color: white;
+            margin-top: 10px;
+            margin-bottom: 0px;
+            padding: 1px;
         }
 
         .predictionForm {
             width: 50%;
-            margin: 0 auto;
+            margin: auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             color: #000000;
             text-align: left;
-            padding: 20px;
+            padding: 0px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             background-color: #f8f9fa;
         }
@@ -44,7 +45,7 @@
             text-align: center;
             margin-top: 10px;
             margin-bottom: 10px;
-            padding: 20px;
+            padding: 0px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             background-color: #f8f9fa;
         }
@@ -80,6 +81,15 @@
             color: #244769;
             font-size: 25px;
             font-weight: bold;
+        }
+        .calculator-container {
+            display: block;
+            margin-top: 1px;
+            margin-bottom: 1px;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            align-items: flex-end;
         }
 
     </style>
@@ -158,9 +168,13 @@
     </div>
   </div>
 </div>
-
 <div class="container " style="margin-top:150px;" >
     <form id="predictionForm">
+        <div class="calculator-container">
+            <label for="squareMeters">평수 입력:</label>
+            <input type="number" id="squareMeters" placeholder="평수를 입력하세요" required>
+            <button onclick="calculateSquareMeters()">계산하기</button><div id="result" ></div>
+        </div>
         <div class = "predictionForm">
             <div class ="home_button">
                 <a href="{% url 'index' %}" class="home-link">
@@ -188,10 +202,13 @@
 
             <button type="button" class = "btn-primary" style= "width:100%;" onclick="predict()">월세 예측</button>
         </div>
+        <div id="predictionResult" class = Result_area></div>
+
     </form>
 
-    <div id="predictionResult" class = Result_area></div>
-</div>
+    </div>
+
+
     <script>
         function getCookie(name) {
             var cookieValue = null;
@@ -258,6 +275,26 @@
     function logout(){
       window.location.href = "{% url 'logout' %}"
 
+    }
+
+
+<!--        계산기에 대한 스크립트 코드-->
+            function calculateSquareMeters() {
+        // Get input value
+        const squareFeet = document.getElementById('squareMeters').value;
+
+        // Check if the input is a valid number
+        if (isNaN(squareFeet) || squareFeet < 0) {
+            alert('올바른 평수를 입력하세요.');
+            return;
+        }
+
+        // Convert square feet to square meters (1 평 = 3.30578 제곱미터)
+        const squareMeters = squareFeet * 3.30578;
+
+        // Display the result
+        const resultElement = document.getElementById('result');
+        resultElement.innerHTML = `면적: ${squareMeters.toFixed(2)} 제곱미터`;
     }
     </script>
 
