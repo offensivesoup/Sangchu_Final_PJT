@@ -253,59 +253,48 @@ var gu_coordinates = {
     var this_region = gu_coordinates[regionName]
     console.log(this_region)
 
+var markerPositions = []; // 전역 변수로 markerPositions 배열을 선언합니다.
+
 function mapfetchData() {
     $.ajax({
-        url: `../${region}/getData/?page=`+page,
+        url: `../${region}/getData/?page=` + page,
         method: 'get',
         dataType: 'json',
         success: function (data) {
             console.log(data.data);
 
-            var centerLatitude = this_region[0];
-            var centerLongitude = this_region[1];
-
-            // map 변수를 전역 변수로 사용합니다.
-            map = new kakao.maps.Map(document.getElementById('map'), {
-                center: new kakao.maps.LatLng(centerLatitude, centerLongitude),
-                level: 7
+            $.each(data.data, function (idx, item) {
+                // 각 마커의 위치를 markerPositions 배열에 추가
+                markerPositions.push(new kakao.maps.LatLng(item.lat, item.lng));
             });
 
-            $.each(data.data, function (idx, item) {
-                var markerPosition = new kakao.maps.LatLng(item.lat, item.lng);
-                var marker = new kakao.maps.Marker({
-                    position: markerPosition,
-                    map: map,
-                    index: item.index
-                });
-
-<!--                function makeClickListener(map, marker, infowindow) {-->
-<!--                var isOpened = false;-->
-
-<!--                return function () {-->
-<!--                    if (isOpened) {-->
-<!--                        infowindow.close();-->
-<!--                    } else {-->
-<!--                        infowindow.open(map, marker);-->
-<!--                    }-->
-<!--                    isOpened = !isOpened; // Toggle the infowindow state-->
-<!--                };-->
-
-<!--            }-->
-
-<!--                kakao.maps.event.addListener(marker, 'click', function () {-->
-<!--                    // 기존에 열린 인포윈도우가 있으면 닫기-->
-<!--                    if (currentInfowindow) {-->
-<!--                        currentInfowindow.close();-->
-<!--                    }-->
-
-<!--                    infowindow.open(map, marker);-->
-<!--                    currentInfowindow = infowindow;-->
-<!--                });-->
-                });
+            // 마커 추가 함수 호출
+            addMarkersToMap();
         },
         error: function (error) {
             console.log('Error:', error);
         }
+    });
+}
+
+function addMarkersToMap() {
+    // map이 없으면 새로 생성합니다.
+    if (!map) {
+        var centerLatitude = this_region[0];
+        var centerLongitude = this_region[1];
+
+        map = new kakao.maps.Map(document.getElementById('map'), {
+            center: new kakao.maps.LatLng(centerLatitude, centerLongitude),
+            level: 7
+        });
+    }
+
+    // markerPositions 배열을 이용하여 지도에 마커를 추가
+    markerPositions.forEach(function (position) {
+        var marker = new kakao.maps.Marker({
+            position: position,
+            map: map
+        });
     });
 }
 

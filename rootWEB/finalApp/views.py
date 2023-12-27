@@ -76,6 +76,13 @@ def get_list(request,region_name):
             name = {'index':row[16],'address': row[5],'deposit':row[0],'month':row[1],'criteria':row[2],'lat':row[3],'lng':row[4],'area':row[7],'my_area':row[8],
                     'my_floor':row[9],'total_floor':row[10]}
             data.append(name)
+    # with connection.cursor() as cursor:
+    #     cursor.execute(sql_query, (region_name,))
+    #     result = cursor.fetchall()
+    #     data = []
+    #     for row in result[start_index:end_index]:
+    #         name = {'lat': row[3], 'lng': row[4]}
+    #         map_data.append(name)
         # # 쿼리 결과를 필요한 형식으로 가공
         # columns = [col[0] for col in cursor.description]
         # print(columns)
