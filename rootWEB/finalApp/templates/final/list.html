@@ -226,6 +226,7 @@
         $('.dropdown-menu').append(txt)
     }
 
+
 <!-- 지도 -->
 var map;
 var markers = [];
@@ -254,7 +255,7 @@ var gu_coordinates = {
 
 function mapfetchData() {
     $.ajax({
-        url: `../${regionName}/getData/`,
+        url: `../${region}/getData/?page=`+page,
         method: 'get',
         dataType: 'json',
         success: function (data) {
