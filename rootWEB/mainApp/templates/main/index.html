@@ -130,11 +130,11 @@ https://templatemo.com/tm-580-woox-travel
                   <div class="more-info">
                     <div class="row">
                       <div class="col-lg-3 col-sm-6 col-6">
-                        <i class="fa fa-user"></i>
+                       <i class="fas fa-map"></i>
                         <h4><span>실시간 인기 지역</span><br>사상구</h4>
                       </div>
                       <div class="col-lg-3 col-sm-6 col-6">
-                        <i class="fa fa-globe"></i>
+                        <i class="fas fa-building"></i>
                         <h4><span>실시간 인기 매물</span><br>경보센트리안</h4>
                       </div>
                       <div class="col-lg-3 col-sm-6 col-6">
@@ -166,11 +166,11 @@ https://templatemo.com/tm-580-woox-travel
                   <div class="more-info">
                     <div class="row">
                       <div class="col-lg-3 col-sm-6 col-6">
-                        <i class="fa fa-user"></i>
+                        <i class="fas fa-map"></i>
                         <h4><span>실시간 인기 지역</span><br>금정구</h4>
                       </div>
                       <div class="col-lg-3 col-sm-6 col-6">
-                        <i class="fa fa-globe"></i>
+                        <i class="fas fa-building"></i>
                         <h4><span>실시간 인기 매물</span><br>삼한골든뷰에듀</h4>
                       </div>
                       <div class="col-lg-3 col-sm-6 col-6">
@@ -202,11 +202,11 @@ https://templatemo.com/tm-580-woox-travel
                   <div class="more-info">
                     <div class="row">
                       <div class="col-lg-3 col-sm-6 col-6">
-                        <i class="fa fa-user"></i>
+                        <i class="fas fa-map"></i>
                         <h4><span>실시간 인기 지역</span><br>북구</h4>
                       </div>
                       <div class="col-lg-3 col-sm-6 col-6">
-                        <i class="fa fa-globe"></i>
+                        <i class="fas fa-building"></i>
                         <h4><span>실시간 인기 매물</span><br>동보빌딩</h4>
                       </div>
                       <div class="col-lg-3 col-sm-6 col-6">
@@ -238,11 +238,11 @@ https://templatemo.com/tm-580-woox-travel
                   <div class="more-info">
                     <div class="row">
                       <div class="col-lg-3 col-sm-6 col-6">
-                        <i class="fa fa-user"></i>
+                        <i class="fas fa-map"></i>
                         <h4><span>실시간 인기 지역</span><br>부산 진구</h4>
                       </div>
                       <div class="col-lg-3 col-sm-6 col-6">
-                        <i class="fa fa-globe"></i>
+                        <i class="fas fa-building"></i>
                         <h4><span>실시간 인기 매물</span><br>한신VAN</h4>
                       </div>
                       <div class="col-lg-3 col-sm-6 col-6">
@@ -372,7 +372,7 @@ https://templatemo.com/tm-580-woox-travel
                         <div class="text-button">
                           <a href="http://127.0.0.1:8000/maemul/%EB%8F%99%EB%9E%98%EA%B5%AC/1784/detail/">Need Directions ? <i class="fa fa-arrow-right"></i></a>
                         </div>
-                        <div id="map3" style="width:100%;height:50vh;"></div>
+                        <div id="map3" style="width:100%;height:50vh"></div>
                       </div>
                     </div>
                   </div>
@@ -473,12 +473,18 @@ https://templatemo.com/tm-580-woox-travel
 
 <script>
 
-    var latorigin = 35.10482165803885
-    var lngorigin = 129.01972954165134
+    var latorigin1 = 35.156973
+    var lngorigin1 = 129.066592
+
+    var latorigin2 = 35.165036
+    var lngorigin2 = 129.159161
+
+    var latorigin3 = 35.156973
+    var lngorigin3 = 129.066592
 
 	var mapContainer = document.getElementById('map'), // 지도를 표시할 div
     mapOption = {
-        center: new kakao.maps.LatLng(latorigin, lngorigin), // 지도의 중심좌표
+        center: new kakao.maps.LatLng(latorigin1, lngorigin1), // 지도의 중심좌표
         level: 7 // 지도의 확대 레벨
     };
 
@@ -497,7 +503,7 @@ https://templatemo.com/tm-580-woox-travel
 
 	var mapContainer = document.getElementById('map2'), // 지도를 표시할 div
     mapOption = {
-        center: new kakao.maps.LatLng(latorigin, lngorigin), // 지도의 중심좌표
+        center: new kakao.maps.LatLng(latorigin2, lngorigin2), // 지도의 중심좌표
         level: 7 // 지도의 확대 레벨
     };
 
@@ -516,7 +522,7 @@ https://templatemo.com/tm-580-woox-travel
 
 	var mapContainer = document.getElementById('map3'), // 지도를 표시할 div
     mapOption = {
-        center: new kakao.maps.LatLng(latorigin, lngorigin), // 지도의 중심좌표
+        center: new kakao.maps.LatLng(latorigin3, lngorigin3), // 지도의 중심좌표
         level: 7 // 지도의 확대 레벨
     };
 
