@@ -163,7 +163,6 @@
   </ul>
 </div>
 <div id = "list_body" class="list-group" style="overflow: scroll;height:80vh;padding:10px 0px">
-    <div><button id = "sort_button">보증금순으로 정렬</button></div>
 <!--  <a href="#" class="list-group-item list-group-item-action wrap_li">-->
 <!--      <div class="li_img"><img  src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>-->
 <!--      <div class="li_text">-->
@@ -278,23 +277,50 @@ function mapfetchData() {
 }
 
 function addMarkersToMap() {
-    // map이 없으면 새로 생성합니다.
-    if (!map) {
-        var centerLatitude = this_region[0];
-        var centerLongitude = this_region[1];
+    $.ajax({
+        url: `../${region}/getData/?page=` + page,
+        method: 'get',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data.data);
 
-        map = new kakao.maps.Map(document.getElementById('map'), {
-            center: new kakao.maps.LatLng(centerLatitude, centerLongitude),
-            level: 7
-        });
-    }
+            // map이 없으면 새로 생성합니다.
+            if (!map) {
+                var centerLatitude = this_region[0];
+                var centerLongitude = this_region[1];
 
-    // markerPositions 배열을 이용하여 지도에 마커를 추가
-    markerPositions.forEach(function (position) {
-        var marker = new kakao.maps.Marker({
-            position: position,
-            map: map
-        });
+                map = new kakao.maps.Map(document.getElementById('map'), {
+                    center: new kakao.maps.LatLng(centerLatitude, centerLongitude),
+                    level: 6
+                });
+            }
+
+            // 데이터에서 마커 정보 추출
+            var markerData = [];
+            data.data.forEach(function (item) {
+                markerData.push({
+                    position: new kakao.maps.LatLng(item.lat, item.lng),
+                    detail_url: `/maemul/${region}/${item.index}/detail`
+                });
+            });
+
+            // 마커를 지도에 추가
+            markerData.forEach(function (data) {
+                var marker = new kakao.maps.Marker({
+                    position: data.position,
+                    map: map
+                });
+
+                // 마커 클릭 이벤트 리스너 설정
+                kakao.maps.event.addListener(marker, 'click', function () {
+                    // 해당 아이템의 URL로 이동
+                    window.location.href = data.detail_url;
+                });
+            });
+        },
+        error: function (error) {
+            console.log('Error:', error);
+        }
     });
 }
 
@@ -394,7 +420,7 @@ fetchData()
                           txt += `<div class="li_img" style="cursor:pointer;"><img style="width:120px;height:95%" onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/상가3.jpg' %}" alt=""></div>`
                           }
                           else{
-                          txt += `<div class="li_img" style="cursor:pointer;"><img style="width:120px;height:95%" onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/이미지준비중1.jpg' %}" alt=""></div>`
+                          txt += `<div class="li_img" style="cursor:pointer;"><img style="width:120px;height:95%" onclick="goDetail(${data.index})"  src="{% static 'bootstrap/assets/images/경주 Y빌딩.jpg' %}" alt=""></div>`
                           }
                           txt +=  `<div class="li_text" style="cursor:pointer;" onclick=goDetail(${data.index})>`
                           txt +=  '<div class="li_title"><h4>' + data.criteria + '</h4></div>'
@@ -488,31 +514,30 @@ function processData() {
 
     $('#list_tbody').empty()
 
-    // 예시: 데이터를 사용하여 화면에 출력
-    var txt = '';
-    $.each(data.data, function (idx, item) {
-        txt += '<a class="list-group-item list-group-item-action wrap_li">';
-        txt += `<div class="li_img"><img onclick="goDetail(${item.index})" src="{% static 'bootstrap/assets/images/SANGCHU.png' %}" alt=""></div>`;
-        txt += `<div class="li_text" onclick=goDetail(${item.index})>`;
-        txt += '<div class="li_title"><h4>' + item.criteria + '</h4></div>';
-        txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + item.deposit + '만원/' + item.month + '만원</div>';
-        if (item.my_area !== '' && item.area !== '') {
-            txt += '<div class="li_info">';
-            txt += '<span>' + item.my_area + '/' + item.area + '</span>';
-            txt += '</div>';
-        }
-        txt += '</div>';
-        txt += '<div class="like_btn">';
-        txt += '{% csrf_token %}'
-<!--        txt +=  `<span onclick="likeToggle(${data.index})"><i class="far fa-star" style="font-size:23px;"></i></span>`-->
-        txt += '</div>';
-        txt += '</div>';
-        txt += '</a>';
-    });
+<!--    // 예시: 데이터를 사용하여 화면에 출력-->
+<!--    var txt = '';-->
+<!--    $.each(data.data, function (idx, item) {-->
+<!--        txt += '<a class="list-group-item list-group-item-action wrap_li">';-->
+<!--        txt += `<div class="li_text" onclick=goDetail(${item.index})>`;-->
+<!--        txt += '<div class="li_title"><h4>' + item.criteria + '</h4></div>';-->
+<!--        txt += '<div class="li_price"><span class="badge bg-secondary">월세</span>' + item.deposit + '만원/' + item.month + '만원</div>';-->
+<!--        if (item.my_area !== '' && item.area !== '') {-->
+<!--            txt += '<div class="li_info">';-->
+<!--            txt += '<span>' + item.my_area + '/' + item.area + '</span>';-->
+<!--            txt += '</div>';-->
+<!--        }-->
+<!--        txt += '</div>';-->
+<!--        txt += '<div class="like_btn">';-->
+<!--        txt += '{% csrf_token %}'-->
+<!--&lt;!&ndash;        txt +=  `<span onclick="likeToggle(${data.index})"><i class="far fa-star" style="font-size:23px;"></i></span>`&ndash;&gt;-->
+<!--        txt += '</div>';-->
+<!--        txt += '</div>';-->
+<!--        txt += '</a>';-->
+<!--    });-->
 
-    // 받아온 데이터를 사용하여 화면에 출력
-    $('#list_body').append(txt);
-}
+<!--    // 받아온 데이터를 사용하여 화면에 출력-->
+<!--    $('#list_body').append(txt);-->
+<!--}-->
 
 // 정렬 버튼에 이벤트 리스너 추가
 $('#sort_button').on('click', function () {
