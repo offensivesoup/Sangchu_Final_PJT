@@ -436,35 +436,31 @@ $('#list_body').scroll(function () {
 </script>
 
 <script>
-function likeToggle(id) {
-    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
-    var user_id = `{{request.session.user_id}}`
-    var maemul_id = id;
+<!--function likeToggle(id) {-->
+<!--    var csrftoken = $("[name=csrfmiddlewaretoken]").val();-->
+<!--    var user_id = "{{ request.session.user_id }}";  // 서버에서 전달된 값 사용-->
+<!--    var maemul_id = id;-->
 
-    // 'self' 변수를 통해 현재 컨텍스트를 저장
-    var self = this;
-
-    $.ajax({
-        url: `../like_view/${maemul_id}/${user_id}`,
-        method: 'POST',
-        dataType: 'json',
-        headers: {'X-CSRFToken': csrftoken},
-        success: function(data) {
-            if (data.liked) {
-                console.log('Liked!')
-                // 'self'를 사용하여 현재 컨텍스트에 대한 엘리먼트를 선택
-                $(self).html(`<i class="bi bi-star-fill" style="font-size:23px;"></i>`);
-            } else {
-                console.log('Unliked!');
-                // 'self'를 사용하여 현재 컨텍스트에 대한 엘리먼트를 선택
-                $(self).html(`<i class="far fa-star" style="font-size:23px;"></i>`);
-            }
-        },
-        error: function(error) {
-            console.error('Error:', error);
-        }
-    });
-}
+<!--    $.ajax({-->
+<!--        url: `../like_view/${maemul_id}/${user_id}`,-->
+<!--        method: 'POST',-->
+<!--        dataType: 'json',-->
+<!--        headers: {'X-CSRFToken': csrftoken},-->
+<!--        context: this,  // 'this'를 현재 컨텍스트로 설정-->
+<!--        success: function(data) {-->
+<!--            if (data.liked) {-->
+<!--                console.log('Liked!');-->
+<!--                $(this).html(`<i class="bi bi-star-fill" style="font-size:23px;"></i>`);-->
+<!--            } else {-->
+<!--                console.log('Unliked!');-->
+<!--                $(this).html(`<i class="far fa-star" style="font-size:23px;"></i>`);-->
+<!--            }-->
+<!--        },-->
+<!--        error: function(error) {-->
+<!--            console.error('Error:', error);-->
+<!--        }-->
+<!--    });-->
+<!--}-->
 
 
 $(document).ready(() => {
@@ -508,7 +504,7 @@ function processData() {
         txt += '</div>';
         txt += '<div class="like_btn">';
         txt += '{% csrf_token %}'
-        txt +=  `<span onclick="likeToggle(${data.index})"><i class="far fa-star" style="font-size:23px;"></i></span>`
+<!--        txt +=  `<span onclick="likeToggle(${data.index})"><i class="far fa-star" style="font-size:23px;"></i></span>`-->
         txt += '</div>';
         txt += '</div>';
         txt += '</a>';

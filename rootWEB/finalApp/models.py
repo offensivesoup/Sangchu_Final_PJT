@@ -8,3 +8,5 @@ class Views(models.Model):
     def __str__(self):
         return str(self.views)
 
+
+

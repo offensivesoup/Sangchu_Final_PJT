@@ -41,13 +41,11 @@ class EmptyRoomData(models.Model):
 class LikeModel(models.Model):
     class Meta:
         db_table = "like_data"
-    # id
-    user_id = models.ForeignKey(UserModel,
-                                on_delete=models.CASCADE,
-                                db_column= 'user_id',
-                                null=False)
-    maemul_id = models.ForeignKey(EmptyRoomData,
-                                  on_delete=models.CASCADE,
-                                  db_column='maemul_id',
-                                  null=False)
+        unique_together = ('user', 'maemul')
+
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE, db_column='user_id')
+    maemul = models.ForeignKey(EmptyRoomData, on_delete=models.CASCADE, db_column='maemul_id')
+
+    def __str__(self):
+        return f"{self.user.username} likes {self.maemul.index}"
 
