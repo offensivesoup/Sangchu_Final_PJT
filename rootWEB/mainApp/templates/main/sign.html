@@ -14,16 +14,18 @@
 
         .container {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
         .card {
-            width: 400px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         .card-title {
@@ -37,20 +39,31 @@
 
         .form-control {
             width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 8px;
+            box-sizing: border-box;
         }
 
         .btn-primary {
             width: 100%;
-            color: #000000;
+            padding: 10px;
+            color: #ffffff;
+            background-color: #244769;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         .signup-link {
             text-align: center;
             margin-top: 20px;
+            color: #2055BF;
         }
         .home-link {
             display: block;
-            margin-top: 1px;
+            margin-top: 10px;
             margin-bottom: 1px;
             color: #2055BF;
             text-decoration: none;
@@ -59,11 +72,18 @@
         }
         .login_link {
             display: block;
-            margin-top: 20px;
+            margin-top: 10px;
             color: #2055BF;
             text-decoration: none;
             text-align: center;
         }
+
+        .footer_copy {
+            text-align: center;
+            margin-top: 50px;
+            color: #999;
+        }
+
     </style>
 </head>
 <body>
@@ -78,17 +98,22 @@
             <form method="post" action="{% url 'sign' %}">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="email">이메일:</label>
-                    <input type="text" class="form-control" name="email" required>
+                    <label for="email"></label>
+                    <input type="text" class="form-control" name="email" placeholder="이메일" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">비밀번호:</label>
-                    <input type="password" class="form-control" name="password" required>
+                    <label for="password"></label>
+                    <input type="password" class="form-control" name="password" placeholder="비밀번호" required>
                 </div>
                 <button type="submit" class="btn btn-primary">로그인</button>
             </form>
             <p class="signup-link">계정 새로 가입하기</p>
             <a href="{% url 'signup' %}" class="login_link">회원가입 하기</a>
+        </div>
+
+        <img src="https://ssl.pstatic.net/melona/libs/1378/1378592/e4be42b030ccc2736b11_20231218174838121_1.jpg" alt="[광고]치지직 스트리밍이 시작됩니다" style="vertical-align:top;width:27%;height:auto;border:none;">
+        <div class="footer-copy">
+            Copyright © sangchu All Rights Reserved.
         </div>
     </div>
     <script>
